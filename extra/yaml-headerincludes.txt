@@ -1,0 +1,27 @@
+- \setbeamercolor{section in toc}{fg=black,bg=white}
+- \setbeamercolor{alerted text}{fg=lmugreen!80!gray}
+- \setbeamercolor*{palette primary}{fg=lmugreen!60!black,bg=gray!30!white}
+- \setbeamercolor*{palette secondary}{fg=lmugreen!70!black,bg=gray!15!white}
+- \setbeamercolor*{palette tertiary}{bg=lmugreen!80!black,fg=gray!10!white}
+- \setbeamercolor*{palette quaternary}{fg=lmugreen,bg=gray!5!white}
+- \setbeamercolor*{sidebar}{fg=lmugreen,bg=gray!15!white}
+- \setbeamercolor*{palette sidebar primary}{fg=lmugreen!10!black}
+- \setbeamercolor*{palette sidebar secondary}{fg=white}
+- \setbeamercolor*{palette sidebar tertiary}{fg=lmugreen!50!black}
+- \setbeamercolor*{palette sidebar quaternary}{fg=gray!10!white}
+- \setbeamercolor{titlelike}{parent=palette primary,fg=lmugreen}
+- \setbeamercolor{frametitle}{bg=gray!10!white}
+- \setbeamercolor{frametitle right}{bg=gray!60!white}
+- \setbeamercolor*{separation line}{}
+- \setbeamercolor*{fine separation line}{}
+
+- \setbeamercolor{structure}{fg=lmugreen}
+- \setbeamercolor{title}{bg=lmugreen, fg=white}
+- \setbeamercolor{frametitle}{bg=lmugreen!10}
+- \setbeamercolor{section title}{fg=lmugreen}
+- \setbeamercolor{subsection title}{fg=lmugreen}
+- \setbeamercolor{item}{fg=lmugreen}
+- \setbeamercolor{enumerate item}{fg=lmugreen}
+- \setbeamercolor{caption name}{fg=lmugreen}
+- \setbeamercolor{block title}{fg=white, bg=lmugreen}
+- \setbeamercolor{block body}{bg=lmugreen!10}
