@@ -1,0 +1,39 @@
+\AtBeginSection{}
+\titlegraphic{\includegraphics[width=0.33\textwidth]{lmu-logo.png}}
+\definecolor{lmugreen}{RGB}{0,136,58}
+\setbeamercolor{section in toc}{fg=black,bg=white}
+\setbeamercolor{alerted text}{fg=lmugreen!80!gray}
+\setbeamercolor*{palette primary}{fg=lmugreen!60!black,bg=gray!30!white}
+\setbeamercolor*{palette secondary}{fg=lmugreen!70!black,bg=gray!15!white}
+\setbeamercolor*{palette tertiary}{bg=lmugreen!80!black,fg=gray!10!white}
+\setbeamercolor*{palette quaternary}{fg=lmugreen,bg=gray!5!white}
+\setbeamercolor*{sidebar}{fg=lmugreen,bg=gray!15!white}
+\setbeamercolor*{palette sidebar primary}{fg=lmugreen!10!black}
+\setbeamercolor*{palette sidebar secondary}{fg=white}
+\setbeamercolor*{palette sidebar tertiary}{fg=lmugreen!50!black}
+\setbeamercolor*{palette sidebar quaternary}{fg=gray!10!white}
+\setbeamercolor{titlelike}{parent=palette primary,fg=lmugreen}
+\setbeamercolor{frametitle}{bg=lmugreen!10}
+\setbeamercolor{frametitle right}{bg=gray!60!white}
+\setbeamercolor{title}{bg=lmugreen!10, fg=lmugreen}
+\setbeamercolor{item}{fg=lmugreen}
+\setbeamercolor{enumerate item}{fg=lmugreen}
+\setbeamercolor*{separation line}{}
+\setbeamercolor*{fine separation line}{}
+\setbeamertemplate{footline}%{miniframes theme}
+{%
+  \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
+  \end{beamercolorbox}
+  \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+    leftskip=.3cm,rightskip=.3cm plus1fil]{author in head/foot}%
+    \leavevmode{\usebeamerfont{author in head/foot}\insertshortauthor}%
+    \hfill%
+    {\usebeamerfont{institute in head/foot}\usebeamercolor[fg]{institute in head/foot}\insertshortinstitute}%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+    leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+    {\usebeamerfont{title in head/foot}\insertshorttitle} \hfill     \insertframenumber/\inserttotalframenumber%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
+  \end{beamercolorbox}
+}
