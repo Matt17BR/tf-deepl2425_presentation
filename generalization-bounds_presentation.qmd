@@ -233,7 +233,7 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
   $$
   - $R(h)$: Generalization error (true performance on unseen data).
   - $R_{\text{emp}}(h)$: Empirical risk (error on training data).
-  - $\epsilon$: A small positive value (tolerance).
+  - $\varepsilon$: A small positive value (tolerance).
   - $m$: Size of the dataset.
 
 ---
@@ -241,7 +241,25 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
 ### Key Insights
 - The probability that the generalization error $R(h)$ deviates significantly from the empirical risk $R_{\text{emp}}(h)$ decreases **exponentially** with:
   - Larger dataset size $m$.
-  - Smaller tolerance $\epsilon$.
+  - Smaller tolerance $\varepsilon$.
+
+---
+
+## Rates of Convergence
+- **What Are Rates of Convergence?**
+  - Quantify how quickly the generalization error approaches the empirical risk as the dataset size $m$ grows.
+  - In Hoeffding's inequality:
+    $$
+    P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
+    $$
+    - The **exponential term** $\exp(-2m\varepsilon^2)$ shows that the convergence is faster with larger datasets.
+
+- **Key Factors**:
+  - **Dataset Size ($m$)**: Larger datasets reduce the gap between $R(h)$ and $R_{\text{emp}}(h)$ more quickly.
+  - **Tolerance ($\varepsilon$)**: Smaller tolerances require larger datasets for the same level of confidence.
+
+- **Practical Insight**:
+  - Rates of convergence provide a guideline for determining the dataset size needed to achieve a desired level of generalization.
 
 ---
 
@@ -249,9 +267,11 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
 - **What Does It Mean?**
   - As the dataset size ($m$) increases, the empirical risk becomes a more reliable indicator of the generalization error.
   - For a fixed hypothesis, we can be confident that the performance observed on training data is close to what can be expected on unseen data.
+  - The **rate of convergence** shows how quickly this reliability improves as $m$ grows.
 
-- **Why is it Important?**
+### Key Insights
   - Hoeffding's inequality gives a **quantitative guarantee** about the relationship between training performance and unseen data performance.
+  - Understanding convergence rates helps in planning how much data is needed for robust generalization.
 
 ---
 
@@ -264,6 +284,37 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
   - It doesn’t directly address:
     - The **selection bias** introduced by choosing the hypothesis that minimizes the empirical risk.
     - The increased risk of overfitting when evaluating multiple hypotheses.
-  
-- **Motivation for Advanced Bounds**:
-  - Hoeffding's inequality provides a foundation but highlights the need for bounds that account for hypothesis complexity, such as **VC dimension** or **Rademacher complexity**.
+
+---
+
+## Limitations of Hoeffding's Inequality
+
+- **Beyond Fixed Hypotheses**:
+  - Hoeffding's inequality assumes a single, fixed hypothesis.
+  - In practice, machine learning involves selecting the best hypothesis from a **large hypothesis class** $\mathcal{H}$, increasing the risk of overfitting.
+
+- **Need for Complexity-Aware Bounds**:
+  - Simple bounds like Hoeffding’s do not consider the complexity of the hypothesis class, which influences generalization.
+
+---
+
+## Motivation for Advanced Bounds
+
+- **Advanced bounds** address this by incorporating:
+  - **VC Dimension**: A measure of the capacity or expressiveness of a hypothesis class. Higher VC dimensions indicate more complex models, which may require more data to generalize well.
+  - **Rademacher Complexity**: A data-dependent measure of how well a hypothesis class can fit random noise in the training data. It captures both the hypothesis class and the specifics of the data distribution.
+
+---
+
+- **Extending Convergence Rates**:
+  - Advanced bounds refine the rates of convergence by linking the generalization error to:
+    - The size of the dataset $m$.
+    - The complexity of the hypothesis class (e.g., **VC dimension** or **Rademacher complexity**).
+  - For example, the generalization error is often bounded as:
+    $$
+    R(h) - R_{\text{emp}}(h) \leq \mathcal{O}\left(\sqrt{\frac{\text{Complexity}(\mathcal{H})}{m}}\right)
+    $$
+    - Larger datasets $m$ reduce error, but higher complexity increases the required data for a desired level of generalization.
+
+- **Practical Implications**:
+  - These bounds provide actionable insights for balancing model complexity and dataset size.
