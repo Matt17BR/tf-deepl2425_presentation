@@ -209,28 +209,30 @@
 \frame{\titlepage}
 
 
-\section{Introduction}\label{introduction}
+\section{The Quest for
+Generalization}\label{the-quest-for-generalization}
 
-\begin{frame}{What is Machine Learning?}
-\phantomsection\label{what-is-machine-learning}
+\begin{frame}{Motivation}
+\phantomsection\label{motivation}
 \begin{itemize}
 \tightlist
 \item
-  Machine learning is the process of learning from data to make
-  predictions or decisions. {[}1{]}
-\end{itemize}
-\end{frame}
+  \textbf{Core Challenge}: How can a model learned from \emph{limited
+  training data} perform well on \emph{unseen data}?
+\item
+  Generalization lies at the heart of the machine learning process.
+\item
+  A poorly generalized model risks:
 
-\begin{frame}{Supervised Learning}
-\phantomsection\label{supervised-learning}
-\begin{itemize}
-\tightlist
-\item
-  We focus on supervised learning where the data consists of
-  input-output pairs, called features (\(x_i\)) and labels (\(y_i\)).
-  {[}1-3{]}
-\item
-  The goal is to infer \(y_i\) from \(x_i\). {[}4{]}
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Overfitting}: Performing well on training data but poorly on
+    unseen data.
+  \item
+    \textbf{Underfitting}: Failing to capture the underlying patterns of
+    the data.
+  \end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -239,329 +241,96 @@
 \begin{itemize}
 \tightlist
 \item
-  We have a dataset of observations
-  \(S = \{(x_1, y_1), …, (x_m, y_m)\}\). {[}4{]}
+  \textbf{Supervised Learning}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Goal: Learn a function ( f: X \to Y ) mapping inputs ( X ) to
+    outputs ( Y ) based on labeled training data.
+  \end{itemize}
 \item
-  We wish to learn how to infer the value of \(y_i\) given \(x_i\).
-  {[}4{]}
+  \textbf{Key Question}: Can the learned function perform well on unseen
+  data?
+\item
+  \textbf{Generalization}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Ability of a model to extend its learning beyond the training data.
+  \item
+    \textbf{Central Problem} in machine learning: balancing
+    \emph{empirical performance} with \emph{future predictions}.
+  \end{itemize}
 \end{itemize}
 \end{frame}
 
-\section{Formalizing the Learning
-Problem}\label{formalizing-the-learning-problem}
-
-\begin{frame}{Statistical Model}
-\phantomsection\label{statistical-model}
+\begin{frame}{Why Theory Matters}
+\phantomsection\label{why-theory-matters}
 \begin{itemize}
 \tightlist
 \item
-  We assume the values of \((x_i, y_i)\) in the dataset are a random
-  sample from a larger population. {[}5{]}
+  \textbf{Significance of Theory}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Guides \textbf{algorithm design} by providing a foundation for
+    developing new methods.
+  \item
+    Allows \textbf{performance analysis} to identify the strengths and
+    weaknesses of algorithms.
+  \item
+    Reveals \textbf{limitations} of learning systems, helping us
+    understand their boundaries.
+  \end{itemize}
 \item
-  The values of \(x_i\) and \(y_i\) are realizations of two random
-  variables \(X\) and \(Y\) with probability distributions \(P_X\) and
-  \(P_Y\) respectively. {[}5{]}
+  \textbf{Theoretical Understanding}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Bridges the gap between empirical performance and guarantees on
+    future behavior.
+  \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Joint Distribution}
-\phantomsection\label{joint-distribution}
+\begin{frame}{Introducing Generalization Bounds}
+\phantomsection\label{introducing-generalization-bounds}
 \begin{itemize}
 \tightlist
 \item
-  There is a relation between the features and the labels. {[}6{]}
-\item
-  The value of \(Y\) is conditioned on the value of \(X\). {[}6{]}
-\item
-  This is expressed by the conditional probability \(P(Y|X)\). {[}6{]}
-\item
-  We can compress \(P_X\) and \(P_Y\) into a single joint distribution
-  \(P(X, Y) = P(X)P(Y|X)\). {[}6{]}
-\end{itemize}
-\end{frame}
+  \textbf{What Are Generalization Bounds?}
 
-\begin{frame}{Target Function}
-\phantomsection\label{target-function}
-\begin{itemize}
-\tightlist
-\item
-  The \textbf{target function} is \(f(X) = \mathbb{E}[Y|X]\). {[}7{]}
-\item
-  It represents the expected value of the label \(Y\) given the features
-  \(X\). {[}7{]}
-\item
-  It becomes the target of the machine learning process. {[}7{]}
-\item
-  The goal is to estimate this function \(f\). {[}7{]}
-\end{itemize}
-\end{frame}
+  \begin{itemize}
+  \tightlist
+  \item
+    Theoretical tools offering guarantees about a model's performance on
+    unseen data.
+  \item
+    Relate:
 
-\begin{frame}{Hypothesis and Hypothesis Space}
-\phantomsection\label{hypothesis-and-hypothesis-space}
-\begin{itemize}
-\tightlist
+    \begin{itemize}
+    \tightlist
+    \item
+      \textbf{Generalization Error}: How well the model generalizes.
+    \item
+      \textbf{Empirical Risk}: Performance observed on training data.
+    \item
+      \textbf{Model Complexity}: How expressive the model is.
+    \end{itemize}
+  \end{itemize}
 \item
-  A \textbf{hypothesis}, denoted by \(h\), attempts to estimate the
-  target function \(f\). {[}7{]}
-\item
-  The \textbf{hypothesis space}, denoted by \(\mathcal{H}\), is the set
-  of possible functions considered for \(h\). {[}7, 8{]}
-\end{itemize}
-\end{frame}
+  \textbf{Purpose}:
 
-\section{The Need for Generalization}\label{the-need-for-generalization}
-
-\begin{frame}{Empirical Risk}
-\phantomsection\label{empirical-risk}
-\begin{itemize}
-\tightlist
-\item
-  The \textbf{empirical risk}, or training error, \(R_{emp}(h)\), is the
-  average loss of a hypothesis \(h\) on the training data. {[}9{]}
-\item
-  It can be calculated using a loss function that quantifies the
-  difference between the predicted and actual labels. {[}9{]}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Overfitting}
-\phantomsection\label{overfitting}
-\begin{itemize}
-\tightlist
-\item
-  Simply minimizing empirical risk can lead to \textbf{overfitting}.
-  {[}10{]}
-\item
-  An overfit model performs well on the training data, but poorly on
-  unseen data. {[}10, 11{]}
-\item
-  This occurs when the model learns the specific details of the training
-  data instead of the underlying patterns. {[}10{]}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Generalization Error}
-\phantomsection\label{generalization-error}
-\begin{itemize}
-\tightlist
-\item
-  The \textbf{generalization error} (risk), \(R(h)\), measures how well
-  the hypothesis \(h\) performs on unseen data. {[}12{]}
-\item
-  It's the expected value of the loss over the entire joint distribution
-  \(P(X,Y)\). {[}12{]}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Generalization Gap}
-\phantomsection\label{generalization-gap}
-\begin{itemize}
-\tightlist
-\item
-  The \textbf{generalization gap} is the difference between the training
-  error and the generalization error. {[}13{]}
-\item
-  It quantifies how well the performance on the training data
-  generalizes to unseen data. {[}13{]}
-\end{itemize}
-\end{frame}
-
-\section{Generalization Bounds}\label{generalization-bounds}
-
-\begin{frame}{Motivation}
-\phantomsection\label{motivation}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Generalization bounds} provide guarantees that the learned
-  hypothesis will perform well on unseen data. {[}2, 14, 15{]}
-\item
-  They relate the generalization error to quantities we can observe or
-  control, such as empirical risk, hypothesis space complexity, and
-  dataset size. {[}16{]}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Hoeffding's Inequality}
-\phantomsection\label{hoeffdings-inequality}
-\begin{itemize}
-\tightlist
-\item
-  For a single hypothesis \(h\), Hoeffding's inequality bounds the
-  difference between the empirical risk and the generalization error.
-  {[}17, 18{]}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Limitations of Hoeffding}
-\phantomsection\label{limitations-of-hoeffding}
-\begin{itemize}
-\tightlist
-\item
-  Hoeffding's inequality doesn't directly apply to the entire hypothesis
-  space. {[}8{]}
-\item
-  It only considers the boundedness of the functions, not their
-  variance. {[}19{]}
-\item
-  The union bound, used to extend Hoeffding to multiple hypotheses,
-  assumes all hypotheses are independent, which is not generally true.
-  {[}20, 21{]}
-\end{itemize}
-\end{frame}
-
-\section{Vapnik-Chervonenkis (VC)
-Theory}\label{vapnik-chervonenkis-vc-theory}
-
-\begin{frame}{The Union Bound}
-\phantomsection\label{the-union-bound}
-\begin{itemize}
-\tightlist
-\item
-  The \textbf{union bound} extends the probability bounds to the entire
-  hypothesis space. {[}22{]}
-\item
-  It states that the probability of at least one hypothesis having a
-  large generalization gap is at most the sum of the probabilities of
-  each individual hypothesis having a large gap. {[}22{]}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{The Growth Function}
-\phantomsection\label{the-growth-function}
-\begin{itemize}
-\tightlist
-\item
-  The \textbf{growth function} quantifies the expressiveness of the
-  hypothesis space. {[}23{]}
-\item
-  It's the maximum number of ways the hypothesis space can label a
-  dataset of a given size. {[}23{]}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{VC Dimension}
-\phantomsection\label{vc-dimension}
-\begin{itemize}
-\tightlist
-\item
-  The \textbf{VC dimension} is the largest dataset size that the
-  hypothesis space can \textbf{shatter}. {[}24, 25{]}
-\item
-  Shattering means the hypothesis space can produce all possible
-  labelings for the dataset. {[}24{]}
-\item
-  It's a measure of the complexity of the hypothesis space. {[}26{]}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{VC Generalization Bound}
-\phantomsection\label{vc-generalization-bound}
-\begin{itemize}
-\tightlist
-\item
-  The \textbf{VC generalization bound} relates the generalization error
-  to the empirical risk, VC dimension, and dataset size. {[}27{]}
-\item
-  It shows that the generalization error can be bounded by the empirical
-  risk plus a term that depends on the VC dimension and dataset size.
-  {[}28{]}
-\end{itemize}
-\end{frame}
-
-\section{Beyond VC Dimension}\label{beyond-vc-dimension}
-
-\begin{frame}{Distribution-Based Bounds}
-\phantomsection\label{distribution-based-bounds}
-\begin{itemize}
-\tightlist
-\item
-  VC dimension is \textbf{distribution-free}, meaning it doesn't
-  consider the data distribution. {[}29{]}
-\item
-  Tighter bounds can be obtained by considering the data distribution.
-  {[}29, 30{]}
-\item
-  \textbf{Support Vector Machines (SVMs)} exemplify this by maximizing
-  the margin between classes, which leads to a lower VC dimension and
-  better generalization. {[}30{]}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Other Capacity Measures}
-\phantomsection\label{other-capacity-measures}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Covering numbers} measure the size of the hypothesis space
-  using a metric based on the difference in predictions on the training
-  data. {[}31{]}
-\item
-  \textbf{Rademacher complexity} measures how well the hypothesis space
-  can fit random noise. {[}32, 33{]}
-\item
-  These measures can be used to derive generalization bounds. {[}32,
-  34{]}
-\end{itemize}
-\end{frame}
-
-\section{Tying it Together}\label{tying-it-together}
-
-\begin{frame}{The General Form of Generalization Bounds}
-\phantomsection\label{the-general-form-of-generalization-bounds}
-\begin{itemize}
-\tightlist
-\item
-  The general form of generalization bounds is:
-  \(R(h) \leq R_{emp}(h) + C(|\mathcal{H}|, N, \delta)\). {[}35{]}
-\item
-  \(C(|\mathcal{H}|, N, \delta)\) represents a complexity term that
-  depends on the hypothesis space complexity, dataset size, and the
-  desired confidence level. {[}35{]}
-\item
-  It highlights the trade-off between minimizing the training error and
-  controlling the model's complexity. {[}35{]}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Relevance to Other Topics}
-\phantomsection\label{relevance-to-other-topics}
-\begin{block}{Rates of Convergence}
-\phantomsection\label{rates-of-convergence}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Rates of convergence} quantify how fast the generalization
-  error decreases with increasing sample size. {[}36{]}
-\item
-  They are closely linked to generalization bounds, as the bounds often
-  provide insights into the rate of convergence. {[}37{]}
-\end{itemize}
-\end{block}
-
-\begin{block}{PAC-Bayes}
-\phantomsection\label{pac-bayes}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{PAC-Bayes} offers a Bayesian approach to deriving
-  generalization bounds. {[}38{]}
-\end{itemize}
-\end{block}
-\end{frame}
-
-\section{Conclusion}\label{conclusion}
-
-\begin{frame}{Key Takeaways}
-\phantomsection\label{key-takeaways}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Generalization bounds} are crucial for understanding and
-  controlling the performance of machine learning models. {[}15{]}
-\item
-  They guarantee the learned hypothesis will perform well on unseen
-  data. {[}15{]}
+  \begin{itemize}
+  \tightlist
+  \item
+    Provide insights into the trade-offs between model accuracy,
+    complexity, and training data size.
+  \end{itemize}
 \end{itemize}
 \end{frame}
 
