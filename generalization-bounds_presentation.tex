@@ -235,7 +235,65 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{The Learning Problem}
+\phantomsection\label{the-learning-problem}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Supervised Learning}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Goal: Learn a function \(f: X \to Y\) mapping inputs \(X\) to
+    outputs \(Y\) based on labeled training data.
+  \end{itemize}
+\item
+  \textbf{Key Question}: Can the learned function perform well on unseen
+  data?
+\item
+  \textbf{Generalization}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Ability of a model to extend its learning beyond the training data.
+  \item
+    \textbf{Central Problem} in machine learning: balancing
+    \emph{empirical performance} with \emph{future predictions}.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Why Theory Matters}
+\phantomsection\label{why-theory-matters}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Significance of Theory}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Guides \textbf{algorithm design} by providing a foundation for
+    developing new methods.
+  \item
+    Allows \textbf{performance analysis} to identify the strengths and
+    weaknesses of algorithms.
+  \item
+    Reveals \textbf{limitations} of learning systems, helping us
+    understand their boundaries.
+  \end{itemize}
+\item
+  \textbf{Theoretical Understanding}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Bridges the gap between empirical performance and guarantees on
+    future behavior.
+  \end{itemize}
+\end{itemize}
 \end{frame}
 
 \section{Overfitting}\label{overfitting}
@@ -425,67 +483,6 @@
 \end{block}
 \end{frame}
 
-\begin{frame}{The Learning Problem}
-\phantomsection\label{the-learning-problem}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Supervised Learning}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Goal: Learn a function \(f: X \to Y\) mapping inputs \(X\) to
-    outputs \(Y\) based on labeled training data.
-  \end{itemize}
-\item
-  \textbf{Key Question}: Can the learned function perform well on unseen
-  data?
-\item
-  \textbf{Generalization}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Ability of a model to extend its learning beyond the training data.
-  \item
-    \textbf{Central Problem} in machine learning: balancing
-    \emph{empirical performance} with \emph{future predictions}.
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Why Theory Matters}
-\phantomsection\label{why-theory-matters}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Significance of Theory}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Guides \textbf{algorithm design} by providing a foundation for
-    developing new methods.
-  \item
-    Allows \textbf{performance analysis} to identify the strengths and
-    weaknesses of algorithms.
-  \item
-    Reveals \textbf{limitations} of learning systems, helping us
-    understand their boundaries.
-  \end{itemize}
-\item
-  \textbf{Theoretical Understanding}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Bridges the gap between empirical performance and guarantees on
-    future behavior.
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
 \begin{frame}{Introducing Generalization Bounds}
 \phantomsection\label{introducing-generalization-bounds}
 \begin{itemize}
@@ -515,6 +512,12 @@
       class can represent, as explained by Approximation Theory.
     \end{itemize}
   \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\tightlist
 \item
   \textbf{Purpose}:
 

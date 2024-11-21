@@ -23,6 +23,24 @@ format:
 
 ---
 
+## The Learning Problem
+- **Supervised Learning**: 
+  - Goal: Learn a function $f: X \to Y$ mapping inputs $X$ to outputs $Y$ based on labeled training data.
+- **Key Question**: Can the learned function perform well on unseen data?
+- **Generalization**:
+  - Ability of a model to extend its learning beyond the training data.
+  - **Central Problem** in machine learning: balancing *empirical performance* with *future predictions*.
+
+---
+
+## Why Theory Matters
+- **Significance of Theory**:
+  - Guides **algorithm design** by providing a foundation for developing new methods.
+  - Allows **performance analysis** to identify the strengths and weaknesses of algorithms.
+  - Reveals **limitations** of learning systems, helping us understand their boundaries.
+- **Theoretical Understanding**:
+  - Bridges the gap between empirical performance and guarantees on future behavior.
+
 # Overfitting
 
 ## Simulating Overfitting
@@ -176,24 +194,6 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
 ### Key Insights
   - While simple models often underfit and overly complex models overfit, the phenomenon of **Double Descent** shows that extremely complex models can sometimes achieve superior generalization, especially in overparameterized regimes.
 
-## The Learning Problem
-- **Supervised Learning**: 
-  - Goal: Learn a function $f: X \to Y$ mapping inputs $X$ to outputs $Y$ based on labeled training data.
-- **Key Question**: Can the learned function perform well on unseen data?
-- **Generalization**:
-  - Ability of a model to extend its learning beyond the training data.
-  - **Central Problem** in machine learning: balancing *empirical performance* with *future predictions*.
-
----
-
-## Why Theory Matters
-- **Significance of Theory**:
-  - Guides **algorithm design** by providing a foundation for developing new methods.
-  - Allows **performance analysis** to identify the strengths and weaknesses of algorithms.
-  - Reveals **limitations** of learning systems, helping us understand their boundaries.
-- **Theoretical Understanding**:
-  - Bridges the gap between empirical performance and guarantees on future behavior.
-
 ---
 
 ## Introducing Generalization Bounds
@@ -205,6 +205,8 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
     - **Empirical Risk**: Performance observed on training data.
     - **Model Complexity**: How expressive the model is.
     - **Approximation Limits**: What kinds of functions the model class can represent, as explained by Approximation Theory.
+
+---
 
 - **Purpose**:
   - Provide insights into the trade-offs between:
