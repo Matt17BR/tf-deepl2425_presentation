@@ -24,14 +24,23 @@ format:
 ---
 
 ## The Perils of Overfitting: A Motivating Visualization
+
 - **Overfitting in Action**:
   - A model can perfectly fit training data but fail to capture the true underlying pattern.
-  - This often leads to poor performance on unseen data.
+  - This often leads to poor performance on unseen data, especially for highly complex models.
+  - However, modern machine learning introduces a fascinating twist: **Double Descent**, where increasing model complexity can sometimes lead to improved generalization after an initial overfitting phase.
+
 - **Demonstration**:
   - Dataset: A simple linear trend with noise.
   - Models:
-    - Linear model: Captures the underlying trend.
-    - High-degree polynomial: Overfits the noise in the data.
+    - Linear model: Captures the underlying trend and generalizes well.
+    - High-degree polynomial: Overfits the noise in the data, leading to poor generalization.
+  - **Double Descent**:
+    - Surprisingly, when we continue increasing model complexity (e.g., using overparameterized neural networks), the generalization error can **decrease again** after the overfitting peak.
+    - This challenges the classical view of overfitting and highlights the complex relationship between model complexity and generalization in modern machine learning.
+
+- **Key Insight**:
+  - While simple models often underfit and overly complex models overfit, the phenomenon of **Double Descent** shows that extremely complex models can sometimes achieve superior generalization, especially in overparameterized regimes.
 
 ---
 
@@ -90,14 +99,23 @@ ggplot(data, aes(x, y)) +
 ---
 
 ## Introducing Generalization Bounds
+
 - **What Are Generalization Bounds?**
   - Theoretical tools offering guarantees about a model's performance on unseen data.
   - Relate:
-    - **Generalization Error**: How well the model generalizes.
+    - **Generalization Error**: How well the model performs on unseen data.
     - **Empirical Risk**: Performance observed on training data.
     - **Model Complexity**: How expressive the model is.
+    - **Approximation Limits**: What kinds of functions the model class can represent, as explained by Approximation Theory.
+
 - **Purpose**:
-  - Provide insights into the trade-offs between model accuracy, complexity, and training data size.
+  - Provide insights into the trade-offs between:
+    - **Model Accuracy**: How well the model captures the data patterns.
+    - **Model Complexity**: The expressiveness of the model and its ability to fit intricate patterns.
+    - **Training Data Size**: How much data is required to achieve reliable generalization.
+  - Approximation Theory informs this by helping us understand the limits of a model class:
+    - Simpler models may not be able to represent complex data (high approximation error).
+    - Overly complex models risk overfitting, where generalization error increases despite better fit on training data.
 
 # Exploring Bounds
 
