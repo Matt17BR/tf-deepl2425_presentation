@@ -71,7 +71,7 @@ ggplot(data, aes(x, y)) +
 
 ## The Learning Problem
 - **Supervised Learning**: 
-  - Goal: Learn a function \( f: X \to Y \) mapping inputs \( X \) to outputs \( Y \) based on labeled training data.
+  - Goal: Learn a function $f: X \to Y$ mapping inputs $X$ to outputs $Y$ based on labeled training data.
 - **Key Question**: Can the learned function perform well on unseen data?
 - **Generalization**:
   - Ability of a model to extend its learning beyond the training data.
@@ -98,3 +98,54 @@ ggplot(data, aes(x, y)) +
     - **Model Complexity**: How expressive the model is.
 - **Purpose**:
   - Provide insights into the trade-offs between model accuracy, complexity, and training data size.
+
+# Exploring Bounds
+
+## Hoeffding's Inequality: A Starting Point
+- **What is Hoeffding's Inequality?**
+  - A fundamental result in probability theory used to bound the difference between the **empirical risk** and the **generalization error** for a fixed hypothesis.
+  - Provides a way to measure how closely a model's performance on training data reflects its performance on unseen data.
+
+---
+
+## Mathematical Formulation of Hoeffding's Inequality
+- **Hoeffding's Inequality**:
+  $$
+  P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
+  $$
+  - $R(h)$: Generalization error (true performance on unseen data).
+  - $R_{\text{emp}}(h)$: Empirical risk (error on training data).
+  - $\epsilon$: A small positive value (tolerance).
+  - $m$: Size of the dataset.
+
+---
+
+### Key Insights
+- The probability that the generalization error $R(h)$ deviates significantly from the empirical risk $R_{\text{emp}}(h)$ decreases **exponentially** with:
+  - Larger dataset size $m$.
+  - Smaller tolerance $\epsilon$.
+
+---
+
+## Interpretation of Hoeffding's Inequality
+- **What Does It Mean?**
+  - As the dataset size ($m$) increases, the empirical risk becomes a more reliable indicator of the generalization error.
+  - For a fixed hypothesis, we can be confident that the performance observed on training data is close to what can be expected on unseen data.
+
+- **Why is it Important?**
+  - Hoeffding's inequality gives a **quantitative guarantee** about the relationship between training performance and unseen data performance.
+
+---
+
+## Limitations of Hoeffding's Inequality
+- **The Challenge of Multiple Hypotheses**:
+  - In practical machine learning, we often choose the best hypothesis from a large hypothesis class $\mathcal{H}$.
+  - Hoeffding's inequality applies to a **single fixed hypothesis**, not to the case where multiple hypotheses are considered.
+  
+- **Implication**:
+  - It doesn’t directly address:
+    - The **selection bias** introduced by choosing the hypothesis that minimizes the empirical risk.
+    - The increased risk of overfitting when evaluating multiple hypotheses.
+  
+- **Motivation for Advanced Bounds**:
+  - Hoeffding's inequality provides a foundation but highlights the need for bounds that account for hypothesis complexity, such as **VC dimension** or **Rademacher complexity**.

@@ -285,8 +285,8 @@
   \begin{itemize}
   \tightlist
   \item
-    Goal: Learn a function ( f: X \to Y ) mapping inputs ( X ) to
-    outputs ( Y ) based on labeled training data.
+    Goal: Learn a function \(f: X \to Y\) mapping inputs \(X\) to
+    outputs \(Y\) based on labeled training data.
   \end{itemize}
 \item
   \textbf{Key Question}: Can the learned function perform well on unseen
@@ -369,6 +369,150 @@
   \item
     Provide insights into the trade-offs between model accuracy,
     complexity, and training data size.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Exploring Bounds}\label{exploring-bounds}
+
+\begin{frame}{Hoeffding's Inequality: A Starting Point}
+\phantomsection\label{hoeffdings-inequality-a-starting-point}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{What is Hoeffding's Inequality?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A fundamental result in probability theory used to bound the
+    difference between the \textbf{empirical risk} and the
+    \textbf{generalization error} for a fixed hypothesis.
+  \item
+    Provides a way to measure how closely a model's performance on
+    training data reflects its performance on unseen data.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Mathematical Formulation of Hoeffding's Inequality}
+\phantomsection\label{mathematical-formulation-of-hoeffdings-inequality}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Hoeffding's Inequality}: \[
+  P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
+  \]
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(R(h)\): Generalization error (true performance on unseen data).
+  \item
+    \(R_{\text{emp}}(h)\): Empirical risk (error on training data).
+  \item
+    \(\epsilon\): A small positive value (tolerance).
+  \item
+    \(m\): Size of the dataset.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Key Insights}
+\phantomsection\label{key-insights}
+\begin{itemize}
+\tightlist
+\item
+  The probability that the generalization error \(R(h)\) deviates
+  significantly from the empirical risk \(R_{\text{emp}}(h)\) decreases
+  \textbf{exponentially} with:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Larger dataset size \(m\).
+  \item
+    Smaller tolerance \(\epsilon\).
+  \end{itemize}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Interpretation of Hoeffding's Inequality}
+\phantomsection\label{interpretation-of-hoeffdings-inequality}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{What Does It Mean?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    As the dataset size (\(m\)) increases, the empirical risk becomes a
+    more reliable indicator of the generalization error.
+  \item
+    For a fixed hypothesis, we can be confident that the performance
+    observed on training data is close to what can be expected on unseen
+    data.
+  \end{itemize}
+\item
+  \textbf{Why is it Important?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Hoeffding's inequality gives a \textbf{quantitative guarantee} about
+    the relationship between training performance and unseen data
+    performance.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Limitations of Hoeffding's Inequality}
+\phantomsection\label{limitations-of-hoeffdings-inequality}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{The Challenge of Multiple Hypotheses}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    In practical machine learning, we often choose the best hypothesis
+    from a large hypothesis class \(\mathcal{H}\).
+  \item
+    Hoeffding's inequality applies to a \textbf{single fixed
+    hypothesis}, not to the case where multiple hypotheses are
+    considered.
+  \end{itemize}
+\item
+  \textbf{Implication}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    It doesn't directly address:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      The \textbf{selection bias} introduced by choosing the hypothesis
+      that minimizes the empirical risk.
+    \item
+      The increased risk of overfitting when evaluating multiple
+      hypotheses.
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Motivation for Advanced Bounds}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Hoeffding's inequality provides a foundation but highlights the need
+    for bounds that account for hypothesis complexity, such as
+    \textbf{VC dimension} or \textbf{Rademacher complexity}.
   \end{itemize}
 \end{itemize}
 \end{frame}
