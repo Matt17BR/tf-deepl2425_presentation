@@ -23,6 +23,52 @@ format:
 
 ---
 
+## The Perils of Overfitting: A Motivating Visualization
+- **Overfitting in Action**:
+  - A model can perfectly fit training data but fail to capture the true underlying pattern.
+  - This often leads to poor performance on unseen data.
+- **Demonstration**:
+  - Dataset: A simple linear trend with noise.
+  - Models:
+    - Linear model: Captures the underlying trend.
+    - High-degree polynomial: Overfits the noise in the data.
+
+---
+
+```{r overfitting-plot}
+library(ggplot2)
+
+# Generate synthetic data
+set.seed(420)
+x <- seq(-3, 3, length.out = 100)
+y <- 2 * x + rnorm(100, sd = 3)  # Linear trend with noise
+
+# Create a dataframe
+data <- data.frame(x, y)
+
+# Fit models
+linear_model <- lm(y ~ x, data = data)
+poly_model <- lm(y ~ poly(x, 10), data = data) # 10th-degree polynomial
+
+# Generate predictions
+data$linear_pred <- predict(linear_model, data)
+data$poly_pred <- predict(poly_model, data)
+
+# Plot the data and models
+ggplot(data, aes(x, y)) +
+  geom_point(color = "blue", alpha = 0.7, size = 2) +
+  geom_line(aes(y = linear_pred), color = "red", lwd = 1.2, linetype = "dashed") +
+  geom_line(aes(y = poly_pred), color = "green", lwd = 1.2) +
+  labs(
+    title = "Overfitting Example: Linear vs. Polynomial Model",
+    x = "Input (x)",
+    y = "Output (y)"
+  ) +
+  theme_minimal()
+```
+
+---
+
 ## The Learning Problem
 - **Supervised Learning**: 
   - Goal: Learn a function \( f: X \to Y \) mapping inputs \( X \) to outputs \( Y \) based on labeled training data.

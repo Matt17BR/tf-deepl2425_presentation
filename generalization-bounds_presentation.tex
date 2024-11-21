@@ -209,8 +209,7 @@
 \frame{\titlepage}
 
 
-\section{The Quest for
-Generalization}\label{the-quest-for-generalization}
+\section{Introduction}\label{introduction}
 
 \begin{frame}{Motivation}
 \phantomsection\label{motivation}
@@ -234,6 +233,46 @@ Generalization}\label{the-quest-for-generalization}
     the data.
   \end{itemize}
 \end{itemize}
+\end{frame}
+
+\begin{frame}{The Perils of Overfitting: A Motivating Visualization}
+\phantomsection\label{the-perils-of-overfitting-a-motivating-visualization}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Overfitting in Action}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A model can perfectly fit training data but fail to capture the true
+    underlying pattern.
+  \item
+    This often leads to poor performance on unseen data.
+  \end{itemize}
+\item
+  \textbf{Demonstration}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Dataset: A simple linear trend with noise.
+  \item
+    Models:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Linear model: Captures the underlying trend.
+    \item
+      High-degree polynomial: Overfits the noise in the data.
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\includegraphics{generalization-bounds_presentation_files/figure-beamer/overfitting-plot-1.pdf}
 \end{frame}
 
 \begin{frame}{The Learning Problem}
