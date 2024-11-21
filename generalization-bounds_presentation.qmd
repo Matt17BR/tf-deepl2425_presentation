@@ -23,60 +23,158 @@ format:
 
 ---
 
-## The Perils of Overfitting: A Motivating Visualization
+# Overfitting
 
-- **Overfitting in Action**:
-  - A model can perfectly fit training data but fail to capture the true underlying pattern.
-  - This often leads to poor performance on unseen data, especially for highly complex models.
-  - However, modern machine learning introduces a fascinating twist: **Double Descent**, where increasing model complexity can sometimes lead to improved generalization after an initial overfitting phase.
+## Simulating Overfitting
 
-- **Demonstration**:
-  - Dataset: A simple linear trend with noise.
-  - Models:
-    - Linear model: Captures the underlying trend and generalizes well.
-    - High-degree polynomial: Overfits the noise in the data, leading to poor generalization.
-  - **Double Descent**:
-    - Surprisingly, when we continue increasing model complexity (e.g., using overparameterized neural networks), the generalization error can **decrease again** after the overfitting peak.
-    - This challenges the classical view of overfitting and highlights the complex relationship between model complexity and generalization in modern machine learning.
+- **Objective**:
+  - Visualize the impact of model complexity on overfitting in a linear regression model.
 
-- **Key Insight**:
-  - While simple models often underfit and overly complex models overfit, the phenomenon of **Double Descent** shows that extremely complex models can sometimes achieve superior generalization, especially in overparameterized regimes.
+- **Dataset**
+  - The experiment uses the **Boston Housing dataset**, where the target variable is `medv` (median value of owner-occupied homes), and the features represent housing characteristics.
+
+---
+
+- **Experimental Setup**:
+  - **Model Complexity**:
+    - Complexity is defined by the number of features included in the model.
+    - Additional random features are generated to simulate increasing complexity beyond the real features in the dataset.
+  - **Train-Test Split**:
+    - The dataset is split into 70% training and 30% test data.
+  - **Range of Complexity**:
+    - Models are trained with 1 to 200 features. Beyond the actual features in the dataset, random noise features are added incrementally.
+
+---
+
+- **Procedure**:
+  For each level of complexity:
+    1. A subset of features (real and random) is used to train a linear regression model.
+    2. Predictions are made on both the training and test datasets.
+    3. Mean Squared Errors (MSE) are calculated for both datasets.
+
+- **Results**:
+  - Training error decreases consistently as model complexity increases.
+  - Test error initially decreases but then increases, demonstrating the overfitting phenomenon.
+
+- **Visualization**:
+  - A line plot shows the relationship between model complexity (number of features) and mean squared error for both the training and test datasets.
 
 ---
 
 ```{r overfitting-plot}
-library(ggplot2)
+#| cache: true
+#| fig-width: 7
+#| fig-height: 3
+#| out-width: "90%"
+#| out-height: "90%"
+#| fig-cap: "Overfitting Phenomenon in Linear Regression"
+# Load necessary libraries
+library(MASS)       # For the Boston dataset
+library(ggplot2)    # For plotting
+library(reshape2)   # For data manipulation
 
-# Generate synthetic data
-set.seed(420)
-x <- seq(-3, 3, length.out = 100)
-y <- 2 * x + rnorm(100, sd = 3)  # Linear trend with noise
+# Set seed for reproducibility
+set.seed(123)
 
-# Create a dataframe
-data <- data.frame(x, y)
+# Load the Boston housing data
+data(Boston)
 
-# Fit models
-linear_model <- lm(y ~ x, data = data)
-poly_model <- lm(y ~ poly(x, 10), data = data) # 10th-degree polynomial
+# Prepare the data
+X <- as.matrix(Boston[, -14])  # Exclude the target variable 'medv'
+y <- Boston$medv
 
-# Generate predictions
-data$linear_pred <- predict(linear_model, data)
-data$poly_pred <- predict(poly_model, data)
+# Split into training and test sets
+train_index <- sample(1:nrow(X), size = 0.7 * nrow(X))
+X_train <- X[train_index, ]
+y_train <- y[train_index]
+X_test <- X[-train_index, ]
+y_test <- y[-train_index]
 
-# Plot the data and models
-ggplot(data, aes(x, y)) +
-  geom_point(color = "blue", alpha = 0.7, size = 2) +
-  geom_line(aes(y = linear_pred), color = "red", lwd = 1.2, linetype = "dashed") +
-  geom_line(aes(y = poly_pred), color = "green", lwd = 1.2) +
-  labs(
-    title = "Overfitting Example: Linear vs. Polynomial Model",
-    x = "Input (x)",
-    y = "Output (y)"
-  ) +
+# Define a range of model complexities (number of features)
+max_features <- 200  # Max number of features to consider
+n_real_features <- ncol(X_train)  # Number of real features
+
+# Initialize vectors to store errors
+train_errors <- numeric(max_features)
+test_errors <- numeric(max_features)
+
+# Loop over increasing number of features
+for (p in 1:max_features) {
+  # Determine the number of random features to add
+  n_random_features <- max(0, p - n_real_features)
+  
+  # Generate random features for training and test sets
+  if (n_random_features > 0) {
+    random_train <- matrix(rnorm(nrow(X_train) * n_random_features), nrow = nrow(X_train))
+    random_test <- matrix(rnorm(nrow(X_test) * n_random_features), nrow = nrow(X_test))
+    
+    # Combine real and random features
+    X_train_p <- cbind(X_train, random_train)
+    X_test_p <- cbind(X_test, random_test)
+  } else {
+    X_train_p <- X_train[, 1:p, drop = FALSE]
+    X_test_p <- X_test[, 1:p, drop = FALSE]
+  }
+  
+  # Prepare data frames for lm()
+  df_train <- data.frame(y = y_train, X_train_p)
+  df_test <- data.frame(y = y_test, X_test_p)
+  
+  # Build the formula for lm()
+  predictors <- paste(colnames(df_train)[-1], collapse = " + ")
+  formula <- as.formula(paste("y ~", predictors))
+  
+  # Fit linear model
+  model <- lm(formula, data = df_train)
+  
+  # Predict on training and test sets
+  y_pred_train <- predict(model, newdata = df_train)
+  y_pred_test <- predict(model, newdata = df_test)
+  
+  # Compute mean squared errors
+  train_errors[p] <- mean((y_train - y_pred_train)^2)
+  test_errors[p] <- mean((y_test - y_pred_test)^2)
+}
+
+# Create a data frame for plotting
+df_errors <- data.frame(
+  Complexity = 1:max_features,
+  Training_Error = train_errors,
+  Test_Error = test_errors
+)
+
+# Melt the data for ggplot
+df_melted <- melt(df_errors, id.vars = "Complexity", variable.name = "Type", value.name = "Error")
+
+# Plot the errors vs model complexity
+ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
+  geom_line(size = 1) +
+  xlab("Model Complexity (Number of Features)") +
+  ylab("Mean Squared Error") +
   theme_minimal()
 ```
 
+- **Highlights**:
+  - The **bias-variance tradeoff**.
+  - The point where overfitting begins, indicated by the divergence of training and test errors.
+
 ---
+
+### Key Insights
+- Increasing model complexity without consideration of the underlying data structure can lead to overfitting.
+- Simple models that focus on the true underlying pattern often generalize better to unseen data.
+
+---
+
+## Double Descent
+- However, modern machine learning introduces a fascinating twist: **Double Descent**, where increasing model complexity can sometimes lead to improved generalization after an initial overfitting phase.
+- Unlike traditional models where increasing complexity leads to overfitting, further increasing the complexity (e.g., using overparameterized neural networks) can eventually reduce the generalization error after an initial peak.
+- This challenges the classical view of overfitting and highlights the complex relationship between model complexity and generalization in modern machine learning.
+
+---
+
+### Key Insights
+  - While simple models often underfit and overly complex models overfit, the phenomenon of **Double Descent** shows that extremely complex models can sometimes achieve superior generalization, especially in overparameterized regimes.
 
 ## The Learning Problem
 - **Supervised Learning**: 

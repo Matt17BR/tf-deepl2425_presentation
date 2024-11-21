@@ -235,44 +235,194 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{The Perils of Overfitting: A Motivating Visualization}
-\phantomsection\label{the-perils-of-overfitting-a-motivating-visualization}
+\begin{frame}
+\end{frame}
+
+\section{Overfitting}\label{overfitting}
+
+\begin{frame}[fragile]{Simulating Overfitting}
+\phantomsection\label{simulating-overfitting}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Overfitting in Action}:
+  \textbf{Objective}:
 
   \begin{itemize}
   \tightlist
   \item
-    A model can perfectly fit training data but fail to capture the true
-    underlying pattern.
-  \item
-    This often leads to poor performance on unseen data.
+    Visualize the impact of model complexity on overfitting in a linear
+    regression model.
   \end{itemize}
 \item
-  \textbf{Demonstration}:
+  \textbf{Dataset}
 
   \begin{itemize}
   \tightlist
   \item
-    Dataset: A simple linear trend with noise.
+    The experiment uses the \textbf{Boston Housing dataset}, where the
+    target variable is \texttt{medv} (median value of owner-occupied
+    homes), and the features represent housing characteristics.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Experimental Setup}:
+
+  \begin{itemize}
+  \tightlist
   \item
-    Models:
+    \textbf{Model Complexity}:
 
     \begin{itemize}
     \tightlist
     \item
-      Linear model: Captures the underlying trend.
+      Complexity is defined by the number of features included in the
+      model.
     \item
-      High-degree polynomial: Overfits the noise in the data.
+      Additional random features are generated to simulate increasing
+      complexity beyond the real features in the dataset.
+    \end{itemize}
+  \item
+    \textbf{Train-Test Split}:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      The dataset is split into 70\% training and 30\% test data.
+    \end{itemize}
+  \item
+    \textbf{Range of Complexity}:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Models are trained with 1 to 200 features. Beyond the actual
+      features in the dataset, random noise features are added
+      incrementally.
     \end{itemize}
   \end{itemize}
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\includegraphics{generalization-bounds_presentation_files/figure-beamer/overfitting-plot-1.pdf}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Procedure}: For each level of complexity:
+
+  \begin{enumerate}
+  \tightlist
+  \item
+    A subset of features (real and random) is used to train a linear
+    regression model.
+  \item
+    Predictions are made on both the training and test datasets.
+  \item
+    Mean Squared Errors (MSE) are calculated for both datasets.
+  \end{enumerate}
+\item
+  \textbf{Results}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Training error decreases consistently as model complexity increases.
+  \item
+    Test error initially decreases but then increases, demonstrating the
+    overfitting phenomenon.
+  \end{itemize}
+\item
+  \textbf{Visualization}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A line plot shows the relationship between model complexity (number
+    of features) and mean squared error for both the training and test
+    datasets.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.9\textwidth,height=0.9\textheight]{generalization-bounds_presentation_files/figure-beamer/overfitting-plot-1.pdf}
+
+}
+
+\caption{Overfitting Phenomenon in Linear Regression}
+
+\end{figure}%
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Highlights}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The \textbf{bias-variance tradeoff}.
+  \item
+    The point where overfitting begins, indicated by the divergence of
+    training and test errors.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Key Insights}
+\phantomsection\label{key-insights}
+\begin{itemize}
+\tightlist
+\item
+  Increasing model complexity without consideration of the underlying
+  data structure can lead to overfitting.
+\item
+  Simple models that focus on the true underlying pattern often
+  generalize better to unseen data.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Double Descent}
+\phantomsection\label{double-descent}
+\begin{itemize}
+\tightlist
+\item
+  However, modern machine learning introduces a fascinating twist:
+  \textbf{Double Descent}, where increasing model complexity can
+  sometimes lead to improved generalization after an initial overfitting
+  phase.
+\item
+  Unlike traditional models where increasing complexity leads to
+  overfitting, further increasing the complexity (e.g., using
+  overparameterized neural networks) can eventually reduce the
+  generalization error after an initial peak.
+\item
+  This challenges the classical view of overfitting and highlights the
+  complex relationship between model complexity and generalization in
+  modern machine learning.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Key Insights}
+\phantomsection\label{key-insights-1}
+\begin{itemize}
+\tightlist
+\item
+  While simple models often underfit and overly complex models overfit,
+  the phenomenon of \textbf{Double Descent} shows that extremely complex
+  models can sometimes achieve superior generalization, especially in
+  overparameterized regimes.
+\end{itemize}
+\end{block}
 \end{frame}
 
 \begin{frame}{The Learning Problem}
@@ -354,11 +504,15 @@
     \begin{itemize}
     \tightlist
     \item
-      \textbf{Generalization Error}: How well the model generalizes.
+      \textbf{Generalization Error}: How well the model performs on
+      unseen data.
     \item
       \textbf{Empirical Risk}: Performance observed on training data.
     \item
       \textbf{Model Complexity}: How expressive the model is.
+    \item
+      \textbf{Approximation Limits}: What kinds of functions the model
+      class can represent, as explained by Approximation Theory.
     \end{itemize}
   \end{itemize}
 \item
@@ -367,8 +521,33 @@
   \begin{itemize}
   \tightlist
   \item
-    Provide insights into the trade-offs between model accuracy,
-    complexity, and training data size.
+    Provide insights into the trade-offs between:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \textbf{Model Accuracy}: How well the model captures the data
+      patterns.
+    \item
+      \textbf{Model Complexity}: The expressiveness of the model and its
+      ability to fit intricate patterns.
+    \item
+      \textbf{Training Data Size}: How much data is required to achieve
+      reliable generalization.
+    \end{itemize}
+  \item
+    Approximation Theory informs this by helping us understand the
+    limits of a model class:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Simpler models may not be able to represent complex data (high
+      approximation error).
+    \item
+      Overly complex models risk overfitting, where generalization error
+      increases despite better fit on training data.
+    \end{itemize}
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -420,7 +599,7 @@
 
 \begin{frame}
 \begin{block}{Key Insights}
-\phantomsection\label{key-insights}
+\phantomsection\label{key-insights-2}
 \begin{itemize}
 \tightlist
 \item
