@@ -16,8 +16,8 @@ format:
 # Introduction
 
 ## Motivation
-- **Core Challenge**: How can a model learned from *limited training data* perform well on *unseen data*?
-- Generalization lies at the heart of the machine learning process.
+- **Core Question**: How can models trained on limited data perform reliably on unseen scenarios?
+- **Generalization** is a fundamental goal in machine learning: ensuring models extend their learned patterns to new, unseen data.
 - A poorly generalized model risks:
   - **Overfitting**: Performing well on training data but poorly on unseen data.
   - **Underfitting**: Failing to capture the underlying patterns of the data.
@@ -179,7 +179,7 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
 - Unlike traditional models where increasing complexity leads to overfitting, further increasing the complexity (e.g., using overparameterized neural networks) can eventually reduce the generalization error after an initial peak.
 - This challenges the classical view of overfitting and highlights the complex relationship between model complexity and generalization in modern machine learning.
 
----
+# Classical Bounds
 
 ## Introducing Generalization Bounds
 - **What Are Generalization Bounds?**
@@ -188,7 +188,6 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
     - **Generalization Error**: How well the model performs on unseen data.
     - **Empirical Risk**: Performance observed on training data.
     - **Model Complexity**: How expressive the model is.
-    - **Approximation Limits**: What kinds of functions the model class can represent, as explained by Approximation Theory.
 
 ---
 
@@ -197,11 +196,8 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
     - **Model Accuracy**: How well the model captures the data patterns.
     - **Model Complexity**: The expressiveness of the model and its ability to fit intricate patterns.
     - **Training Data Size**: How much data is required to achieve reliable generalization.
-  - Approximation Theory informs this by helping us understand the limits of a model class:
-    - Simpler models may not be able to represent complex data (high approximation error).
-    - Overly complex models risk overfitting, where generalization error increases despite better fit on training data.
 
-# Classical Bounds
+---
 
 ## Hoeffding's Inequality: A Starting Point
 - **What is Hoeffding's Inequality?**
@@ -232,6 +228,7 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
 ## Rates of Convergence
 - **What Are Rates of Convergence?**
   - Quantify how quickly the generalization error approaches the empirical risk as the dataset size $m$ grows.
+  - Provide a guideline for determining the dataset size needed to achieve a desired level of generalization.
   - In Hoeffding's inequality:
     $$
     P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
@@ -241,10 +238,7 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
 - **Key Factors**:
   - **Dataset Size ($m$)**: Larger datasets reduce the gap between $R(h)$ and $R_{\text{emp}}(h)$ more quickly.
   - **Tolerance ($\varepsilon$)**: Smaller tolerances require larger datasets for the same level of confidence.
-
-- **Practical Insight**:
-  - Rates of convergence provide a guideline for determining the dataset size needed to achieve a desired level of generalization.
-
+  
 ---
 
 ## Interpretation of Hoeffding's Inequality
@@ -385,7 +379,6 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
 - **Expressiveness vs. Generalization**:
   - The VC dimension captures the **expressiveness** of a hypothesis space:
     - Higher $d_{\text{VC}}$: More complex, more expressive.
-    - Lower $d_{\text{VC}}$: Less complex, less expressive.
   - A balance is required to avoid overfitting (high complexity) or underfitting (low complexity).
 - **Implications for Learning**:
   - The VC dimension helps understand:

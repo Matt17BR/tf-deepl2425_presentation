@@ -222,10 +222,11 @@
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Core Challenge}: How can a model learned from \emph{limited
-  training data} perform well on \emph{unseen data}?
+  \textbf{Core Question}: How can models trained on limited data perform
+  reliably on unseen scenarios?
 \item
-  Generalization lies at the heart of the machine learning process.
+  \textbf{Generalization} is a fundamental goal in machine learning:
+  ensuring models extend their learned patterns to new, unseen data.
 \item
   A poorly generalized model risks:
 
@@ -444,6 +445,8 @@
 \end{itemize}
 \end{frame}
 
+\section{Classical Bounds}\label{classical-bounds}
+
 \begin{frame}{Introducing Generalization Bounds}
 \phantomsection\label{introducing-generalization-bounds}
 \begin{itemize}
@@ -468,9 +471,6 @@
       \textbf{Empirical Risk}: Performance observed on training data.
     \item
       \textbf{Model Complexity}: How expressive the model is.
-    \item
-      \textbf{Approximation Limits}: What kinds of functions the model
-      class can represent, as explained by Approximation Theory.
     \end{itemize}
   \end{itemize}
 \end{itemize}
@@ -499,24 +499,9 @@
       \textbf{Training Data Size}: How much data is required to achieve
       reliable generalization.
     \end{itemize}
-  \item
-    Approximation Theory informs this by helping us understand the
-    limits of a model class:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      Simpler models may not be able to represent complex data (high
-      approximation error).
-    \item
-      Overly complex models risk overfitting, where generalization error
-      increases despite better fit on training data.
-    \end{itemize}
   \end{itemize}
 \end{itemize}
 \end{frame}
-
-\section{Classical Bounds}\label{classical-bounds}
 
 \begin{frame}{Hoeffding's Inequality: A Starting Point}
 \phantomsection\label{hoeffdings-inequality-a-starting-point}
@@ -595,6 +580,9 @@
     Quantify how quickly the generalization error approaches the
     empirical risk as the dataset size \(m\) grows.
   \item
+    Provide a guideline for determining the dataset size needed to
+    achieve a desired level of generalization.
+  \item
     In Hoeffding's inequality: \[
     P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
     \]
@@ -617,15 +605,6 @@
   \item
     \textbf{Tolerance (\(\varepsilon\))}: Smaller tolerances require
     larger datasets for the same level of confidence.
-  \end{itemize}
-\item
-  \textbf{Practical Insight}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Rates of convergence provide a guideline for determining the dataset
-    size needed to achieve a desired level of generalization.
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -1058,8 +1037,6 @@
     \tightlist
     \item
       Higher \(d_{\text{VC}}\): More complex, more expressive.
-    \item
-      Lower \(d_{\text{VC}}\): Less complex, less expressive.
     \end{itemize}
   \item
     A balance is required to avoid overfitting (high complexity) or
