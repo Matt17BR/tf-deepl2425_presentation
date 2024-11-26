@@ -10,6 +10,7 @@ format:
     fonttheme: "structurebold"
     keep-tex: true
     include-in-header: beamer_template.tex
+    pdf-engine: latexmk
 ---
 
 # Introduction
@@ -30,16 +31,6 @@ format:
 - **Generalization**:
   - Ability of a model to extend its learning beyond the training data.
   - **Central Problem** in machine learning: balancing *empirical performance* with *future predictions*.
-
----
-
-## Why Theory Matters
-- **Significance of Theory**:
-  - Guides **algorithm design** by providing a foundation for developing new methods.
-  - Allows **performance analysis** to identify the strengths and weaknesses of algorithms.
-  - Reveals **limitations** of learning systems, helping us understand their boundaries.
-- **Theoretical Understanding**:
-  - Bridges the gap between empirical performance and guarantees on future behavior.
 
 # Overfitting
 
@@ -84,7 +75,6 @@ format:
 #| fig-width: 7
 #| fig-height: 3
 #| out-width: "90%"
-#| out-height: "90%"
 #| fig-cap: "Overfitting Phenomenon in Linear Regression"
 # Load necessary libraries
 library(MASS)       # For the Boston dataset
@@ -166,7 +156,7 @@ df_melted <- melt(df_errors, id.vars = "Complexity", variable.name = "Type", val
 
 # Plot the errors vs model complexity
 ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
-  geom_line(size = 1) +
+  geom_line(lwd = 1) +
   xlab("Model Complexity (Number of Features)") +
   ylab("Mean Squared Error") +
   theme_minimal()
@@ -191,13 +181,7 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
 
 ---
 
-### Key Insights
-  - While simple models often underfit and overly complex models overfit, the phenomenon of **Double Descent** shows that extremely complex models can sometimes achieve superior generalization, especially in overparameterized regimes.
-
----
-
 ## Introducing Generalization Bounds
-
 - **What Are Generalization Bounds?**
   - Theoretical tools offering guarantees about a model's performance on unseen data.
   - Relate:
@@ -217,7 +201,7 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
     - Simpler models may not be able to represent complex data (high approximation error).
     - Overly complex models risk overfitting, where generalization error increases despite better fit on training data.
 
-# Exploring Bounds
+# Classical Bounds
 
 ## Hoeffding's Inequality: A Starting Point
 - **What is Hoeffding's Inequality?**
@@ -269,26 +253,15 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
   - For a fixed hypothesis, we can be confident that the performance observed on training data is close to what can be expected on unseen data.
   - The **rate of convergence** shows how quickly this reliability improves as $m$ grows.
 
+---
+
 ### Key Insights
-  - Hoeffding's inequality gives a **quantitative guarantee** about the relationship between training performance and unseen data performance.
-  - Understanding convergence rates helps in planning how much data is needed for robust generalization.
+- Hoeffding's inequality gives a **quantitative guarantee** about the relationship between training performance and unseen data performance.
+- Understanding convergence rates helps in planning how much data is needed for robust generalization.
 
 ---
 
 ## Limitations of Hoeffding's Inequality
-- **The Challenge of Multiple Hypotheses**:
-  - In practical machine learning, we often choose the best hypothesis from a large hypothesis class $\mathcal{H}$.
-  - Hoeffding's inequality applies to a **single fixed hypothesis**, not to the case where multiple hypotheses are considered.
-  
-- **Implication**:
-  - It doesn’t directly address:
-    - The **selection bias** introduced by choosing the hypothesis that minimizes the empirical risk.
-    - The increased risk of overfitting when evaluating multiple hypotheses.
-
----
-
-## Limitations of Hoeffding's Inequality
-
 - **Beyond Fixed Hypotheses**:
   - Hoeffding's inequality assumes a single, fixed hypothesis.
   - In practice, machine learning involves selecting the best hypothesis from a **large hypothesis class** $\mathcal{H}$, increasing the risk of overfitting.
@@ -298,9 +271,51 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
 
 ---
 
-## Motivation for Advanced Bounds
+## The Union Bound
+- **What is the Union Bound?**
+  - A probability tool used to extend bounds like Hoeffding's inequality to apply across an entire hypothesis space $\mathcal{H}$.
+  - Helps estimate the probability that **at least one hypothesis** in $\mathcal{H}$ has a large generalization gap.
+- **Key Idea**:
+  - Instead of considering a single fixed hypothesis, the Union Bound aggregates the probabilities of generalization gaps over all hypotheses in $\mathcal{H}$.
 
-- **Advanced bounds** address this by incorporating:
+---
+
+## Formalization of The Union Bound
+- **Mathematical Expression**:
+  $$
+  P\left(\sup_{h \in \mathcal{H}} |R(h) - R_{\text{emp}}(h)| > \epsilon \right) \leq \sum_{h \in \mathcal{H}} P\left(|R(h) - R_{\text{emp}}(h)| > \epsilon \right)
+  $$
+  - $\sup_{h \in \mathcal{H}}$: The supremum ensures we account for the worst-case scenario across all hypotheses.
+  - $P(|R(h) - R_{\text{emp}}(h)| > \epsilon)$: The probability of a significant generalization gap for each hypothesis.
+
+- **How It Works**:
+  - By summing up the probabilities for all hypotheses, the Union Bound provides a way to analyze the worst-case scenario over the hypothesis space.
+
+---
+
+## Implications of The Union Bound
+- **Impact of Hypothesis Space Size**:
+  - The bound depends directly on the **size of the hypothesis space** $|\mathcal{H}|$.
+  - Larger hypothesis spaces increase the sum, making the bound looser.
+
+- **Takeaway**:
+  - The Union Bound highlights a trade-off:
+    - **Small hypothesis space**: Tighter bounds, but limited model capacity.
+    - **Large hypothesis space**: Higher capacity, but risk of overfitting and looser bounds.
+
+---
+
+## Transition to Advanced Bounds
+- **Connection to Practical Learning**:
+  - In practice, hypothesis spaces are often infinite or too large to enumerate explicitly. This motivates the need for alternative ways to measure hypothesis complexity.
+- **From Simple to Sophisticated**:
+  - The Union Bound provides a conceptual basis for understanding how hypothesis space size affects generalization.
+  - Next, we delve into **complexity measures** that allow us to extend generalization bounds to more practical, infinite hypothesis spaces.
+
+# Advanced Bounds
+
+## Motivation for Advanced Bounds
+- **Advanced bounds** address a variety of the limitations we have outlined by incorporating:
   - **VC Dimension**: A measure of the capacity or expressiveness of a hypothesis class. Higher VC dimensions indicate more complex models, which may require more data to generalize well.
   - **Rademacher Complexity**: A data-dependent measure of how well a hypothesis class can fit random noise in the training data. It captures both the hypothesis class and the specifics of the data distribution.
 
@@ -318,3 +333,107 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
 
 - **Practical Implications**:
   - These bounds provide actionable insights for balancing model complexity and dataset size.
+
+## Vapnik-Chervonenkis (VC) Theory
+- **Growth Function**
+  - The **Growth Function** is a measure of the expressiveness of a hypothesis space $\mathcal{H}$.
+  - **Definition**:
+    - The growth function, $\Pi_{\mathcal{H}}(m)$, is the maximum number of distinct ways a hypothesis space can label $m$ data points.
+  - **Key Idea**:
+    - A more expressive hypothesis space can label datasets in a greater number of ways, indicating higher complexity.
+  - **Growth Behavior**:
+    - For small $m$, $\Pi_{\mathcal{H}}(m) = 2^m$.
+    - For larger $m$, the growth may be limited by the structure of $\mathcal{H}$.
+
+---
+
+- **VC Dimension**
+  - The **VC Dimension** is a scalar value that quantifies the capacity of a hypothesis space $\mathcal{H}$.
+  - **Definition**:
+    - The VC dimension $d_{\text{VC}}$ is the size of the largest dataset that can be **shattered** by $\mathcal{H}$.
+  - **Shattering**:
+    - A dataset is shattered if every possible labeling of the dataset can be perfectly captured by hypotheses in $\mathcal{H}$.
+- **Examples**:
+  - A linear classifier in 2D space has a VC dimension of 3 (it can shatter any 3 points, but not all configurations of 4 points).
+
+---
+
+## VC Generalization Bound
+- **What is the VC Generalization Bound?**
+  - A theoretical result that connects the **generalization error** with the **empirical risk**, the **VC dimension**, and the size of the dataset.
+  - **Mathematical Formulation**:
+    $$
+    R(h) \leq R_{\text{emp}}(h) + \sqrt{\frac{8 d_{\text{VC}} \left(\ln\left(\frac{2m}{d_{\text{VC}}}\right) + 1\right) + 8 \ln\left(\frac{4}{\delta}\right)}{m}}
+    $$
+    - $R(h)$: Generalization error.
+    - $R_{\text{emp}}(h)$: Empirical risk.
+    - $d_{\text{VC}}$: VC dimension.
+    - $m$: Dataset size.
+    - $\delta$: Confidence level ($1 - \delta$ is the probability that the bound holds).
+
+---
+
+### Key Insights
+- As $d_{\text{VC}}$ increases (more complex hypothesis space):
+  - The bound becomes looser, reflecting a higher risk of overfitting.
+- As $m$ increases (larger dataset size):
+  - The bound tightens, improving generalization guarantees.
+
+---
+
+## Summing Up VC Theory
+- **Expressiveness vs. Generalization**:
+  - The VC dimension captures the **expressiveness** of a hypothesis space:
+    - Higher $d_{\text{VC}}$: More complex, more expressive.
+    - Lower $d_{\text{VC}}$: Less complex, less expressive.
+  - A balance is required to avoid overfitting (high complexity) or underfitting (low complexity).
+- **Implications for Learning**:
+  - The VC dimension helps understand:
+    - Why simpler models often generalize better.
+    - Why increasing data size improves generalization, especially for complex models.
+- **Foundation for Algorithm Design**:
+  - VC theory guides the development of learning algorithms by quantifying the trade-offs between hypothesis complexity, data size, and generalization performance.
+
+## Distribution-Based Bounds
+- **From General Bounds to Data-Driven Insights**:
+  - Generalization bounds like Hoeffding’s inequality and VC bounds rely on worst-case scenarios.
+- **Distribution-Based Bounds**:
+  - Leverage specific properties of the data distribution to achieve **tighter bounds**.
+  - Exploit **data structure** to understand how well a model generalizes in practice.
+
+---
+
+## Example: Support Vector Machines (SVMs)
+- **SVMs and Margin-Based Bounds**:
+  - Support Vector Machines (SVMs) introduce the concept of a **margin**, the distance between the decision boundary and the nearest data points.
+  - **Intuition**:
+    - A larger margin indicates better separation between classes, leading to better generalization.
+  - **Margin-Based Generalization Bounds**:
+    - Generalization error decreases as the margin increases, even for infinite hypothesis spaces.
+
+---
+
+## Alternative Capacity Measures
+- **Why Explore Alternative Measures?**
+  - VC dimension assumes worst-case datasets, often leading to overly conservative bounds.
+  - Alternative measures provide more nuanced insights into hypothesis space complexity, especially for modern machine learning models like neural networks.
+
+---
+
+- **Examples of Alternative Measures**
+  1. **Covering Numbers**: The minimum number of small "balls" needed to cover the hypothesis space under a certain metric. Smaller covering numbers indicate a simpler hypothesis space, leading to tighter generalization bounds.
+  2. **Rademacher Complexity**: Measures the ability of a hypothesis class to fit random noise. A lower Rademacher complexity indicates that the hypothesis space is less prone to overfitting.
+
+- **Next Steps**:
+  - We want to explore how these theoretical tools are applied to modern machine learning methods.
+
+---
+
+### Key Insights
+- These measures allow for tighter, data-adaptive generalization bounds, particularly useful for complex or large-scale models.
+- There’s no one-size-fits-all measure. The choice of capacity measure depends on:
+  - The hypothesis space.
+  - The structure of the data.
+  - The learning algorithm.
+
+# Conclusion

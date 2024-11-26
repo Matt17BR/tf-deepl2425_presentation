@@ -21,13 +21,13 @@
 }
 \setbeamertemplate{section page}{
   \centering
-  \begin{beamercolorbox}[sep=12pt,center]{part title}
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
     \usebeamerfont{section title}\insertsection\par
   \end{beamercolorbox}
 }
 \setbeamertemplate{subsection page}{
   \centering
-  \begin{beamercolorbox}[sep=8pt,center]{part title}
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
     \usebeamerfont{subsection title}\insertsubsection\par
   \end{beamercolorbox}
 }
@@ -93,20 +93,27 @@
 \makeatother
 \usepackage{graphicx}
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
 % Set default figure placement to htbp
-\makeatletter
 \def\fps@figure{htbp}
 \makeatother
 
-\AtBeginSection{}
+%% suppress section title at beginning of new section
+% \AtBeginSection{}
+
+%% add lmu logo to title slide
 \titlegraphic{\includegraphics[width=0.33\textwidth]{lmu-logo.png}}
+
+%% modify color template to lmu-inspired one
 \definecolor{lmugreen}{RGB}{0,136,58}
 \setbeamercolor{section in toc}{fg=black,bg=white}
 \setbeamercolor{alerted text}{fg=lmugreen!80!gray}
@@ -127,6 +134,8 @@
 \setbeamercolor{enumerate item}{fg=lmugreen}
 \setbeamercolor*{separation line}{}
 \setbeamercolor*{fine separation line}{}
+
+%% modify beamer template to have slide number on footer
 \setbeamertemplate{footline}%{miniframes theme}
 {%
   \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
@@ -186,9 +195,6 @@
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
 
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
 \usepackage{bookmark}
 
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
@@ -261,37 +267,6 @@
   \item
     \textbf{Central Problem} in machine learning: balancing
     \emph{empirical performance} with \emph{future predictions}.
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Why Theory Matters}
-\phantomsection\label{why-theory-matters}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Significance of Theory}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Guides \textbf{algorithm design} by providing a foundation for
-    developing new methods.
-  \item
-    Allows \textbf{performance analysis} to identify the strengths and
-    weaknesses of algorithms.
-  \item
-    Reveals \textbf{limitations} of learning systems, helping us
-    understand their boundaries.
-  \end{itemize}
-\item
-  \textbf{Theoretical Understanding}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Bridges the gap between empirical performance and guarantees on
-    future behavior.
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -409,7 +384,7 @@
 \begin{frame}
 \begin{figure}[H]
 
-{\centering \includegraphics[width=0.9\textwidth,height=0.9\textheight]{generalization-bounds_presentation_files/figure-beamer/overfitting-plot-1.pdf}
+{\centering \includegraphics[width=0.9\linewidth,height=\textheight,keepaspectratio]{generalization-bounds_presentation_files/figure-beamer/overfitting-plot-1.pdf}
 
 }
 
@@ -467,20 +442,6 @@
   complex relationship between model complexity and generalization in
   modern machine learning.
 \end{itemize}
-\end{frame}
-
-\begin{frame}
-\begin{block}{Key Insights}
-\phantomsection\label{key-insights-1}
-\begin{itemize}
-\tightlist
-\item
-  While simple models often underfit and overly complex models overfit,
-  the phenomenon of \textbf{Double Descent} shows that extremely complex
-  models can sometimes achieve superior generalization, especially in
-  overparameterized regimes.
-\end{itemize}
-\end{block}
 \end{frame}
 
 \begin{frame}{Introducing Generalization Bounds}
@@ -555,7 +516,7 @@
 \end{itemize}
 \end{frame}
 
-\section{Exploring Bounds}\label{exploring-bounds}
+\section{Classical Bounds}\label{classical-bounds}
 
 \begin{frame}{Hoeffding's Inequality: A Starting Point}
 \phantomsection\label{hoeffdings-inequality-a-starting-point}
@@ -602,7 +563,7 @@
 
 \begin{frame}
 \begin{block}{Key Insights}
-\phantomsection\label{key-insights-2}
+\phantomsection\label{key-insights-1}
 \begin{itemize}
 \tightlist
 \item
@@ -690,9 +651,11 @@
     improves as \(m\) grows.
   \end{itemize}
 \end{itemize}
+\end{frame}
 
+\begin{frame}
 \begin{block}{Key Insights}
-\phantomsection\label{key-insights-3}
+\phantomsection\label{key-insights-2}
 \begin{itemize}
 \tightlist
 \item
@@ -708,44 +671,6 @@
 
 \begin{frame}{Limitations of Hoeffding's Inequality}
 \phantomsection\label{limitations-of-hoeffdings-inequality}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{The Challenge of Multiple Hypotheses}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    In practical machine learning, we often choose the best hypothesis
-    from a large hypothesis class \(\mathcal{H}\).
-  \item
-    Hoeffding's inequality applies to a \textbf{single fixed
-    hypothesis}, not to the case where multiple hypotheses are
-    considered.
-  \end{itemize}
-\item
-  \textbf{Implication}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    It doesn't directly address:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      The \textbf{selection bias} introduced by choosing the hypothesis
-      that minimizes the empirical risk.
-    \item
-      The increased risk of overfitting when evaluating multiple
-      hypotheses.
-    \end{itemize}
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Limitations of Hoeffding's Inequality}
-\phantomsection\label{limitations-of-hoeffdings-inequality-1}
 \begin{itemize}
 \tightlist
 \item
@@ -772,12 +697,141 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}{The Union Bound}
+\phantomsection\label{the-union-bound}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{What is the Union Bound?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A probability tool used to extend bounds like Hoeffding's inequality
+    to apply across an entire hypothesis space \(\mathcal{H}\).
+  \item
+    Helps estimate the probability that \textbf{at least one hypothesis}
+    in \(\mathcal{H}\) has a large generalization gap.
+  \end{itemize}
+\item
+  \textbf{Key Idea}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Instead of considering a single fixed hypothesis, the Union Bound
+    aggregates the probabilities of generalization gaps over all
+    hypotheses in \(\mathcal{H}\).
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Formalization of The Union Bound}
+\phantomsection\label{formalization-of-the-union-bound}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Mathematical Expression}: \[
+  P\left(\sup_{h \in \mathcal{H}} |R(h) - R_{\text{emp}}(h)| > \epsilon \right) \leq \sum_{h \in \mathcal{H}} P\left(|R(h) - R_{\text{emp}}(h)| > \epsilon \right)
+  \]
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(\sup_{h \in \mathcal{H}}\): The supremum ensures we account for
+    the worst-case scenario across all hypotheses.
+  \item
+    \(P(|R(h) - R_{\text{emp}}(h)| > \epsilon)\): The probability of a
+    significant generalization gap for each hypothesis.
+  \end{itemize}
+\item
+  \textbf{How It Works}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    By summing up the probabilities for all hypotheses, the Union Bound
+    provides a way to analyze the worst-case scenario over the
+    hypothesis space.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Implications of The Union Bound}
+\phantomsection\label{implications-of-the-union-bound}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Impact of Hypothesis Space Size}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The bound depends directly on the \textbf{size of the hypothesis
+    space} \(|\mathcal{H}|\).
+  \item
+    Larger hypothesis spaces increase the sum, making the bound looser.
+  \end{itemize}
+\item
+  \textbf{Takeaway}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The Union Bound highlights a trade-off:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \textbf{Small hypothesis space}: Tighter bounds, but limited model
+      capacity.
+    \item
+      \textbf{Large hypothesis space}: Higher capacity, but risk of
+      overfitting and looser bounds.
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Transition to Advanced Bounds}
+\phantomsection\label{transition-to-advanced-bounds}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Connection to Practical Learning}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    In practice, hypothesis spaces are often infinite or too large to
+    enumerate explicitly. This motivates the need for alternative ways
+    to measure hypothesis complexity.
+  \end{itemize}
+\item
+  \textbf{From Simple to Sophisticated}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The Union Bound provides a conceptual basis for understanding how
+    hypothesis space size affects generalization.
+  \item
+    Next, we delve into \textbf{complexity measures} that allow us to
+    extend generalization bounds to more practical, infinite hypothesis
+    spaces.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Advanced Bounds}\label{advanced-bounds}
+
 \begin{frame}{Motivation for Advanced Bounds}
 \phantomsection\label{motivation-for-advanced-bounds}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Advanced bounds} address this by incorporating:
+  \textbf{Advanced bounds} address a variety of the limitations we have
+  outlined by incorporating:
 
   \begin{itemize}
   \tightlist
@@ -837,6 +891,349 @@
   \end{itemize}
 \end{itemize}
 \end{frame}
+
+\begin{frame}{Vapnik-Chervonenkis (VC) Theory}
+\phantomsection\label{vapnik-chervonenkis-vc-theory}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Growth Function}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The \textbf{Growth Function} is a measure of the expressiveness of a
+    hypothesis space \(\mathcal{H}\).
+  \item
+    \textbf{Definition}:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      The growth function, \(\Pi_{\mathcal{H}}(m)\), is the maximum
+      number of distinct ways a hypothesis space can label \(m\) data
+      points.
+    \end{itemize}
+  \item
+    \textbf{Key Idea}:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      A more expressive hypothesis space can label datasets in a greater
+      number of ways, indicating higher complexity.
+    \end{itemize}
+  \item
+    \textbf{Growth Behavior}:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      For small \(m\), \(\Pi_{\mathcal{H}}(m) = 2^m\).
+    \item
+      For larger \(m\), the growth may be limited by the structure of
+      \(\mathcal{H}\).
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{VC Dimension}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The \textbf{VC Dimension} is a scalar value that quantifies the
+    capacity of a hypothesis space \(\mathcal{H}\).
+  \item
+    \textbf{Definition}:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      The VC dimension \(d_{\text{VC}}\) is the size of the largest
+      dataset that can be \textbf{shattered} by \(\mathcal{H}\).
+    \end{itemize}
+  \item
+    \textbf{Shattering}:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      A dataset is shattered if every possible labeling of the dataset
+      can be perfectly captured by hypotheses in \(\mathcal{H}\).
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Examples}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A linear classifier in 2D space has a VC dimension of 3 (it can
+    shatter any 3 points, but not all configurations of 4 points).
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{VC Generalization Bound}
+\phantomsection\label{vc-generalization-bound}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{What is the VC Generalization Bound?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A theoretical result that connects the \textbf{generalization error}
+    with the \textbf{empirical risk}, the \textbf{VC dimension}, and the
+    size of the dataset.
+  \item
+    \textbf{Mathematical Formulation}: \[
+    R(h) \leq R_{\text{emp}}(h) + \sqrt{\frac{8 d_{\text{VC}} \left(\ln\left(\frac{2m}{d_{\text{VC}}}\right) + 1\right) + 8 \ln\left(\frac{4}{\delta}\right)}{m}}
+    \]
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(R(h)\): Generalization error.
+    \item
+      \(R_{\text{emp}}(h)\): Empirical risk.
+    \item
+      \(d_{\text{VC}}\): VC dimension.
+    \item
+      \(m\): Dataset size.
+    \item
+      \(\delta\): Confidence level (\(1 - \delta\) is the probability
+      that the bound holds).
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Key Insights}
+\phantomsection\label{key-insights-3}
+\begin{itemize}
+\tightlist
+\item
+  As \(d_{\text{VC}}\) increases (more complex hypothesis space):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The bound becomes looser, reflecting a higher risk of overfitting.
+  \end{itemize}
+\item
+  As \(m\) increases (larger dataset size):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The bound tightens, improving generalization guarantees.
+  \end{itemize}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Summing Up VC Theory}
+\phantomsection\label{summing-up-vc-theory}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Expressiveness vs.~Generalization}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The VC dimension captures the \textbf{expressiveness} of a
+    hypothesis space:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Higher \(d_{\text{VC}}\): More complex, more expressive.
+    \item
+      Lower \(d_{\text{VC}}\): Less complex, less expressive.
+    \end{itemize}
+  \item
+    A balance is required to avoid overfitting (high complexity) or
+    underfitting (low complexity).
+  \end{itemize}
+\item
+  \textbf{Implications for Learning}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The VC dimension helps understand:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Why simpler models often generalize better.
+    \item
+      Why increasing data size improves generalization, especially for
+      complex models.
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Foundation for Algorithm Design}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    VC theory guides the development of learning algorithms by
+    quantifying the trade-offs between hypothesis complexity, data size,
+    and generalization performance.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Distribution-Based Bounds}
+\phantomsection\label{distribution-based-bounds}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{From General Bounds to Data-Driven Insights}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Generalization bounds like Hoeffding's inequality and VC bounds rely
+    on worst-case scenarios.
+  \end{itemize}
+\item
+  \textbf{Distribution-Based Bounds}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Leverage specific properties of the data distribution to achieve
+    \textbf{tighter bounds}.
+  \item
+    Exploit \textbf{data structure} to understand how well a model
+    generalizes in practice.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example: Support Vector Machines (SVMs)}
+\phantomsection\label{example-support-vector-machines-svms}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{SVMs and Margin-Based Bounds}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Support Vector Machines (SVMs) introduce the concept of a
+    \textbf{margin}, the distance between the decision boundary and the
+    nearest data points.
+  \item
+    \textbf{Intuition}:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      A larger margin indicates better separation between classes,
+      leading to better generalization.
+    \end{itemize}
+  \item
+    \textbf{Margin-Based Generalization Bounds}:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Generalization error decreases as the margin increases, even for
+      infinite hypothesis spaces.
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Alternative Capacity Measures}
+\phantomsection\label{alternative-capacity-measures}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Why Explore Alternative Measures?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    VC dimension assumes worst-case datasets, often leading to overly
+    conservative bounds.
+  \item
+    Alternative measures provide more nuanced insights into hypothesis
+    space complexity, especially for modern machine learning models like
+    neural networks.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Examples of Alternative Measures}
+
+  \begin{enumerate}
+  \tightlist
+  \item
+    \textbf{Covering Numbers}: The minimum number of small ``balls''
+    needed to cover the hypothesis space under a certain metric. Smaller
+    covering numbers indicate a simpler hypothesis space, leading to
+    tighter generalization bounds.
+  \item
+    \textbf{Rademacher Complexity}: Measures the ability of a hypothesis
+    class to fit random noise. A lower Rademacher complexity indicates
+    that the hypothesis space is less prone to overfitting.
+  \end{enumerate}
+\item
+  \textbf{Next Steps}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    We want to explore how these theoretical tools are applied to modern
+    machine learning methods.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Key Insights}
+\phantomsection\label{key-insights-4}
+\begin{itemize}
+\tightlist
+\item
+  These measures allow for tighter, data-adaptive generalization bounds,
+  particularly useful for complex or large-scale models.
+\item
+  There's no one-size-fits-all measure. The choice of capacity measure
+  depends on:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The hypothesis space.
+  \item
+    The structure of the data.
+  \item
+    The learning algorithm.
+  \end{itemize}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\section{Conclusion}\label{conclusion}
 
 
 
