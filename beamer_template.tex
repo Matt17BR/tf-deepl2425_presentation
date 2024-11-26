@@ -1,5 +1,10 @@
-\AtBeginSection{}
+%% suppress section title at beginning of new section
+% \AtBeginSection{}
+
+%% add lmu logo to title slide
 \titlegraphic{\includegraphics[width=0.33\textwidth]{lmu-logo.png}}
+
+%% modify color template to lmu-inspired one
 \definecolor{lmugreen}{RGB}{0,136,58}
 \setbeamercolor{section in toc}{fg=black,bg=white}
 \setbeamercolor{alerted text}{fg=lmugreen!80!gray}
@@ -20,6 +25,8 @@
 \setbeamercolor{enumerate item}{fg=lmugreen}
 \setbeamercolor*{separation line}{}
 \setbeamercolor*{fine separation line}{}
+
+%% modify beamer template to have slide number on footer
 \setbeamertemplate{footline}%{miniframes theme}
 {%
   \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
