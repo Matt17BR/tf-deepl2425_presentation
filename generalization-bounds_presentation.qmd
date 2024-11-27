@@ -12,6 +12,7 @@ format:
     include-in-header: beamer_template.tex
     pdf-engine: latexmk
 bibliography: references.bib
+# csl: apa_numeric_superscript_brackets.csl
 nocite: |
   @*
 ---
