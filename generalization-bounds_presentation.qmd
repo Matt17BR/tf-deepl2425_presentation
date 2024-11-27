@@ -9,10 +9,10 @@ format:
     theme: "Dresden"
     fonttheme: "structurebold"
     keep-tex: true
-    include-in-header: beamer_template.tex
+    include-in-header: extra/beamer_template.tex
     pdf-engine: latexmk
-bibliography: references.bib
-# csl: apa_numeric_superscript_brackets.csl
+bibliography: extra/references.bib
+# csl: extra/apa_numeric_superscript_brackets.csl
 nocite: |
   @*
 ---
