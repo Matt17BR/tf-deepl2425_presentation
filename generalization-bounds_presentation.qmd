@@ -11,6 +11,9 @@ format:
     keep-tex: true
     include-in-header: beamer_template.tex
     pdf-engine: latexmk
+bibliography: references.bib
+nocite: |
+  @*
 ---
 
 # Introduction
@@ -40,7 +43,7 @@ format:
   - Visualize the impact of model complexity on overfitting in a linear regression model.
 
 - **Dataset**
-  - The experiment uses the **Boston Housing dataset**, where the target variable is `medv` (median value of owner-occupied homes), and the features represent housing characteristics.
+  - The experiment uses the **Boston Housing dataset**, where the target variable is `medv` (median value of owner-occupied homes), and the 13 features represent housing characteristics.
 
 ---
 
@@ -430,3 +433,10 @@ ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
   - The learning algorithm.
 
 # Conclusion
+
+---
+
+### References
+
+::: {#refs}
+:::
