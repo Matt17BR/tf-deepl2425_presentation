@@ -48,10 +48,10 @@ nocite: |
   - Using the scikit-learn **Diabetes** dataset with a single feature (BMI) and a quantitative response variable indicating disease progression (Target) [@sklearndiabetes11].
 
 - **Approach**:
-  - Fit polynomial regression models of varying degrees.
-  - Visualize polynomial fits on the training data.
-  - Examine the fits' residuals to see how errors behave.
-  - Plot training vs. test errors to highlight overfitting.
+  1. Fit polynomial regression models of varying degrees.
+  2. Visualize polynomial fits on the training data.
+  3. Examine the fits' residuals to see how errors behave.
+  4. Plot training vs. test errors to highlight overfitting.
 
 ---
 
@@ -441,4 +441,5 @@ plt.show()
 ### References
 
 ::: {#refs}
+\footnotesize
 :::
