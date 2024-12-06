@@ -13,7 +13,7 @@ format:
     include-in-header: extra/beamer_template.tex
     pdf-engine: latexmk
 bibliography: extra/references.bib
-csl: extra/apa-numeric-superscript-brackets.csl
+csl: extra/apa7-numeric-superscript-brackets-nocommas.csl
 nocite: |
   @*
 ---
@@ -45,7 +45,7 @@ nocite: |
   - Show how increasing model complexity (polynomial degree) leads to overfitting.
 
 - **Dataset**:
-  - Using the **Diabetes** dataset with a single feature (BMI).
+  - Using the scikit-learn **Diabetes** dataset with a single feature (BMI) and a quantitative response variable indicating disease progression (Target) [@sklearndiabetes11].
 
 - **Approach**:
   - Fit polynomial regression models of varying degrees.
