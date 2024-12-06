@@ -38,143 +38,150 @@ nocite: |
 
 # Overfitting
 
-## Simulating Overfitting
+## Demonstrating Overfitting
 
 - **Objective**:
-  - Visualize the impact of model complexity on overfitting in a linear regression model.
+  - Show how increasing model complexity (polynomial degree) leads to overfitting.
 
-- **Dataset**
-  - The experiment uses the **Boston Housing dataset**, where the target variable is `medv` (median value of owner-occupied homes), and the 13 features represent housing characteristics.
+- **Dataset**:
+  - Using the **Diabetes** dataset with a single feature (BMI).
 
----
-
-- **Experimental Setup**:
-  - **Model Complexity**:
-    - Complexity is defined by the number of features included in the model.
-    - Additional random features are generated to simulate increasing complexity beyond the real features in the dataset.
-  - **Train-Test Split**:
-    - The dataset is split into 70% training and 30% test data.
-  - **Range of Complexity**:
-    - Models are trained with 1 to 200 features. Beyond the actual features in the dataset, random noise features are added incrementally.
+- **Approach**:
+  - Fit polynomial regression models of varying degrees .
+  - Compare training and testing errors as complexity increases.
+  - Visualize polynomial fits on the training data.
+  - Examine residuals for low and high degrees to see how errors behave.
+  - Plot training vs. test errors to highlight overfitting.
 
 ---
 
-- **Procedure**:
-  For each level of complexity:
-    1. A subset of features (real and random) is used to train a linear regression model.
-    2. Predictions are made on both the training and test datasets.
-    3. Mean Squared Errors (MSE) are calculated for both datasets.
+```{python overfitting-plot}
+#| fig-cap: "Overfitting Phenomenon in Polynomial Regression"
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-- **Results**:
-  - Training error decreases consistently as model complexity increases.
-  - Test error initially decreases but then increases, demonstrating the overfitting phenomenon.
+from sklearn.datasets import load_diabetes
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+from matplotlib.gridspec import GridSpec
 
-- **Visualization**:
-  - A line plot shows the relationship between model complexity (number of features) and mean squared error for both the training and test datasets.
+# Set style for prettier plots
+sns.set_style('whitegrid')
+sns.set_context('talk')
 
----
+# Load the Diabetes dataset
+X, y = load_diabetes(return_X_y=True)
 
-```{r overfitting-plot}
-#| cache: true
-#| fig-width: 7
-#| fig-height: 3
-#| out-width: "90%"
-#| fig-cap: "Overfitting Phenomenon in Linear Regression"
-# Load necessary libraries
-library(MASS)       # For the Boston dataset
-library(ggplot2)    # For plotting
-library(reshape2)   # For data manipulation
-
-# Set seed for reproducibility
-set.seed(123)
-
-# Load the Boston housing data
-data(Boston)
-
-# Prepare the data
-X <- as.matrix(Boston[, -14])  # Exclude the target variable 'medv'
-y <- Boston$medv
+# Use one feature for easy visualization (e.g., BMI at index 2)
+X = X[:, np.newaxis, 2]
 
 # Split into training and test sets
-train_index <- sample(1:nrow(X), size = 0.7 * nrow(X))
-X_train <- X[train_index, ]
-y_train <- y[train_index]
-X_test <- X[-train_index, ]
-y_test <- y[-train_index]
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 
-# Define a range of model complexities (number of features)
-max_features <- 200  # Max number of features to consider
-n_real_features <- ncol(X_train)  # Number of real features
+# Polynomial degrees to test
+degrees = [1, 3, 5, 7, 9]
+train_errors = []
+test_errors = []
 
-# Initialize vectors to store errors
-train_errors <- numeric(max_features)
-test_errors <- numeric(max_features)
-
-# Loop over increasing number of features
-for (p in 1:max_features) {
-  # Determine the number of random features to add
-  n_random_features <- max(0, p - n_real_features)
-  
-  # Generate random features for training and test sets
-  if (n_random_features > 0) {
-    random_train <- matrix(rnorm(nrow(X_train) * n_random_features), nrow = nrow(X_train))
-    random_test <- matrix(rnorm(nrow(X_test) * n_random_features), nrow = nrow(X_test))
+for d in degrees:
+    poly = PolynomialFeatures(degree=d)
+    X_train_poly = poly.fit_transform(X_train)
+    X_test_poly = poly.transform(X_test)
     
-    # Combine real and random features
-    X_train_p <- cbind(X_train, random_train)
-    X_test_p <- cbind(X_test, random_test)
-  } else {
-    X_train_p <- X_train[, 1:p, drop = FALSE]
-    X_test_p <- X_test[, 1:p, drop = FALSE]
-  }
-  
-  # Prepare data frames for lm()
-  df_train <- data.frame(y = y_train, X_train_p)
-  df_test <- data.frame(y = y_test, X_test_p)
-  
-  # Build the formula for lm()
-  predictors <- paste(colnames(df_train)[-1], collapse = " + ")
-  formula <- as.formula(paste("y ~", predictors))
-  
-  # Fit linear model
-  model <- lm(formula, data = df_train)
-  
-  # Predict on training and test sets
-  y_pred_train <- predict(model, newdata = df_train)
-  y_pred_test <- predict(model, newdata = df_test)
-  
-  # Compute mean squared errors
-  train_errors[p] <- mean((y_train - y_pred_train)^2)
-  test_errors[p] <- mean((y_test - y_pred_test)^2)
-}
+    model = LinearRegression()
+    model.fit(X_train_poly, y_train)
+    
+    y_train_pred = model.predict(X_train_poly)
+    y_test_pred = model.predict(X_test_poly)
+    
+    train_mse = mean_squared_error(y_train, y_train_pred)
+    test_mse = mean_squared_error(y_test, y_test_pred)
+    
+    train_errors.append(train_mse)
+    test_errors.append(test_mse)
 
-# Create a data frame for plotting
-df_errors <- data.frame(
-  Complexity = 1:max_features,
-  Training_Error = train_errors,
-  Test_Error = test_errors
-)
+# Degrees to visualize in the top row
+degrees_to_visualize = [1, 5, 9]
 
-# Melt the data for ggplot
-df_melted <- melt(df_errors, id.vars = "Complexity", variable.name = "Type", value.name = "Error")
+# Residual plots for these degrees in the second row
+residual_degrees = [1, 9]
 
-# Plot the errors vs model complexity
-ggplot(df_melted, aes(x = Complexity, y = Error, color = Type)) +
-  geom_line(lwd = 1) +
-  xlab("Model Complexity (Number of Features)") +
-  ylab("Mean Squared Error") +
-  theme_minimal()
+# Create figure and GridSpec
+fig = plt.figure(figsize=(15, 10))
+gs = GridSpec(2, 3, figure=fig)
+
+# Top row: three polynomial fits
+axes_top = [fig.add_subplot(gs[0, i]) for i in range(3)]
+
+# Define custom colors for the top row
+top_train_color = "#2a9d8f"  # teal
+top_line_color = "#e76f51"   # salmon
+
+for i, d in enumerate(degrees_to_visualize):
+    poly_viz = PolynomialFeatures(degree=d)
+    X_train_poly_viz = poly_viz.fit_transform(X_train)
+    model_viz = LinearRegression()
+    model_viz.fit(X_train_poly_viz, y_train)
+    
+    # Create a smooth curve for the polynomial fit
+    X_curve = np.linspace(X_train.min(), X_train.max(), 200).reshape(-1, 1)
+    X_curve_poly = poly_viz.transform(X_curve)
+    y_curve = model_viz.predict(X_curve_poly)
+    
+    # Plot the training data and the polynomial fit with new colors
+    axes_top[i].scatter(X_train, y_train, color=top_train_color, alpha=0.7, label='Training Data')
+    axes_top[i].plot(X_curve, y_curve, color=top_line_color, linewidth=3, label=f'Degree {d}')
+    axes_top[i].set_title(f'Polynomial Degree {d}', fontsize=18, pad=10)
+    axes_top[i].set_xlabel('Feature (BMI)', fontsize=14)
+    axes_top[i].set_ylabel('Target', fontsize=14)
+    axes_top[i].legend(fontsize=12)
+
+# Bottom row: 2 residual plots + training vs test error
+ax_res1 = fig.add_subplot(gs[1, 0])
+ax_res2 = fig.add_subplot(gs[1, 1])
+ax_err = fig.add_subplot(gs[1, 2])
+
+for i, d in enumerate(residual_degrees):
+    poly = PolynomialFeatures(degree=d)
+    X_train_poly = poly.fit_transform(X_train)
+    X_test_poly = poly.transform(X_test)
+
+    model = LinearRegression()
+    model.fit(X_train_poly, y_train)
+    
+    y_test_pred = model.predict(X_test_poly)
+    residuals = y_test - y_test_pred
+
+    ax = ax_res1 if i == 0 else ax_res2
+    ax.scatter(y_test_pred, residuals, color='purple', alpha=0.7)
+    ax.hlines(y=0, xmin=y_test_pred.min(), xmax=y_test_pred.max(), colors='red', linestyles='dashed')
+    ax.set_title(f'Residual Plot (Degree={d})', fontsize=16, pad=10)
+    ax.set_xlabel('Predicted Values', fontsize=14)
+    ax.set_ylabel('Residuals', fontsize=14)
+
+# Keep the original palette for training vs test error plot
+palette = sns.color_palette("deep", 3)
+
+# Plot training vs test errors
+ax_err.plot(degrees, train_errors, label='Training Error', marker='o', markersize=8, linewidth=3, color=palette[0])
+ax_err.plot(degrees, test_errors, label='Test Error', marker='s', markersize=8, linewidth=3, color=palette[1])
+ax_err.set_title('Training vs Test Errors', fontsize=18, pad=10)
+ax_err.set_xlabel('Polynomial Degree', fontsize=14)
+ax_err.set_ylabel('Mean Squared Error', fontsize=14)
+ax_err.legend(fontsize=12)
+
+plt.tight_layout()
+plt.show()
 ```
-
-- **Highlights**:
-  - The **bias-variance tradeoff**.
-  - The point where overfitting begins, indicated by the divergence of training and test errors.
 
 ---
 
 ### Key Insights
-- Increasing model complexity without consideration of the underlying data structure can lead to overfitting.
-- Simple models that focus on the true underlying pattern often generalize better to unseen data.
+- As polynomial degree increases, the model can tightly fit the training data (low training error).
+- Beyond a certain complexity, test error rises, illustrating poor generalization.
 
 ---
 

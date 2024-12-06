@@ -312,8 +312,8 @@
 
 \section{Overfitting}\label{overfitting}
 
-\begin{frame}[fragile]{Simulating Overfitting}
-\phantomsection\label{simulating-overfitting}
+\begin{frame}{Demonstrating Overfitting}
+\phantomsection\label{demonstrating-overfitting}
 \begin{itemize}
 \tightlist
 \item
@@ -322,100 +322,32 @@
   \begin{itemize}
   \tightlist
   \item
-    Visualize the impact of model complexity on overfitting in a linear
-    regression model.
+    Show how increasing model complexity (polynomial degree) leads to
+    overfitting.
   \end{itemize}
 \item
-  \textbf{Dataset}
+  \textbf{Dataset}:
 
   \begin{itemize}
   \tightlist
   \item
-    The experiment uses the \textbf{Boston Housing dataset}, where the
-    target variable is \texttt{medv} (median value of owner-occupied
-    homes), and the 13 features represent housing characteristics.
+    Using the \textbf{Diabetes} dataset with a single feature (BMI).
   \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\begin{itemize}
-\tightlist
 \item
-  \textbf{Experimental Setup}:
+  \textbf{Approach}:
 
   \begin{itemize}
   \tightlist
   \item
-    \textbf{Model Complexity}:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      Complexity is defined by the number of features included in the
-      model.
-    \item
-      Additional random features are generated to simulate increasing
-      complexity beyond the real features in the dataset.
-    \end{itemize}
+    Fit polynomial regression models of varying degrees .
   \item
-    \textbf{Train-Test Split}:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      The dataset is split into 70\% training and 30\% test data.
-    \end{itemize}
+    Compare training and testing errors as complexity increases.
   \item
-    \textbf{Range of Complexity}:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      Models are trained with 1 to 200 features. Beyond the actual
-      features in the dataset, random noise features are added
-      incrementally.
-    \end{itemize}
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Procedure}: For each level of complexity:
-
-  \begin{enumerate}
-  \tightlist
+    Visualize polynomial fits on the training data.
   \item
-    A subset of features (real and random) is used to train a linear
-    regression model.
+    Examine residuals for low and high degrees to see how errors behave.
   \item
-    Predictions are made on both the training and test datasets.
-  \item
-    Mean Squared Errors (MSE) are calculated for both datasets.
-  \end{enumerate}
-\item
-  \textbf{Results}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Training error decreases consistently as model complexity increases.
-  \item
-    Test error initially decreases but then increases, demonstrating the
-    overfitting phenomenon.
-  \end{itemize}
-\item
-  \textbf{Visualization}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    A line plot shows the relationship between model complexity (number
-    of features) and mean squared error for both the training and test
-    datasets.
+    Plot training vs.~test errors to highlight overfitting.
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -423,28 +355,13 @@
 \begin{frame}
 \begin{figure}[H]
 
-{\centering \includegraphics[width=0.9\linewidth,height=\textheight,keepaspectratio]{generalization-bounds_presentation_files/figure-beamer/overfitting-plot-1.pdf}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{generalization-bounds_presentation_files/figure-beamer/cell-2-output-1.pdf}}
 
 }
 
-\caption{Overfitting Phenomenon in Linear Regression}
+\caption{Overfitting Phenomenon in Polynomial Regression}
 
 \end{figure}%
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Highlights}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    The \textbf{bias-variance tradeoff}.
-  \item
-    The point where overfitting begins, indicated by the divergence of
-    training and test errors.
-  \end{itemize}
-\end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -453,11 +370,11 @@
 \begin{itemize}
 \tightlist
 \item
-  Increasing model complexity without consideration of the underlying
-  data structure can lead to overfitting.
+  As polynomial degree increases, the model can tightly fit the training
+  data (low training error).
 \item
-  Simple models that focus on the true underlying pattern often
-  generalize better to unseen data.
+  Beyond a certain complexity, test error rises, illustrating poor
+  generalization.
 \end{itemize}
 \end{block}
 \end{frame}
