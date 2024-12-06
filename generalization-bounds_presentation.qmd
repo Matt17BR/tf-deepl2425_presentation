@@ -8,6 +8,7 @@ format:
   beamer:
     theme: "Dresden"
     fonttheme: "structurebold"
+    link-citations: true
     keep-tex: true
     include-in-header: extra/beamer_template.tex
     pdf-engine: latexmk
@@ -47,10 +48,9 @@ nocite: |
   - Using the **Diabetes** dataset with a single feature (BMI).
 
 - **Approach**:
-  - Fit polynomial regression models of varying degrees .
-  - Compare training and testing errors as complexity increases.
+  - Fit polynomial regression models of varying degrees.
   - Visualize polynomial fits on the training data.
-  - Examine residuals for low and high degrees to see how errors behave.
+  - Examine the fits' residuals to see how errors behave.
   - Plot training vs. test errors to highlight overfitting.
 
 ---
@@ -179,16 +179,10 @@ plt.show()
 
 ---
 
-### Key Insights
-- As polynomial degree increases, the model can tightly fit the training data (low training error).
-- Beyond a certain complexity, test error rises, illustrating poor generalization.
-
----
-
 ## Double Descent
-- However, modern machine learning introduces a fascinating twist: **Double Descent**, where increasing model complexity can sometimes lead to improved generalization after an initial overfitting phase.
-- Unlike traditional models where increasing complexity leads to overfitting, further increasing the complexity (e.g., using overparameterized neural networks) can eventually reduce the generalization error after an initial peak.
-- This challenges the classical view of overfitting and highlights the complex relationship between model complexity and generalization in modern machine learning.
+- Modern machine learning introduces a fascinating twist: **Double Descent**, where increasing model complexity can lead to improved generalization after an initial overfitting phase.
+
+![Double Descent phenomenon in a Residual Neural Network [@nakkiran19]](extra/double_descent.png){width=80%}
 
 # Classical Bounds
 

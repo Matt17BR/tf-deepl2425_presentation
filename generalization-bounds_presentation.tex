@@ -339,13 +339,11 @@
   \begin{itemize}
   \tightlist
   \item
-    Fit polynomial regression models of varying degrees .
-  \item
-    Compare training and testing errors as complexity increases.
+    Fit polynomial regression models of varying degrees.
   \item
     Visualize polynomial fits on the training data.
   \item
-    Examine residuals for low and high degrees to see how errors behave.
+    Examine the fits' residuals to see how errors behave.
   \item
     Plot training vs.~test errors to highlight overfitting.
   \end{itemize}
@@ -364,40 +362,26 @@
 \end{figure}%
 \end{frame}
 
-\begin{frame}
-\begin{block}{Key Insights}
-\phantomsection\label{key-insights}
-\begin{itemize}
-\tightlist
-\item
-  As polynomial degree increases, the model can tightly fit the training
-  data (low training error).
-\item
-  Beyond a certain complexity, test error rises, illustrating poor
-  generalization.
-\end{itemize}
-\end{block}
-\end{frame}
-
 \begin{frame}{Double Descent}
 \phantomsection\label{double-descent}
 \begin{itemize}
 \tightlist
 \item
-  However, modern machine learning introduces a fascinating twist:
-  \textbf{Double Descent}, where increasing model complexity can
-  sometimes lead to improved generalization after an initial overfitting
-  phase.
-\item
-  Unlike traditional models where increasing complexity leads to
-  overfitting, further increasing the complexity (e.g., using
-  overparameterized neural networks) can eventually reduce the
-  generalization error after an initial peak.
-\item
-  This challenges the classical view of overfitting and highlights the
-  complex relationship between model complexity and generalization in
-  modern machine learning.
+  Modern machine learning introduces a fascinating twist: \textbf{Double
+  Descent}, where increasing model complexity can lead to improved
+  generalization after an initial overfitting phase.
 \end{itemize}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio]{extra/double_descent.png}
+
+}
+
+\caption{Double Descent phenomenon in a Residual Neural
+Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{1}{]}}}
+
+\end{figure}%
 \end{frame}
 
 \section{Classical Bounds}\label{classical-bounds}
@@ -503,7 +487,7 @@
 
 \begin{frame}
 \begin{block}{Key Insights}
-\phantomsection\label{key-insights-1}
+\phantomsection\label{key-insights}
 \begin{itemize}
 \tightlist
 \item
@@ -589,7 +573,7 @@
 
 \begin{frame}
 \begin{block}{Key Insights}
-\phantomsection\label{key-insights-2}
+\phantomsection\label{key-insights-1}
 \begin{itemize}
 \tightlist
 \item
@@ -952,7 +936,7 @@
 
 \begin{frame}
 \begin{block}{Key Insights}
-\phantomsection\label{key-insights-3}
+\phantomsection\label{key-insights-2}
 \begin{itemize}
 \tightlist
 \item
@@ -1142,7 +1126,7 @@
 
 \begin{frame}
 \begin{block}{Key Insights}
-\phantomsection\label{key-insights-4}
+\phantomsection\label{key-insights-3}
 \begin{itemize}
 \tightlist
 \item
@@ -1172,21 +1156,26 @@
 \phantomsection\label{references}
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-nakkiran19}
+1. Nakkiran, P., Kaplun, G., Bansal, Y., Yang, T., Barak, B., \&
+Sutskever, I. (2019). \emph{Deep double descent: Where bigger models and
+more data hurt}. \url{https://arxiv.org/abs/1912.02292}
+
 \bibitem[\citeproctext]{ref-bousquet03}
-1. Bousquet, O., Boucheron, S., \& Lugosi, G. (2003). Introduction to
+2. Bousquet, O., Boucheron, S., \& Lugosi, G. (2003). Introduction to
 statistical learning theory. \emph{Advanced Lectures on Machine
 Learning}.
 
 \bibitem[\citeproctext]{ref-samir16}
-2. Samir, M. (2016). \emph{A gentle introduction to statistical learning
+3. Samir, M. (2016). \emph{A gentle introduction to statistical learning
 theory}. \url{https://mostafa-samir.github.io/ml-theory-pt2/}.
 
 \bibitem[\citeproctext]{ref-vapnik98}
-3. Vapnik, V. N. (1995). \emph{The nature of statistical learning
+4. Vapnik, V. N. (1995). \emph{The nature of statistical learning
 theory}. Springer.
 
 \bibitem[\citeproctext]{ref-mohri12}
-4. Mohri, M., Rostamizadeh, A., \& Talwalkar, A. (2012).
+5. Mohri, M., Rostamizadeh, A., \& Talwalkar, A. (2012).
 \emph{Foundations of machine learning}. MIT Press.
 
 \end{CSLReferences}
