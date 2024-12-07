@@ -302,7 +302,7 @@ plt.show()
 
 - **Larger Model Space**: The more models we consider, the looser the bound becomes.
 
-| Hypothesis Space Size | Bound      | Model Capacity |
+| **Hypothesis Space Size** | **Bound**      | **Model Capacity** |
 | :--------------------- | :--------- | :------------- |
 | Small                 | Tighter    | Limited        |
 | Large                 | Looser     | Higher         |
