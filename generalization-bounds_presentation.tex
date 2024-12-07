@@ -389,358 +389,211 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 
 \section{Classical Bounds}\label{classical-bounds}
 
-\begin{frame}{Introducing Generalization Bounds}
-\phantomsection\label{introducing-generalization-bounds}
+\begin{frame}{Generalization Bounds: Bridging the Gap}
+\phantomsection\label{generalization-bounds-bridging-the-gap}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{What Are Generalization Bounds?}
+  \textbf{Goal}: Predict a model's performance on \textbf{unseen data}.
+\item
+  \textbf{Generalization Bounds} provide theoretical guarantees,
+  linking:
 
   \begin{itemize}
   \tightlist
   \item
-    Theoretical tools offering guarantees about a model's performance on
-    unseen data.
+    \textbf{Generalization Error}: Error on unseen data.
   \item
-    Relate:
+    \textbf{Empirical Risk}: Error on training data.
+  \item
+    \textbf{Model Complexity}: Model's flexibility.
+  \end{itemize}
+\item
+  \textbf{Why They Matter}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Help understand the trade-offs between:
 
     \begin{itemize}
     \tightlist
     \item
-      \textbf{Generalization Error}: How well the model performs on
-      unseen data.
+      \textbf{Accuracy}: How well the model fits the data.
     \item
-      \textbf{Empirical Risk}: Performance observed on training data.
+      \textbf{Complexity}: Ability to model intricate patterns.
     \item
-      \textbf{Model Complexity}: How expressive the model is.
+      \textbf{Data Size}: Amount of data needed for reliable learning.
     \end{itemize}
   \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Hoeffding's Inequality: A Foundation}
+\phantomsection\label{hoeffdings-inequality-a-foundation}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Purpose}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Provide insights into the trade-offs between:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      \textbf{Model Accuracy}: How well the model captures the data
-      patterns.
-    \item
-      \textbf{Model Complexity}: The expressiveness of the model and its
-      ability to fit intricate patterns.
-    \item
-      \textbf{Training Data Size}: How much data is required to achieve
-      reliable generalization.
-    \end{itemize}
-  \end{itemize}
+  \textbf{What it is}: A probabilistic tool that helps estimate how well
+  a model will generalize.
+\item
+  \textbf{Focus}: Quantifies the difference between \textbf{empirical
+  risk} (training error) and \textbf{generalization error} (true error)
+  for a \emph{single, fixed model}.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Hoeffding's Inequality: A Starting Point}
-\phantomsection\label{hoeffdings-inequality-a-starting-point}
+\begin{frame}{Hoeffding's Inequality: The Math}
+\phantomsection\label{hoeffdings-inequality-the-math}
 \begin{itemize}
-\tightlist
 \item
-  \textbf{What is Hoeffding's Inequality?}
-
-  \begin{itemize}
-  \tightlist
-  \item
-    A fundamental result in probability theory used to bound the
-    difference between the \textbf{empirical risk} and the
-    \textbf{generalization error} for a fixed hypothesis.
-  \item
-    Provides a way to measure how closely a model's performance on
-    training data reflects its performance on unseen data.
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Mathematical Formulation of Hoeffding's Inequality}
-\phantomsection\label{mathematical-formulation-of-hoeffdings-inequality}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Hoeffding's Inequality}: \[
+  \textbf{Formula}: \[
   P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
   \]
 
   \begin{itemize}
   \tightlist
   \item
-    \(R(h)\): Generalization error (true performance on unseen data).
+    \(R(h)\): True error on unseen data.
   \item
-    \(R_{\text{emp}}(h)\): Empirical risk (error on training data).
+    \(R_{\text{emp}}(h)\): Error on training data.
   \item
-    \(\varepsilon\): A small positive value (tolerance).
+    \(\varepsilon\): Error tolerance.
   \item
-    \(m\): Size of the dataset.
+    \(m\): Dataset size.
+  \end{itemize}
+\item
+  \textbf{Interpretation}: The probability of a large difference between
+  true error and training error decreases \textbf{exponentially} with:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Larger datasets} (\(m\)).
+  \item
+    \textbf{Smaller error tolerance} (\(\varepsilon\)).
   \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Key Insights}
-\phantomsection\label{key-insights}
+\begin{frame}{Convergence: How Fast Does It Happen?}
+\phantomsection\label{convergence-how-fast-does-it-happen}
 \begin{itemize}
 \tightlist
 \item
-  The probability that the generalization error \(R(h)\) deviates
-  significantly from the empirical risk \(R_{\text{emp}}(h)\) decreases
-  \textbf{exponentially} with:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Larger dataset size \(m\).
-  \item
-    Smaller tolerance \(\varepsilon\).
-  \end{itemize}
+  \textbf{Rate of Convergence}: How quickly the training error becomes a
+  good estimate of the true error as we get more data.
+\item
+  \textbf{Hoeffding's Formula} shows \textbf{faster convergence} with
+  larger datasets due to the \(\exp(-2m\varepsilon^2)\) term.
 \end{itemize}
-\end{block}
+
+\begin{figure}[H]
+
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{generalization-bounds_presentation_files/figure-beamer/cell-3-output-1.pdf}}
+
+}
+
+\caption{Hoeffding Bound Convergence Rate}
+
+\end{figure}%
 \end{frame}
 
-\begin{frame}{Rates of Convergence}
-\phantomsection\label{rates-of-convergence}
+\begin{frame}{Interpreting Hoeffding's Inequality}
+\phantomsection\label{interpreting-hoeffdings-inequality}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{What Are Rates of Convergence?}
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Quantify how quickly the generalization error approaches the
-    empirical risk as the dataset size \(m\) grows.
-  \item
-    Provide a guideline for determining the dataset size needed to
-    achieve a desired level of generalization.
-  \item
-    In Hoeffding's inequality: \[
-    P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
-    \]
-
-    \begin{itemize}
-    \tightlist
-    \item
-      The \textbf{exponential term} \(\exp(-2m\varepsilon^2)\) shows
-      that the convergence is faster with larger datasets.
-    \end{itemize}
-  \end{itemize}
+  \textbf{Meaning}: With more data, training error becomes a better
+  predictor of true error.
 \item
-  \textbf{Key Factors}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \textbf{Dataset Size (\(m\))}: Larger datasets reduce the gap
-    between \(R(h)\) and \(R_{\text{emp}}(h)\) more quickly.
-  \item
-    \textbf{Tolerance (\(\varepsilon\))}: Smaller tolerances require
-    larger datasets for the same level of confidence.
-  \end{itemize}
+  \textbf{Practical Implication}: For a fixed model, training
+  performance is a good indicator of unseen data performance, and this
+  improves with dataset size.
+\item
+  \textbf{Limitations}: We usually pick the best model from many, not
+  just one. Hoeffding doesn't account for how complex the model class
+  is.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Interpretation of Hoeffding's Inequality}
-\phantomsection\label{interpretation-of-hoeffdings-inequality}
+\begin{frame}{The Union Bound: Handling Multiple Models}
+\phantomsection\label{the-union-bound-handling-multiple-models}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{What Does It Mean?}
-
-  \begin{itemize}
-  \tightlist
-  \item
-    As the dataset size (\(m\)) increases, the empirical risk becomes a
-    more reliable indicator of the generalization error.
-  \item
-    For a fixed hypothesis, we can be confident that the performance
-    observed on training data is close to what can be expected on unseen
-    data.
-  \item
-    The \textbf{rate of convergence} shows how quickly this reliability
-    improves as \(m\) grows.
-  \end{itemize}
+  \textbf{What it does}: Extends bounds like Hoeffding's to work when
+  choosing from \textbf{many models} (a hypothesis space
+  \(\mathcal{H}\)).
+\item
+  \textbf{Main Idea}: Considers the chance that \emph{at least one}
+  model in \(\mathcal{H}\) has a large difference between training and
+  true error.
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Key Insights}
-\phantomsection\label{key-insights-1}
+\begin{frame}{Union Bound: The Formula}
+\phantomsection\label{union-bound-the-formula}
 \begin{itemize}
 \tightlist
 \item
-  Hoeffding's inequality gives a \textbf{quantitative guarantee} about
-  the relationship between training performance and unseen data
-  performance.
-\item
-  Understanding convergence rates helps in planning how much data is
-  needed for robust generalization.
-\end{itemize}
-\end{block}
-\end{frame}
-
-\begin{frame}{Limitations of Hoeffding's Inequality}
-\phantomsection\label{limitations-of-hoeffdings-inequality}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Beyond Fixed Hypotheses}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Hoeffding's inequality assumes a single, fixed hypothesis.
-  \item
-    In practice, machine learning involves selecting the best hypothesis
-    from a \textbf{large hypothesis class} \(\mathcal{H}\), increasing
-    the risk of overfitting.
-  \end{itemize}
-\item
-  \textbf{Need for Complexity-Aware Bounds}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Simple bounds like Hoeffding's do not consider the complexity of the
-    hypothesis class, which influences generalization.
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{The Union Bound}
-\phantomsection\label{the-union-bound}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{What is the Union Bound?}
-
-  \begin{itemize}
-  \tightlist
-  \item
-    A probability tool used to extend bounds like Hoeffding's inequality
-    to apply across an entire hypothesis space \(\mathcal{H}\).
-  \item
-    Helps estimate the probability that \textbf{at least one hypothesis}
-    in \(\mathcal{H}\) has a large generalization gap.
-  \end{itemize}
-\item
-  \textbf{Key Idea}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Instead of considering a single fixed hypothesis, the Union Bound
-    aggregates the probabilities of generalization gaps over all
-    hypotheses in \(\mathcal{H}\).
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Formalization of The Union Bound}
-\phantomsection\label{formalization-of-the-union-bound}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Mathematical Expression}: \[
+  \textbf{Expression}: \[
   P\left(\sup_{h \in \mathcal{H}} |R(h) - R_{\text{emp}}(h)| > \epsilon \right) \leq \sum_{h \in \mathcal{H}} P\left(|R(h) - R_{\text{emp}}(h)| > \epsilon \right)
   \]
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \(\sup_{h \in \mathcal{H}}\): The supremum ensures we account for
-    the worst-case scenario across all hypotheses.
-  \item
-    \(P(|R(h) - R_{\text{emp}}(h)| > \epsilon)\): The probability of a
-    significant generalization gap for each hypothesis.
-  \end{itemize}
 \item
-  \textbf{How It Works}:
+  \textbf{Breakdown}:
 
   \begin{itemize}
   \tightlist
   \item
-    By summing up the probabilities for all hypotheses, the Union Bound
-    provides a way to analyze the worst-case scenario over the
-    hypothesis space.
+    \(\sup_{h \in \mathcal{H}}\): Account for the worst-case scenario
+    across all hypotheses.
+  \item
+    \(\sum_{h \in \mathcal{H}} P(|R(h) - R_{\text{emp}}(h)| > \epsilon)\):
+    Sums up probabilities of large error differences for each model.
   \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Implications of The Union Bound}
-\phantomsection\label{implications-of-the-union-bound}
+\begin{frame}{Union Bound: Key Implications}
+\phantomsection\label{union-bound-key-implications}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Impact of Hypothesis Space Size}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    The bound depends directly on the \textbf{size of the hypothesis
-    space} \(|\mathcal{H}|\).
-  \item
-    Larger hypothesis spaces increase the sum, making the bound looser.
-  \end{itemize}
-\item
-  \textbf{Takeaway}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    The Union Bound highlights a trade-off:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      \textbf{Small hypothesis space}: Tighter bounds, but limited model
-      capacity.
-    \item
-      \textbf{Large hypothesis space}: Higher capacity, but risk of
-      overfitting and looser bounds.
-    \end{itemize}
-  \end{itemize}
+  \textbf{Larger Model Space}: The more models we consider, the looser
+  the bound becomes.
 \end{itemize}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{Trade-off: Hypothesis Space vs.~Bound \&
+Capacity}\tabularnewline
+\toprule\noalign{}
+Hypothesis Space Size & Bound & Model Capacity \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Hypothesis Space Size & Bound & Model Capacity \\
+\midrule\noalign{}
+\endhead
+Small & Tighter & Limited \\
+Large & Looser & Higher \\
+\bottomrule\noalign{}
+\end{longtable}
 \end{frame}
 
-\begin{frame}{Transition to Advanced Bounds}
-\phantomsection\label{transition-to-advanced-bounds}
+\begin{frame}{Moving Forward}
+\phantomsection\label{moving-forward}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Connection to Practical Learning}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    In practice, hypothesis spaces are often infinite or too large to
-    enumerate explicitly. This motivates the need for alternative ways
-    to measure hypothesis complexity.
-  \end{itemize}
+  \textbf{Challenge}: Real-world model spaces are often infinite or too
+  large.
 \item
-  \textbf{From Simple to Sophisticated}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    The Union Bound provides a conceptual basis for understanding how
-    hypothesis space size affects generalization.
-  \item
-    Next, we delve into \textbf{complexity measures} that allow us to
-    extend generalization bounds to more practical, infinite hypothesis
-    spaces.
-  \end{itemize}
+  \textbf{Solution}: We need ways to measure model complexity that go
+  beyond counting.
+\item
+  \textbf{Next}: Exploring \textbf{complexity measures} for more
+  practical generalization bounds.
 \end{itemize}
 \end{frame}
 
@@ -939,7 +792,7 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 
 \begin{frame}
 \begin{block}{Key Insights}
-\phantomsection\label{key-insights-2}
+\phantomsection\label{key-insights}
 \begin{itemize}
 \tightlist
 \item
@@ -1129,7 +982,7 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 
 \begin{frame}
 \begin{block}{Key Insights}
-\phantomsection\label{key-insights-3}
+\phantomsection\label{key-insights-1}
 \begin{itemize}
 \tightlist
 \item
@@ -1152,7 +1005,7 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 \end{block}
 \end{frame}
 
-\section{Conclusion}\label{conclusion}
+\section{Conclusions}\label{conclusions}
 
 \begin{frame}
 \begin{block}{References}

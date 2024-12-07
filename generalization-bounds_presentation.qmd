@@ -12,6 +12,8 @@ format:
     keep-tex: true
     include-in-header: extra/beamer_template.tex
     pdf-engine: latexmk
+execute: 
+  cache: true
 bibliography: extra/references.bib
 csl: extra/apa7-numeric-superscript-brackets-nocommas.csl
 nocite: |
@@ -79,7 +81,7 @@ X, y = load_diabetes(return_X_y=True)
 X = X[:, np.newaxis, 2]
 
 # Split into training and test sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=666)
 
 # Polynomial degrees to test
 degrees = [1, 3, 5, 7, 9]
@@ -134,7 +136,7 @@ for i, d in enumerate(degrees_to_visualize):
     # Plot the training data and the polynomial fit with new colors
     axes_top[i].scatter(X_train, y_train, color=top_train_color, alpha=0.7, label='Training Data')
     axes_top[i].plot(X_curve, y_curve, color=top_line_color, linewidth=3, label=f'Degree {d}')
-    axes_top[i].set_title(f'Polynomial Degree {d}', fontsize=18, pad=10)
+    axes_top[i].set_title(f'Polynomial (Degree {d})', fontsize=16, pad=10)
     axes_top[i].set_xlabel('Feature (BMI)', fontsize=14)
     axes_top[i].set_ylabel('Target', fontsize=14)
     axes_top[i].legend(fontsize=12)
@@ -158,7 +160,7 @@ for i, d in enumerate(residual_degrees):
     ax = ax_res1 if i == 0 else ax_res2
     ax.scatter(y_test_pred, residuals, color='purple', alpha=0.7)
     ax.hlines(y=0, xmin=y_test_pred.min(), xmax=y_test_pred.max(), colors='red', linestyles='dashed')
-    ax.set_title(f'Residual Plot (Degree={d})', fontsize=16, pad=10)
+    ax.set_title(f'Residual Plot (Degree {d})', fontsize=16, pad=10)
     ax.set_xlabel('Predicted Values', fontsize=14)
     ax.set_ylabel('Residuals', fontsize=14)
 
@@ -168,7 +170,7 @@ palette = sns.color_palette("deep", 3)
 # Plot training vs test errors
 ax_err.plot(degrees, train_errors, label='Training Error', marker='o', markersize=8, linewidth=3, color=palette[0])
 ax_err.plot(degrees, test_errors, label='Test Error', marker='s', markersize=8, linewidth=3, color=palette[1])
-ax_err.set_title('Training vs Test Errors', fontsize=18, pad=10)
+ax_err.set_title('Training vs. Test Errors', fontsize=16, pad=10)
 ax_err.set_xlabel('Polynomial Degree', fontsize=14)
 ax_err.set_ylabel('Mean Squared Error', fontsize=14)
 ax_err.legend(fontsize=12)
@@ -186,130 +188,133 @@ plt.show()
 
 # Classical Bounds
 
-## Introducing Generalization Bounds
-- **What Are Generalization Bounds?**
-  - Theoretical tools offering guarantees about a model's performance on unseen data.
-  - Relate:
-    - **Generalization Error**: How well the model performs on unseen data.
-    - **Empirical Risk**: Performance observed on training data.
-    - **Model Complexity**: How expressive the model is.
+## Generalization Bounds: Bridging the Gap
+
+- **Goal**: Predict a model's performance on **unseen data**.
+- **Generalization Bounds** provide theoretical guarantees, linking:
+  - **Generalization Error**: Error on unseen data.
+  - **Empirical Risk**: Error on training data.
+  - **Model Complexity**: Model's flexibility.
+- **Why They Matter**:
+  - Help understand the trade-offs between:
+    - **Accuracy**: How well the model fits the data.
+    - **Complexity**: Ability to model intricate patterns.
+    - **Data Size**: Amount of data needed for reliable learning.
 
 ---
 
-- **Purpose**:
-  - Provide insights into the trade-offs between:
-    - **Model Accuracy**: How well the model captures the data patterns.
-    - **Model Complexity**: The expressiveness of the model and its ability to fit intricate patterns.
-    - **Training Data Size**: How much data is required to achieve reliable generalization.
+## Hoeffding's Inequality: A Foundation
+
+- **What it is**: A probabilistic tool that helps estimate how well a model will generalize.
+- **Focus**: Quantifies the difference between **empirical risk** (training error) and **generalization error** (true error) for a *single, fixed model*.
 
 ---
 
-## Hoeffding's Inequality: A Starting Point
-- **What is Hoeffding's Inequality?**
-  - A fundamental result in probability theory used to bound the difference between the **empirical risk** and the **generalization error** for a fixed hypothesis.
-  - Provides a way to measure how closely a model's performance on training data reflects its performance on unseen data.
+## Hoeffding's Inequality: The Math
 
----
-
-## Mathematical Formulation of Hoeffding's Inequality
-- **Hoeffding's Inequality**:
+- **Formula**:
   $$
   P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
   $$
-  - $R(h)$: Generalization error (true performance on unseen data).
-  - $R_{\text{emp}}(h)$: Empirical risk (error on training data).
-  - $\varepsilon$: A small positive value (tolerance).
-  - $m$: Size of the dataset.
+
+  - $R(h)$: True error on unseen data.
+  - $R_{\text{emp}}(h)$: Error on training data.
+  - $\varepsilon$: Error tolerance.
+  - $m$: Dataset size.
+
+- **Interpretation**: The probability of a large difference between true error and training error decreases **exponentially** with:
+  - **Larger datasets** ($m$).
+  - **Smaller error tolerance** ($\varepsilon$).
 
 ---
 
-### Key Insights
-- The probability that the generalization error $R(h)$ deviates significantly from the empirical risk $R_{\text{emp}}(h)$ decreases **exponentially** with:
-  - Larger dataset size $m$.
-  - Smaller tolerance $\varepsilon$.
+## Convergence: How Fast Does It Happen?
+
+- **Rate of Convergence**: How quickly the training error becomes a good estimate of the true error as we get more data.
+- **Hoeffding's Formula** shows **faster convergence** with larger datasets due to the $\exp(-2m\varepsilon^2)$ term.
+
+```{python convergence-plot}
+#| fig-cap: "Hoeffding Bound Convergence Rate"
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Set style for prettier plots
+sns.set_style('whitegrid')
+sns.set_context('talk')
+
+# Function to calculate Hoeffding bound
+def hoeffding_bound(m, epsilon):
+    return 2 * np.exp(-2 * m * epsilon**2)
+
+# Dataset sizes
+m_values = np.linspace(1, 500, 500)
+
+# Epsilon values
+epsilon_values = [0.05, 0.1, 0.2]
+
+# Create the plot
+plt.figure(figsize=(12, 3))
+
+# Plotting for different epsilon values
+for epsilon in epsilon_values:
+    bound_values = hoeffding_bound(m_values, epsilon)
+    plt.plot(m_values, bound_values, label=f'ε = {epsilon}')
+
+# plt.title('Hoeffding Bound Convergence Rate')
+plt.xlabel('Dataset Size (m)')
+plt.ylabel('Probability Bound')
+plt.yscale('log')  # Log scale for better visualization of exponential decay
+plt.legend()
+plt.show()
+```
 
 ---
 
-## Rates of Convergence
-- **What Are Rates of Convergence?**
-  - Quantify how quickly the generalization error approaches the empirical risk as the dataset size $m$ grows.
-  - Provide a guideline for determining the dataset size needed to achieve a desired level of generalization.
-  - In Hoeffding's inequality:
-    $$
-    P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
-    $$
-    - The **exponential term** $\exp(-2m\varepsilon^2)$ shows that the convergence is faster with larger datasets.
+## Interpreting Hoeffding's Inequality
 
-- **Key Factors**:
-  - **Dataset Size ($m$)**: Larger datasets reduce the gap between $R(h)$ and $R_{\text{emp}}(h)$ more quickly.
-  - **Tolerance ($\varepsilon$)**: Smaller tolerances require larger datasets for the same level of confidence.
-  
----
-
-## Interpretation of Hoeffding's Inequality
-- **What Does It Mean?**
-  - As the dataset size ($m$) increases, the empirical risk becomes a more reliable indicator of the generalization error.
-  - For a fixed hypothesis, we can be confident that the performance observed on training data is close to what can be expected on unseen data.
-  - The **rate of convergence** shows how quickly this reliability improves as $m$ grows.
+- **Meaning**: With more data, training error becomes a better predictor of true error.
+- **Practical Implication**: For a fixed model, training performance is a good indicator of unseen data performance, and this improves with dataset size.
+- **Limitations**: We usually pick the best model from many, not just one. Hoeffding doesn't account for how complex the model class is.
 
 ---
 
-### Key Insights
-- Hoeffding's inequality gives a **quantitative guarantee** about the relationship between training performance and unseen data performance.
-- Understanding convergence rates helps in planning how much data is needed for robust generalization.
+## The Union Bound: Handling Multiple Models
+
+- **What it does**: Extends bounds like Hoeffding's to work when choosing from **many models** (a hypothesis space $\mathcal{H}$).
+- **Main Idea**: Considers the chance that *at least one* model in $\mathcal{H}$ has a large difference between training and true error.
 
 ---
 
-## Limitations of Hoeffding's Inequality
-- **Beyond Fixed Hypotheses**:
-  - Hoeffding's inequality assumes a single, fixed hypothesis.
-  - In practice, machine learning involves selecting the best hypothesis from a **large hypothesis class** $\mathcal{H}$, increasing the risk of overfitting.
+## Union Bound: The Formula
 
-- **Need for Complexity-Aware Bounds**:
-  - Simple bounds like Hoeffding’s do not consider the complexity of the hypothesis class, which influences generalization.
-
----
-
-## The Union Bound
-- **What is the Union Bound?**
-  - A probability tool used to extend bounds like Hoeffding's inequality to apply across an entire hypothesis space $\mathcal{H}$.
-  - Helps estimate the probability that **at least one hypothesis** in $\mathcal{H}$ has a large generalization gap.
-- **Key Idea**:
-  - Instead of considering a single fixed hypothesis, the Union Bound aggregates the probabilities of generalization gaps over all hypotheses in $\mathcal{H}$.
-
----
-
-## Formalization of The Union Bound
-- **Mathematical Expression**:
+- **Expression**:
   $$
   P\left(\sup_{h \in \mathcal{H}} |R(h) - R_{\text{emp}}(h)| > \epsilon \right) \leq \sum_{h \in \mathcal{H}} P\left(|R(h) - R_{\text{emp}}(h)| > \epsilon \right)
   $$
-  - $\sup_{h \in \mathcal{H}}$: The supremum ensures we account for the worst-case scenario across all hypotheses.
-  - $P(|R(h) - R_{\text{emp}}(h)| > \epsilon)$: The probability of a significant generalization gap for each hypothesis.
-
-- **How It Works**:
-  - By summing up the probabilities for all hypotheses, the Union Bound provides a way to analyze the worst-case scenario over the hypothesis space.
+- **Breakdown**:
+  - $\sup_{h \in \mathcal{H}}$: Account for the worst-case scenario across all hypotheses.
+  - $\sum_{h \in \mathcal{H}} P(|R(h) - R_{\text{emp}}(h)| > \epsilon)$: Sums up probabilities of large error differences for each model.
 
 ---
 
-## Implications of The Union Bound
-- **Impact of Hypothesis Space Size**:
-  - The bound depends directly on the **size of the hypothesis space** $|\mathcal{H}|$.
-  - Larger hypothesis spaces increase the sum, making the bound looser.
+## Union Bound: Key Implications
 
-- **Takeaway**:
-  - The Union Bound highlights a trade-off:
-    - **Small hypothesis space**: Tighter bounds, but limited model capacity.
-    - **Large hypothesis space**: Higher capacity, but risk of overfitting and looser bounds.
+- **Larger Model Space**: The more models we consider, the looser the bound becomes.
+
+| Hypothesis Space Size | Bound      | Model Capacity |
+| :--------------------- | :--------- | :------------- |
+| Small                 | Tighter    | Limited        |
+| Large                 | Looser     | Higher         |
+: Trade-off: Hypothesis Space vs. Bound & Capacity
 
 ---
 
-## Transition to Advanced Bounds
-- **Connection to Practical Learning**:
-  - In practice, hypothesis spaces are often infinite or too large to enumerate explicitly. This motivates the need for alternative ways to measure hypothesis complexity.
-- **From Simple to Sophisticated**:
-  - The Union Bound provides a conceptual basis for understanding how hypothesis space size affects generalization.
-  - Next, we delve into **complexity measures** that allow us to extend generalization bounds to more practical, infinite hypothesis spaces.
+## Moving Forward
+
+- **Challenge**: Real-world model spaces are often infinite or too large.
+- **Solution**: We need ways to measure model complexity that go beyond counting.
+- **Next**: Exploring **complexity measures** for more practical generalization bounds.
 
 # Advanced Bounds
 
@@ -434,7 +439,7 @@ plt.show()
   - The structure of the data.
   - The learning algorithm.
 
-# Conclusion
+# Conclusions
 
 ---
 
