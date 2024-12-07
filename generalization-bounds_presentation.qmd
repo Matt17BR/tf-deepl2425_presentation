@@ -407,7 +407,7 @@ plt.show()
 
 ---
 
-## VC Bound: Key Insights
+## VC Bound: Interpretation
 
 - **Higher VC Dimension**:
   - More complex model, looser bound, higher risk of overfitting.
@@ -474,6 +474,23 @@ plt.show()
 : Further ways to measure complexity [@bousquet03]
 
 # Conclusions
+
+## Key Takeaways I
+
+- **Generalization** is crucial: We want models to work on **unseen data**, not just the training set.
+- **Overfitting** is a risk: More complex models can memorize the training data but fail to generalize.
+- **Classical Bounds** highlight the importance of:
+  - **Dataset size**: More data leads to better generalization.
+  - **Model complexity**: Simpler models (smaller hypothesis spaces) are safer.
+
+---
+
+## Key Takeaways II
+
+- **Advanced Bounds** offer a refined view:
+  - **VC Dimension**: Measures a model's ability to shatter data. Higher VC dimension means more complexity.
+  - **Distribution-Based**: Leverage data properties for tighter bounds.
+- **The Goal**: Balance model expressiveness with the risk of overfitting by controlling complexity and leveraging insights from the data distribution.
 
 ---
 
