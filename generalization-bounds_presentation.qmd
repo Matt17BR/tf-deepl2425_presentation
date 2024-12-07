@@ -6,11 +6,12 @@ date: 12/17/2024
 date-format: long
 format: 
   beamer:
+    include-in-header: extra/beamer_template.tex
     theme: "Dresden"
     fonttheme: "structurebold"
     link-citations: true
+    linkcolor: lmugreen
     keep-tex: true
-    include-in-header: extra/beamer_template.tex
     pdf-engine: latexmk
 execute: 
   cache: true
@@ -136,10 +137,10 @@ for i, d in enumerate(degrees_to_visualize):
     # Plot the training data and the polynomial fit with new colors
     axes_top[i].scatter(X_train, y_train, color=top_train_color, alpha=0.7, label='Training Data')
     axes_top[i].plot(X_curve, y_curve, color=top_line_color, linewidth=3, label=f'Degree {d}')
-    axes_top[i].set_title(f'Polynomial (Degree {d})', fontsize=16, pad=10)
-    axes_top[i].set_xlabel('Feature (BMI)', fontsize=14)
-    axes_top[i].set_ylabel('Target', fontsize=14)
-    axes_top[i].legend(fontsize=12)
+    axes_top[i].set_title(f'Polynomial (Degree {d})', fontsize=18, pad=10)
+    axes_top[i].set_xlabel('Feature (BMI)', fontsize=16)
+    axes_top[i].set_ylabel('Target', fontsize=16)
+    axes_top[i].legend(fontsize=14)
 
 # Bottom row: 2 residual plots + training vs test error
 ax_res1 = fig.add_subplot(gs[1, 0])
@@ -160,9 +161,9 @@ for i, d in enumerate(residual_degrees):
     ax = ax_res1 if i == 0 else ax_res2
     ax.scatter(y_test_pred, residuals, color='purple', alpha=0.7)
     ax.hlines(y=0, xmin=y_test_pred.min(), xmax=y_test_pred.max(), colors='red', linestyles='dashed')
-    ax.set_title(f'Residual Plot (Degree {d})', fontsize=16, pad=10)
-    ax.set_xlabel('Predicted Values', fontsize=14)
-    ax.set_ylabel('Residuals', fontsize=14)
+    ax.set_title(f'Residual Plot (Degree {d})', fontsize=18, pad=10)
+    ax.set_xlabel('Predicted Values', fontsize=16)
+    ax.set_ylabel('Residuals', fontsize=16)
 
 # Keep the original palette for training vs test error plot
 palette = sns.color_palette("deep", 3)
@@ -170,10 +171,10 @@ palette = sns.color_palette("deep", 3)
 # Plot training vs test errors
 ax_err.plot(degrees, train_errors, label='Training Error', marker='o', markersize=8, linewidth=3, color=palette[0])
 ax_err.plot(degrees, test_errors, label='Test Error', marker='s', markersize=8, linewidth=3, color=palette[1])
-ax_err.set_title('Training vs. Test Errors', fontsize=16, pad=10)
-ax_err.set_xlabel('Polynomial Degree', fontsize=14)
-ax_err.set_ylabel('Mean Squared Error', fontsize=14)
-ax_err.legend(fontsize=12)
+ax_err.set_title('Training vs. Test Errors', fontsize=18, pad=10)
+ax_err.set_xlabel('Polynomial Degree', fontsize=16)
+ax_err.set_ylabel('Mean Squared Error', fontsize=16)
+ax_err.legend(fontsize=14)
 
 plt.tight_layout()
 plt.show()
@@ -195,11 +196,10 @@ plt.show()
   - **Generalization Error**: Error on unseen data.
   - **Empirical Risk**: Error on training data.
   - **Model Complexity**: Model's flexibility.
-- **Why They Matter**:
-  - Help understand the trade-offs between:
-    - **Accuracy**: How well the model fits the data.
-    - **Complexity**: Ability to model intricate patterns.
-    - **Data Size**: Amount of data needed for reliable learning.
+- **Why They Matter**: They help understand the trade-offs between:
+  - **Accuracy**: How well the model fits the data.
+  - **Complexity**: Ability to model intricate patterns.
+  - **Data Size**: Amount of data needed for reliable learning.
 
 ---
 
@@ -212,7 +212,7 @@ plt.show()
 
 ## Hoeffding's Inequality: The Math
 
-- **Formula**:
+- **Formula**[@mohri12; @samir16]:
   $$
   P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
   $$
@@ -288,13 +288,13 @@ plt.show()
 
 ## Union Bound: The Formula
 
-- **Expression**:
+- **Expression**[@mohri12; @samir16]:
   $$
   P\left(\sup_{h \in \mathcal{H}} |R(h) - R_{\text{emp}}(h)| > \epsilon \right) \leq \sum_{h \in \mathcal{H}} P\left(|R(h) - R_{\text{emp}}(h)| > \epsilon \right)
   $$
 - **Breakdown**:
   - $\sup_{h \in \mathcal{H}}$: Account for the worst-case scenario across all hypotheses.
-  - $\sum_{h \in \mathcal{H}} P(|R(h) - R_{\text{emp}}(h)| > \epsilon)$: Sums up probabilities of large error differences for each model.
+  - $\sum_{h \in \mathcal{H}}$: Sums up probabilities of large error differences for each model.
 
 ---
 

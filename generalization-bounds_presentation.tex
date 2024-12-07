@@ -1,6 +1,7 @@
 % Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
   ignorenonframetext,
@@ -140,37 +141,17 @@
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
-%% suppress section title at beginning of new section
-% \AtBeginSection{}
-
 %% add lmu logo to title slide
 \titlegraphic{\includegraphics[width=0.33\textwidth]{extra/lmu-logo.png}}
 
 %% modify color template to lmu-inspired one
 \definecolor{lmugreen}{RGB}{0,136,58}
-\setbeamercolor{section in toc}{fg=black,bg=white}
-\setbeamercolor{alerted text}{fg=lmugreen!80!gray}
-\setbeamercolor*{palette primary}{fg=lmugreen!60!black,bg=gray!30!white}
-\setbeamercolor*{palette secondary}{fg=lmugreen!70!black,bg=gray!15!white}
-\setbeamercolor*{palette tertiary}{bg=lmugreen!80!black,fg=gray!10!white}
-\setbeamercolor*{palette quaternary}{fg=lmugreen,bg=gray!5!white}
-\setbeamercolor*{sidebar}{fg=lmugreen,bg=gray!15!white}
-\setbeamercolor*{palette sidebar primary}{fg=lmugreen!10!black}
-\setbeamercolor*{palette sidebar secondary}{fg=white}
-\setbeamercolor*{palette sidebar tertiary}{fg=lmugreen!50!black}
-\setbeamercolor*{palette sidebar quaternary}{fg=gray!10!white}
-\setbeamercolor{titlelike}{parent=palette primary,fg=lmugreen}
-\setbeamercolor{frametitle}{bg=lmugreen!10}
-\setbeamercolor{frametitle right}{bg=gray!60!white}
+\setbeamercolor*{palette primary}{bg=lmugreen!10}
 \setbeamercolor{title}{bg=lmugreen!10, fg=lmugreen}
 \setbeamercolor{item}{fg=lmugreen}
 \setbeamercolor{enumerate item}{fg=lmugreen}
-\setbeamercolor*{separation line}{}
-\setbeamercolor*{fine separation line}{}
 \setbeamercolor{structure}{fg=lmugreen}
-\setbeamercolor{bibliography entry title}{fg=black}
-\setbeamercolor{bibliography entry note}{fg=black}
-\setbeamercolor{bibliography entry location}{fg=black}
+\setbeamercolor{titlelike}{parent=palette primary,fg=lmugreen}
 \setbeamercolor{bibliography entry author}{fg=black}
 
 %% modify beamer template to have slide number on footer
@@ -191,6 +172,12 @@
   \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
   \end{beamercolorbox}
 }
+
+\makeatletter
+\newcommand\disablecolorlinks{\def\HyColor@UseColor##1{}}
+\makeatother
+\addtobeamertemplate{headline}{\disablecolorlinks{}}{}
+\addtobeamertemplate{footline}{\disablecolorlinks{}}{}
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -240,7 +227,11 @@
 \hypersetup{
   pdftitle={Generalization Bounds},
   pdfauthor={Matteo Mazzarelli},
-  hidelinks,
+  colorlinks=true,
+  linkcolor={lmugreen},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
 
 
@@ -409,22 +400,16 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
     \textbf{Model Complexity}: Model's flexibility.
   \end{itemize}
 \item
-  \textbf{Why They Matter}:
+  \textbf{Why They Matter}: They help understand the trade-offs between:
 
   \begin{itemize}
   \tightlist
   \item
-    Help understand the trade-offs between:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      \textbf{Accuracy}: How well the model fits the data.
-    \item
-      \textbf{Complexity}: Ability to model intricate patterns.
-    \item
-      \textbf{Data Size}: Amount of data needed for reliable learning.
-    \end{itemize}
+    \textbf{Accuracy}: How well the model fits the data.
+  \item
+    \textbf{Complexity}: Ability to model intricate patterns.
+  \item
+    \textbf{Data Size}: Amount of data needed for reliable learning.
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -447,7 +432,8 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 \phantomsection\label{hoeffdings-inequality-the-math}
 \begin{itemize}
 \item
-  \textbf{Formula}: \[
+  \textbf{Formula}\textsuperscript{{[}\citeproc{ref-mohri12}{3},\citeproc{ref-samir16}{4}{]}}:
+  \[
   P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
   \]
 
@@ -537,7 +523,8 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Expression}: \[
+  \textbf{Expression}\textsuperscript{{[}\citeproc{ref-mohri12}{3},\citeproc{ref-samir16}{4}{]}}:
+  \[
   P\left(\sup_{h \in \mathcal{H}} |R(h) - R_{\text{emp}}(h)| > \epsilon \right) \leq \sum_{h \in \mathcal{H}} P\left(|R(h) - R_{\text{emp}}(h)| > \epsilon \right)
   \]
 \item
@@ -549,8 +536,8 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
     \(\sup_{h \in \mathcal{H}}\): Account for the worst-case scenario
     across all hypotheses.
   \item
-    \(\sum_{h \in \mathcal{H}} P(|R(h) - R_{\text{emp}}(h)| > \epsilon)\):
-    Sums up probabilities of large error differences for each model.
+    \(\sum_{h \in \mathcal{H}}\): Sums up probabilities of large error
+    differences for each model.
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -1024,22 +1011,22 @@ Machine learning in python, diabetes dataset}.
 Where bigger models and more data hurt}.
 \url{https://arxiv.org/abs/1912.02292}
 
-\bibitem[\citeproctext]{ref-bousquet03}
-3. Bousquet O., Boucheron S., \& Lugosi G. (2003). Introduction to
-statistical learning theory. \emph{Advanced Lectures on Machine
-Learning}.
+\bibitem[\citeproctext]{ref-mohri12}
+3. Mohri M., Rostamizadeh A., \& Talwalkar A. (2012). \emph{Foundations
+of machine learning}. MIT Press.
 
 \bibitem[\citeproctext]{ref-samir16}
 4. Samir M. (2016). \emph{A gentle introduction to statistical learning
 theory}. \url{https://mostafa-samir.github.io/ml-theory-pt2/}.
 
-\bibitem[\citeproctext]{ref-vapnik98}
-5. Vapnik V. N. (1995). \emph{The nature of statistical learning
-theory}. Springer.
+\bibitem[\citeproctext]{ref-bousquet03}
+5. Bousquet O., Boucheron S., \& Lugosi G. (2003). Introduction to
+statistical learning theory. \emph{Advanced Lectures on Machine
+Learning}.
 
-\bibitem[\citeproctext]{ref-mohri12}
-6. Mohri M., Rostamizadeh A., \& Talwalkar A. (2012). \emph{Foundations
-of machine learning}. MIT Press.
+\bibitem[\citeproctext]{ref-vapnik98}
+6. Vapnik V. N. (1995). \emph{The nature of statistical learning
+theory}. Springer.
 
 \end{CSLReferences}
 \end{block}

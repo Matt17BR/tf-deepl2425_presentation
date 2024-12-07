@@ -1,34 +1,14 @@
-%% suppress section title at beginning of new section
-% \AtBeginSection{}
-
 %% add lmu logo to title slide
 \titlegraphic{\includegraphics[width=0.33\textwidth]{extra/lmu-logo.png}}
 
 %% modify color template to lmu-inspired one
 \definecolor{lmugreen}{RGB}{0,136,58}
-\setbeamercolor{section in toc}{fg=black,bg=white}
-\setbeamercolor{alerted text}{fg=lmugreen!80!gray}
-\setbeamercolor*{palette primary}{fg=lmugreen!60!black,bg=gray!30!white}
-\setbeamercolor*{palette secondary}{fg=lmugreen!70!black,bg=gray!15!white}
-\setbeamercolor*{palette tertiary}{bg=lmugreen!80!black,fg=gray!10!white}
-\setbeamercolor*{palette quaternary}{fg=lmugreen,bg=gray!5!white}
-\setbeamercolor*{sidebar}{fg=lmugreen,bg=gray!15!white}
-\setbeamercolor*{palette sidebar primary}{fg=lmugreen!10!black}
-\setbeamercolor*{palette sidebar secondary}{fg=white}
-\setbeamercolor*{palette sidebar tertiary}{fg=lmugreen!50!black}
-\setbeamercolor*{palette sidebar quaternary}{fg=gray!10!white}
-\setbeamercolor{titlelike}{parent=palette primary,fg=lmugreen}
-\setbeamercolor{frametitle}{bg=lmugreen!10}
-\setbeamercolor{frametitle right}{bg=gray!60!white}
+\setbeamercolor*{palette primary}{bg=lmugreen!10}
 \setbeamercolor{title}{bg=lmugreen!10, fg=lmugreen}
 \setbeamercolor{item}{fg=lmugreen}
 \setbeamercolor{enumerate item}{fg=lmugreen}
-\setbeamercolor*{separation line}{}
-\setbeamercolor*{fine separation line}{}
 \setbeamercolor{structure}{fg=lmugreen}
-\setbeamercolor{bibliography entry title}{fg=black}
-\setbeamercolor{bibliography entry note}{fg=black}
-\setbeamercolor{bibliography entry location}{fg=black}
+\setbeamercolor{titlelike}{parent=palette primary,fg=lmugreen}
 \setbeamercolor{bibliography entry author}{fg=black}
 
 %% modify beamer template to have slide number on footer
@@ -49,3 +29,9 @@
   \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
   \end{beamercolorbox}
 }
+
+\makeatletter
+\newcommand\disablecolorlinks{\def\HyColor@UseColor##1{}}
+\makeatother
+\addtobeamertemplate{headline}{\disablecolorlinks{}}{}
+\addtobeamertemplate{footline}{\disablecolorlinks{}}{}
