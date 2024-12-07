@@ -432,8 +432,7 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 \phantomsection\label{hoeffdings-inequality-the-math}
 \begin{itemize}
 \item
-  \textbf{Formula}\textsuperscript{{[}\citeproc{ref-mohri12}{3},\citeproc{ref-samir16}{4}{]}}:
-  \[
+  \textbf{Formula}\textsuperscript{{[}\citeproc{ref-mohri12}{3}{]}}: \[
   P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
   \]
 
@@ -523,7 +522,7 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Expression}\textsuperscript{{[}\citeproc{ref-mohri12}{3},\citeproc{ref-samir16}{4}{]}}:
+  \textbf{Expression}\textsuperscript{{[}\citeproc{ref-samir16}{4}{]}}:
   \[
   P\left(\sup_{h \in \mathcal{H}} |R(h) - R_{\text{emp}}(h)| > \epsilon \right) \leq \sum_{h \in \mathcal{H}} P\left(|R(h) - R_{\text{emp}}(h)| > \epsilon \right)
   \]
@@ -582,276 +581,137 @@ Large & Looser & Higher \\
   \textbf{Next}: Exploring \textbf{complexity measures} for more
   practical generalization bounds.
 \end{itemize}
+
+Okay, here's a revamped version of the ``Advanced Bounds'' section,
+taking inspiration from the style and clarity of the ``Classical
+Bounds'' section you provided. I've aimed for conciseness, clarity, and
+added visualizations where they can help understanding.
 \end{frame}
 
 \section{Advanced Bounds}\label{advanced-bounds}
 
-\begin{frame}{Motivation for Advanced Bounds}
-\phantomsection\label{motivation-for-advanced-bounds}
+\begin{frame}{Why Advanced Bounds?}
+\phantomsection\label{why-advanced-bounds}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Advanced bounds} address a variety of the limitations we have
-  outlined by incorporating:
+  \textbf{Classical Bounds} give us a good starting point, but they can
+  be loose.
+\item
+  \textbf{Goal}: Tighter bounds that better reflect real-world
+  performance.
+\item
+  \textbf{How?}: By measuring model complexity in more sophisticated
+  ways.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{VC Dimension}
+\phantomsection\label{vc-dimension}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Growth Function} (\(\Pi_{\mathcal{H}}(m)\)): How many ways can
+  a model class (\(\mathcal{H}\)) label \emph{m} data points?
 
   \begin{itemize}
   \tightlist
   \item
-    \textbf{VC Dimension}: A measure of the capacity or expressiveness
-    of a hypothesis class. Higher VC dimensions indicate more complex
-    models, which may require more data to generalize well.
+    More ways = more complex.
   \item
-    \textbf{Rademacher Complexity}: A data-dependent measure of how well
-    a hypothesis class can fit random noise in the training data. It
-    captures both the hypothesis class and the specifics of the data
-    distribution.
+    For small \emph{m}, \(\Pi_{\mathcal{H}}(m)=2^m\).
+  \end{itemize}
+\item
+  \textbf{Shattering}: A model class \emph{shatters} a dataset if it can
+  label it in \emph{every possible way}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{VC Dimension: Definition}
+\phantomsection\label{vc-dimension-definition}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{VC Dimension (\(d_{\text{VC}}\))}: The size of the
+  \emph{largest} dataset a model class can shatter.
+\item
+  \textbf{Example}: Linear classifiers in 2D have \(d_{\text{VC}} = 3\).
+  They can shatter 3 points but not 4 (in all configurations).
+\end{itemize}
+
+\begin{figure}[H]
+
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{generalization-bounds_presentation_files/figure-beamer/cell-4-output-1.pdf}}
+
+}
+
+\caption{VC Dimension of Linear Classifiers in 2D}
+
+\end{figure}%
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Intuition}: Higher \(d_{\text{VC}}\) = more complex model.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The VC Generalization Bound}
+\phantomsection\label{the-vc-generalization-bound}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Formula}\textsuperscript{{[}\citeproc{ref-vapnik95}{5}{]}}: \[
+  R(h) \leq R_{\text{emp}}(h) + \sqrt{\frac{8 d_{\text{VC}} \left(\ln\left(\frac{2m}{d_{\text{VC}}}\right) + 1\right) + 8 \ln\left(\frac{4}{\delta}\right)}{m}}
+  \]
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(R(h)\): True error.
+  \item
+    \(R_{\text{emp}}(h)\): Training error.
+  \item
+    \(d_{\text{VC}}\): VC dimension.
+  \item
+    \(m\): Dataset size.
+  \item
+    \(\delta\): Confidence parameter.
   \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{VC Bound: Key Insights}
+\phantomsection\label{vc-bound-key-insights}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Extending Convergence Rates}:
+  \textbf{Higher VC Dimension}:
 
   \begin{itemize}
   \tightlist
   \item
-    Advanced bounds refine the rates of convergence by linking the
-    generalization error to:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      The size of the dataset \(m\).
-    \item
-      The complexity of the hypothesis class (e.g., \textbf{VC
-      dimension} or \textbf{Rademacher complexity}).
-    \end{itemize}
-  \item
-    For example, the generalization error is often bounded as: \[
-    R(h) - R_{\text{emp}}(h) \leq \mathcal{O}\left(\sqrt{\frac{\text{Complexity}(\mathcal{H})}{m}}\right)
-    \]
-
-    \begin{itemize}
-    \tightlist
-    \item
-      Larger datasets \(m\) reduce error, but higher complexity
-      increases the required data for a desired level of generalization.
-    \end{itemize}
+    More complex model, looser bound, higher risk of overfitting.
   \end{itemize}
 \item
-  \textbf{Practical Implications}:
+  \textbf{Larger Dataset}:
 
   \begin{itemize}
   \tightlist
   \item
-    These bounds provide actionable insights for balancing model
-    complexity and dataset size.
+    Tighter bound, better generalization.
   \end{itemize}
 \end{itemize}
-\end{frame}
 
-\begin{frame}{Vapnik-Chervonenkis (VC) Theory}
-\phantomsection\label{vapnik-chervonenkis-vc-theory}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Growth Function}
+\begin{figure}[H]
 
-  \begin{itemize}
-  \tightlist
-  \item
-    The \textbf{Growth Function} is a measure of the expressiveness of a
-    hypothesis space \(\mathcal{H}\).
-  \item
-    \textbf{Definition}:
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{generalization-bounds_presentation_files/figure-beamer/cell-5-output-1.pdf}}
 
-    \begin{itemize}
-    \tightlist
-    \item
-      The growth function, \(\Pi_{\mathcal{H}}(m)\), is the maximum
-      number of distinct ways a hypothesis space can label \(m\) data
-      points.
-    \end{itemize}
-  \item
-    \textbf{Key Idea}:
+}
 
-    \begin{itemize}
-    \tightlist
-    \item
-      A more expressive hypothesis space can label datasets in a greater
-      number of ways, indicating higher complexity.
-    \end{itemize}
-  \item
-    \textbf{Growth Behavior}:
+\caption{Approximation of the VC Generalization Bound}
 
-    \begin{itemize}
-    \tightlist
-    \item
-      For small \(m\), \(\Pi_{\mathcal{H}}(m) = 2^m\).
-    \item
-      For larger \(m\), the growth may be limited by the structure of
-      \(\mathcal{H}\).
-    \end{itemize}
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{VC Dimension}
-
-  \begin{itemize}
-  \tightlist
-  \item
-    The \textbf{VC Dimension} is a scalar value that quantifies the
-    capacity of a hypothesis space \(\mathcal{H}\).
-  \item
-    \textbf{Definition}:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      The VC dimension \(d_{\text{VC}}\) is the size of the largest
-      dataset that can be \textbf{shattered} by \(\mathcal{H}\).
-    \end{itemize}
-  \item
-    \textbf{Shattering}:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      A dataset is shattered if every possible labeling of the dataset
-      can be perfectly captured by hypotheses in \(\mathcal{H}\).
-    \end{itemize}
-  \end{itemize}
-\item
-  \textbf{Examples}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    A linear classifier in 2D space has a VC dimension of 3 (it can
-    shatter any 3 points, but not all configurations of 4 points).
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{VC Generalization Bound}
-\phantomsection\label{vc-generalization-bound}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{What is the VC Generalization Bound?}
-
-  \begin{itemize}
-  \tightlist
-  \item
-    A theoretical result that connects the \textbf{generalization error}
-    with the \textbf{empirical risk}, the \textbf{VC dimension}, and the
-    size of the dataset.
-  \item
-    \textbf{Mathematical Formulation}: \[
-    R(h) \leq R_{\text{emp}}(h) + \sqrt{\frac{8 d_{\text{VC}} \left(\ln\left(\frac{2m}{d_{\text{VC}}}\right) + 1\right) + 8 \ln\left(\frac{4}{\delta}\right)}{m}}
-    \]
-
-    \begin{itemize}
-    \tightlist
-    \item
-      \(R(h)\): Generalization error.
-    \item
-      \(R_{\text{emp}}(h)\): Empirical risk.
-    \item
-      \(d_{\text{VC}}\): VC dimension.
-    \item
-      \(m\): Dataset size.
-    \item
-      \(\delta\): Confidence level (\(1 - \delta\) is the probability
-      that the bound holds).
-    \end{itemize}
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\begin{block}{Key Insights}
-\phantomsection\label{key-insights}
-\begin{itemize}
-\tightlist
-\item
-  As \(d_{\text{VC}}\) increases (more complex hypothesis space):
-
-  \begin{itemize}
-  \tightlist
-  \item
-    The bound becomes looser, reflecting a higher risk of overfitting.
-  \end{itemize}
-\item
-  As \(m\) increases (larger dataset size):
-
-  \begin{itemize}
-  \tightlist
-  \item
-    The bound tightens, improving generalization guarantees.
-  \end{itemize}
-\end{itemize}
-\end{block}
-\end{frame}
-
-\begin{frame}{Summing Up VC Theory}
-\phantomsection\label{summing-up-vc-theory}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Expressiveness vs.~Generalization}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    The VC dimension captures the \textbf{expressiveness} of a
-    hypothesis space:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      Higher \(d_{\text{VC}}\): More complex, more expressive.
-    \end{itemize}
-  \item
-    A balance is required to avoid overfitting (high complexity) or
-    underfitting (low complexity).
-  \end{itemize}
-\item
-  \textbf{Implications for Learning}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    The VC dimension helps understand:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      Why simpler models often generalize better.
-    \item
-      Why increasing data size improves generalization, especially for
-      complex models.
-    \end{itemize}
-  \end{itemize}
-\item
-  \textbf{Foundation for Algorithm Design}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    VC theory guides the development of learning algorithms by
-    quantifying the trade-offs between hypothesis complexity, data size,
-    and generalization performance.
-  \end{itemize}
-\end{itemize}
+\end{figure}%
 \end{frame}
 
 \begin{frame}{Distribution-Based Bounds}
@@ -859,137 +719,82 @@ Large & Looser & Higher \\
 \begin{itemize}
 \tightlist
 \item
-  \textbf{From General Bounds to Data-Driven Insights}:
+  \textbf{VC theory} often considers the \emph{worst-case} scenario.
+\item
+  \textbf{New Idea}: Use information about the \textbf{data
+  distribution} for tighter bounds.
+\item
+  \textbf{Example}: Support Vector Machines (SVMs).
 
   \begin{itemize}
   \tightlist
   \item
-    Generalization bounds like Hoeffding's inequality and VC bounds rely
-    on worst-case scenarios.
+    \textbf{Margin}: Distance from the decision boundary to the nearest
+    data points.
+  \item
+    Larger margin = better generalization.
   \end{itemize}
 \item
-  \textbf{Distribution-Based Bounds}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Leverage specific properties of the data distribution to achieve
-    \textbf{tighter bounds}.
-  \item
-    Exploit \textbf{data structure} to understand how well a model
-    generalizes in practice.
-  \end{itemize}
+  \textbf{Benefit}: More realistic bounds reflecting real-world
+  performance.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Example: Support Vector Machines (SVMs)}
-\phantomsection\label{example-support-vector-machines-svms}
+\begin{frame}{Other Ways to Measure Complexity}
+\phantomsection\label{other-ways-to-measure-complexity}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{SVMs and Margin-Based Bounds}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Support Vector Machines (SVMs) introduce the concept of a
-    \textbf{margin}, the distance between the decision boundary and the
-    nearest data points.
-  \item
-    \textbf{Intuition}:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      A larger margin indicates better separation between classes,
-      leading to better generalization.
-    \end{itemize}
-  \item
-    \textbf{Margin-Based Generalization Bounds}:
-
-    \begin{itemize}
-    \tightlist
-    \item
-      Generalization error decreases as the margin increases, even for
-      infinite hypothesis spaces.
-    \end{itemize}
-  \end{itemize}
+  \textbf{Why?}: VC dimension can be too pessimistic.
+\item
+  \textbf{Goal}: More nuanced measures, especially for things like
+  neural networks.
 \end{itemize}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2054}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4107}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3839}}@{}}
+\caption{Further ways to measure
+complexity\textsuperscript{{[}\citeproc{ref-bousquet03}{6}{]}}}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Measure}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Description}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Key Idea}
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Measure}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Description}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Key Idea}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Covering Numbers & How many ``balls'' cover the hypothesis space? &
+Smaller = simpler = tighter bounds \\
+Rademacher Complexity & How well can the model fit random noise? & Lower
+= less prone to overfitting \\
+\bottomrule\noalign{}
+\end{longtable}
 \end{frame}
 
-\begin{frame}{Alternative Capacity Measures}
-\phantomsection\label{alternative-capacity-measures}
+\begin{frame}{Summary: Advanced Bounds}
+\phantomsection\label{summary-advanced-bounds}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Why Explore Alternative Measures?}
-
-  \begin{itemize}
-  \tightlist
-  \item
-    VC dimension assumes worst-case datasets, often leading to overly
-    conservative bounds.
-  \item
-    Alternative measures provide more nuanced insights into hypothesis
-    space complexity, especially for modern machine learning models like
-    neural networks.
-  \end{itemize}
+  These advanced measures can lead to tighter, more data-dependent
+  bounds.
+\item
+  The best measure depends on the model, data, and learning algorithm.
 \end{itemize}
-\end{frame}
-
-\begin{frame}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Examples of Alternative Measures}
-
-  \begin{enumerate}
-  \tightlist
-  \item
-    \textbf{Covering Numbers}: The minimum number of small ``balls''
-    needed to cover the hypothesis space under a certain metric. Smaller
-    covering numbers indicate a simpler hypothesis space, leading to
-    tighter generalization bounds.
-  \item
-    \textbf{Rademacher Complexity}: Measures the ability of a hypothesis
-    class to fit random noise. A lower Rademacher complexity indicates
-    that the hypothesis space is less prone to overfitting.
-  \end{enumerate}
-\item
-  \textbf{Next Steps}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    We want to explore how these theoretical tools are applied to modern
-    machine learning methods.
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\begin{block}{Key Insights}
-\phantomsection\label{key-insights-1}
-\begin{itemize}
-\tightlist
-\item
-  These measures allow for tighter, data-adaptive generalization bounds,
-  particularly useful for complex or large-scale models.
-\item
-  There's no one-size-fits-all measure. The choice of capacity measure
-  depends on:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    The hypothesis space.
-  \item
-    The structure of the data.
-  \item
-    The learning algorithm.
-  \end{itemize}
-\end{itemize}
-\end{block}
 \end{frame}
 
 \section{Conclusions}\label{conclusions}
@@ -1019,14 +824,14 @@ of machine learning}. MIT Press.
 4. Samir M. (2016). \emph{A gentle introduction to statistical learning
 theory}. \url{https://mostafa-samir.github.io/ml-theory-pt2/}.
 
+\bibitem[\citeproctext]{ref-vapnik95}
+5. Vapnik V. N. (1995). \emph{The nature of statistical learning
+theory}. Springer.
+
 \bibitem[\citeproctext]{ref-bousquet03}
-5. Bousquet O., Boucheron S., \& Lugosi G. (2003). Introduction to
+6. Bousquet O., Boucheron S., \& Lugosi G. (2003). Introduction to
 statistical learning theory. \emph{Advanced Lectures on Machine
 Learning}.
-
-\bibitem[\citeproctext]{ref-vapnik98}
-6. Vapnik V. N. (1995). \emph{The nature of statistical learning
-theory}. Springer.
 
 \end{CSLReferences}
 \end{block}

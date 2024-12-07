@@ -212,7 +212,7 @@ plt.show()
 
 ## Hoeffding's Inequality: The Math
 
-- **Formula**[@mohri12; @samir16]:
+- **Formula**[@mohri12]:
   $$
   P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
   $$
@@ -288,7 +288,7 @@ plt.show()
 
 ## Union Bound: The Formula
 
-- **Expression**[@mohri12; @samir16]:
+- **Expression**[@samir16]:
   $$
   P\left(\sup_{h \in \mathcal{H}} |R(h) - R_{\text{emp}}(h)| > \epsilon \right) \leq \sum_{h \in \mathcal{H}} P\left(|R(h) - R_{\text{emp}}(h)| > \epsilon \right)
   $$
@@ -318,126 +318,160 @@ plt.show()
 
 # Advanced Bounds
 
-## Motivation for Advanced Bounds
-- **Advanced bounds** address a variety of the limitations we have outlined by incorporating:
-  - **VC Dimension**: A measure of the capacity or expressiveness of a hypothesis class. Higher VC dimensions indicate more complex models, which may require more data to generalize well.
-  - **Rademacher Complexity**: A data-dependent measure of how well a hypothesis class can fit random noise in the training data. It captures both the hypothesis class and the specifics of the data distribution.
+## Why Advanced Bounds?
+
+- **Classical Bounds** give us a good starting point, but they can be loose.
+- **Goal**: Tighter bounds that better reflect real-world performance.
+- **How?**: By measuring model complexity in more sophisticated ways.
 
 ---
 
-- **Extending Convergence Rates**:
-  - Advanced bounds refine the rates of convergence by linking the generalization error to:
-    - The size of the dataset $m$.
-    - The complexity of the hypothesis class (e.g., **VC dimension** or **Rademacher complexity**).
-  - For example, the generalization error is often bounded as:
-    $$
-    R(h) - R_{\text{emp}}(h) \leq \mathcal{O}\left(\sqrt{\frac{\text{Complexity}(\mathcal{H})}{m}}\right)
-    $$
-    - Larger datasets $m$ reduce error, but higher complexity increases the required data for a desired level of generalization.
+## VC Dimension
 
-- **Practical Implications**:
-  - These bounds provide actionable insights for balancing model complexity and dataset size.
-
-## Vapnik-Chervonenkis (VC) Theory
-- **Growth Function**
-  - The **Growth Function** is a measure of the expressiveness of a hypothesis space $\mathcal{H}$.
-  - **Definition**:
-    - The growth function, $\Pi_{\mathcal{H}}(m)$, is the maximum number of distinct ways a hypothesis space can label $m$ data points.
-  - **Key Idea**:
-    - A more expressive hypothesis space can label datasets in a greater number of ways, indicating higher complexity.
-  - **Growth Behavior**:
-    - For small $m$, $\Pi_{\mathcal{H}}(m) = 2^m$.
-    - For larger $m$, the growth may be limited by the structure of $\mathcal{H}$.
+- **Growth Function** ($\Pi_{\mathcal{H}}(m)$): How many ways can a model class ($\mathcal{H}$) label *m* data points?
+  - More ways = more complex.
+  - For small *m*, $\Pi_{\mathcal{H}}(m)=2^m$. 
+- **Shattering**: A model class *shatters* a dataset if it can label it in *every possible way*.
 
 ---
 
-- **VC Dimension**
-  - The **VC Dimension** is a scalar value that quantifies the capacity of a hypothesis space $\mathcal{H}$.
-  - **Definition**:
-    - The VC dimension $d_{\text{VC}}$ is the size of the largest dataset that can be **shattered** by $\mathcal{H}$.
-  - **Shattering**:
-    - A dataset is shattered if every possible labeling of the dataset can be perfectly captured by hypotheses in $\mathcal{H}$.
-- **Examples**:
-  - A linear classifier in 2D space has a VC dimension of 3 (it can shatter any 3 points, but not all configurations of 4 points).
+## VC Dimension: Definition
+
+- **VC Dimension ($d_{\text{VC}}$)**: The size of the *largest* dataset a model class can shatter.
+- **Example**: Linear classifiers in 2D have $d_{\text{VC}} = 3$. They can shatter 3 points but not 4 (in all configurations).
+
+```{python vc-dimension-illustration}
+#| fig-cap: "VC Dimension of Linear Classifiers in 2D"
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+
+# Set style for prettier plots
+sns.set_style('whitegrid')
+sns.set_context('talk')
+
+# Create a figure and axes for subplots
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
+# Function to plot points and a linear classifier
+def plot_points(ax, points, labels, title):
+    ax.scatter(points[:, 0], points[:, 1], c=labels, cmap='viridis', s=100, edgecolors='k')
+    ax.set_title(title)
+    ax.set_xlabel('Feature 1')
+    ax.set_ylabel('Feature 2')
+
+    # Add a linear classifier (for illustration)
+    if len(np.unique(labels)) > 1:
+        xlim = ax.get_xlim()
+        ylim = ax.get_ylim()
+        xx, yy = np.meshgrid(np.linspace(xlim[0], xlim[1], 100),
+                             np.linspace(ylim[0], ylim[1], 100))
+        # Assume a simple linear classifier (y = x) for demonstration
+        Z = xx - yy
+        ax.contour(xx, yy, Z, levels=[0], colors='red')
+
+# --- 3 Points, Shattered ---
+points_3 = np.array([[1, 2], [2, 1], [3, 3]])
+labels_3 = np.array([1, -1, 1])  # Example labels that can be separated
+plot_points(axes[0], points_3, labels_3, "3 Points, Shattered")
+
+# --- 4 Points, Not Shattered (XOR Configuration) ---
+points_4 = np.array([[1, 1], [1, 2], [2, 1], [2, 2]])
+labels_4 = np.array([1, -1, -1, 1])  # XOR configuration, cannot be linearly separated
+plot_points(axes[1], points_4, labels_4, "4 Points, Not Shattered (XOR)")
+
+# --- 4 Points, Shattered (Convex Configuration) ---
+points_4_2 = np.array([[0, 0], [0, 2], [2, 2], [1.5, 0.5]])
+labels_4_2 = np.array([1, 1, -1, -1])  # Example labels that can be separated
+plot_points(axes[2], points_4_2, labels_4_2 , "4 Points, Shattered (Convex)")
+
+plt.tight_layout()
+plt.show()
+```
+
+- **Intuition**: Higher $d_{\text{VC}}$ = more complex model.
 
 ---
 
-## VC Generalization Bound
-- **What is the VC Generalization Bound?**
-  - A theoretical result that connects the **generalization error** with the **empirical risk**, the **VC dimension**, and the size of the dataset.
-  - **Mathematical Formulation**:
-    $$
-    R(h) \leq R_{\text{emp}}(h) + \sqrt{\frac{8 d_{\text{VC}} \left(\ln\left(\frac{2m}{d_{\text{VC}}}\right) + 1\right) + 8 \ln\left(\frac{4}{\delta}\right)}{m}}
-    $$
-    - $R(h)$: Generalization error.
-    - $R_{\text{emp}}(h)$: Empirical risk.
-    - $d_{\text{VC}}$: VC dimension.
-    - $m$: Dataset size.
-    - $\delta$: Confidence level ($1 - \delta$ is the probability that the bound holds).
+## The VC Generalization Bound
+
+- **Formula**[@vapnik95]:
+  $$
+  R(h) \leq R_{\text{emp}}(h) + \sqrt{\frac{8 d_{\text{VC}} \left(\ln\left(\frac{2m}{d_{\text{VC}}}\right) + 1\right) + 8 \ln\left(\frac{4}{\delta}\right)}{m}}
+  $$
+  - $R(h)$: True error.
+  - $R_{\text{emp}}(h)$: Training error.
+  - $d_{\text{VC}}$: VC dimension.
+  - $m$: Dataset size.
+  - $\delta$: Confidence parameter.
 
 ---
 
-### Key Insights
-- As $d_{\text{VC}}$ increases (more complex hypothesis space):
-  - The bound becomes looser, reflecting a higher risk of overfitting.
-- As $m$ increases (larger dataset size):
-  - The bound tightens, improving generalization guarantees.
+## VC Bound: Key Insights
+
+- **Higher VC Dimension**:
+  - More complex model, looser bound, higher risk of overfitting.
+- **Larger Dataset**:
+  - Tighter bound, better generalization.
+
+```{python vc-bound-insights}
+#| fig-cap: "Approximation of the VC Generalization Bound"
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Set style for prettier plots
+sns.set_style('whitegrid')
+sns.set_context('talk')
+
+# Function to calculate the VC bound term
+def vc_bound_term(d_vc, m, delta=0.05):
+    return np.sqrt((8 * d_vc * (np.log((2 * m) / d_vc) + 1) + 8 * np.log(4 / delta)) / m)
+
+# Dataset sizes
+m_values = np.linspace(10, 1000, 100)
+
+# VC dimension values
+d_vc_values = [1, 5, 10]
+
+# Create the plot
+plt.figure(figsize=(10, 2.25))
+
+# Plotting for different VC dimension values
+for d_vc in d_vc_values:
+    bound_values = vc_bound_term(d_vc, m_values)
+    plt.plot(m_values, bound_values, label=f'VC Dimension = {d_vc}')
+
+plt.xlabel('Dataset Size (m)')
+plt.ylabel('VC Bound Term')
+# plt.title('Impact of VC Dimension and Dataset Size on Generalization Bound')
+plt.legend()
+plt.show()
+```
 
 ---
-
-## Summing Up VC Theory
-- **Expressiveness vs. Generalization**:
-  - The VC dimension captures the **expressiveness** of a hypothesis space:
-    - Higher $d_{\text{VC}}$: More complex, more expressive.
-  - A balance is required to avoid overfitting (high complexity) or underfitting (low complexity).
-- **Implications for Learning**:
-  - The VC dimension helps understand:
-    - Why simpler models often generalize better.
-    - Why increasing data size improves generalization, especially for complex models.
-- **Foundation for Algorithm Design**:
-  - VC theory guides the development of learning algorithms by quantifying the trade-offs between hypothesis complexity, data size, and generalization performance.
 
 ## Distribution-Based Bounds
-- **From General Bounds to Data-Driven Insights**:
-  - Generalization bounds like Hoeffding’s inequality and VC bounds rely on worst-case scenarios.
-- **Distribution-Based Bounds**:
-  - Leverage specific properties of the data distribution to achieve **tighter bounds**.
-  - Exploit **data structure** to understand how well a model generalizes in practice.
+
+- **VC theory** often considers the *worst-case* scenario.
+- **New Idea**: Use information about the **data distribution** for tighter bounds.
+- **Example**: Support Vector Machines (SVMs).
+  - **Margin**: Distance from the decision boundary to the nearest data points.
+  - Larger margin = better generalization.
+- **Benefit**: More realistic bounds reflecting real-world performance.
 
 ---
 
-## Example: Support Vector Machines (SVMs)
-- **SVMs and Margin-Based Bounds**:
-  - Support Vector Machines (SVMs) introduce the concept of a **margin**, the distance between the decision boundary and the nearest data points.
-  - **Intuition**:
-    - A larger margin indicates better separation between classes, leading to better generalization.
-  - **Margin-Based Generalization Bounds**:
-    - Generalization error decreases as the margin increases, even for infinite hypothesis spaces.
+## Other Ways to Measure Complexity
 
----
+- **Why?**: VC dimension can be too pessimistic.
+- **Goal**: More nuanced measures, especially for things like neural networks.
 
-## Alternative Capacity Measures
-- **Why Explore Alternative Measures?**
-  - VC dimension assumes worst-case datasets, often leading to overly conservative bounds.
-  - Alternative measures provide more nuanced insights into hypothesis space complexity, especially for modern machine learning models like neural networks.
-
----
-
-- **Examples of Alternative Measures**
-  1. **Covering Numbers**: The minimum number of small "balls" needed to cover the hypothesis space under a certain metric. Smaller covering numbers indicate a simpler hypothesis space, leading to tighter generalization bounds.
-  2. **Rademacher Complexity**: Measures the ability of a hypothesis class to fit random noise. A lower Rademacher complexity indicates that the hypothesis space is less prone to overfitting.
-
-- **Next Steps**:
-  - We want to explore how these theoretical tools are applied to modern machine learning methods.
-
----
-
-### Key Insights
-- These measures allow for tighter, data-adaptive generalization bounds, particularly useful for complex or large-scale models.
-- There’s no one-size-fits-all measure. The choice of capacity measure depends on:
-  - The hypothesis space.
-  - The structure of the data.
-  - The learning algorithm.
+| **Measure**                | **Description**                                  | **Key Idea**                                    |
+| :---------------------- | :--------------------------------------------- | :------------------------------------------ |
+| Covering Numbers   | How many "balls" cover the hypothesis space?      | Smaller = simpler = tighter bounds         |
+| Rademacher Complexity | How well can the model fit random noise?          | Lower = less prone to overfitting          |
+: Further ways to measure complexity [@bousquet03]
 
 # Conclusions
 
