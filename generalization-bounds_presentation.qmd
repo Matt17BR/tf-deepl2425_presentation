@@ -23,7 +23,7 @@ nocite: |
 
 # Introduction
 
-## Motivation
+## Why Study Generalization?
 - **Core Question**: How can models trained on limited data perform reliably on unseen scenarios?
 - **Generalization** is a fundamental goal in machine learning: ensuring models extend their learned patterns to new, unseen data.
 - A poorly generalized model risks:
@@ -32,13 +32,13 @@ nocite: |
 
 ---
 
-## The Learning Problem
+## Defining Generalization
 - **Supervised Learning**: 
   - Goal: Learn a function $f: X \to Y$ mapping inputs $X$ to outputs $Y$ based on labeled training data.
 - **Key Question**: Can the learned function perform well on unseen data?
 - **Generalization**:
   - Ability of a model to extend its learning beyond the training data.
-  - **Central Problem** in machine learning: balancing *empirical performance* with *future predictions*.
+  - **Central problem** in machine learning: balancing *empirical performance* with *future predictions*.
 
 # Overfitting
 
@@ -189,7 +189,7 @@ plt.show()
 
 # Classical Bounds
 
-## Generalization Bounds: Bridging the Gap
+## Generalization Bounds
 
 - **Goal**: Predict a model's performance on **unseen data**.
 - **Generalization Bounds** provide theoretical guarantees, linking:
@@ -203,7 +203,7 @@ plt.show()
 
 ---
 
-## Hoeffding's Inequality: A Foundation
+## Hoeffding's Inequality
 
 - **What it is**: A probabilistic tool that helps estimate how well a model will generalize.
 - **Focus**: Quantifies the difference between **empirical risk** (training error) and **generalization error** (true error) for a *single, fixed model*.
@@ -228,7 +228,7 @@ plt.show()
 
 ---
 
-## Convergence: How Fast Does It Happen?
+## Hoeffding's Inequality: Convergence
 
 - **Rate of Convergence**: How quickly the training error becomes a good estimate of the true error as we get more data.
 - **Hoeffding's Formula** shows **faster convergence** with larger datasets due to the $\exp(-2m\varepsilon^2)$ term.
@@ -271,7 +271,7 @@ plt.show()
 
 ---
 
-## Interpreting Hoeffding's Inequality
+## Hoeffding's Inequality: Interpretation
 
 - **Meaning**: With more data, training error becomes a better predictor of true error.
 - **Practical Implication**: For a fixed model, training performance is a good indicator of unseen data performance, and this improves with dataset size.
@@ -279,14 +279,14 @@ plt.show()
 
 ---
 
-## The Union Bound: Handling Multiple Models
+## Union Bound
 
 - **What it does**: Extends bounds like Hoeffding's to work when choosing from **many models** (a hypothesis space $\mathcal{H}$).
 - **Main Idea**: Considers the chance that *at least one* model in $\mathcal{H}$ has a large difference between training and true error.
 
 ---
 
-## Union Bound: The Formula
+## Union Bound: The Maths
 
 - **Expression**[@samir16]:
   $$
@@ -298,7 +298,7 @@ plt.show()
 
 ---
 
-## Union Bound: Key Implications
+## Union Bound: Interpretation
 
 - **Larger Model Space**: The more models we consider, the looser the bound becomes.
 
@@ -393,7 +393,7 @@ plt.show()
 
 ---
 
-## The VC Generalization Bound
+## VC Generalization Bound
 
 - **Formula**[@vapnik95]:
   $$
@@ -462,7 +462,7 @@ plt.show()
 
 ---
 
-## Other Ways to Measure Complexity
+## More Measures of Complexity
 
 - **Why?**: VC dimension can be too pessimistic.
 - **Goal**: More nuanced measures, especially for things like neural networks.
