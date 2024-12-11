@@ -453,11 +453,12 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Rate of Convergence}: How quickly the training error becomes a
-  good estimate of the true error as we get more data.
+  \textbf{Rate of Convergence}: Simulating biased coin flips to show the
+  rate at which sample mean approaches the true probability.
 \item
-  \textbf{Hoeffding's Formula} shows \textbf{faster convergence} with
-  larger datasets due to the \(\exp(-2n\varepsilon^2)\) term.
+  \textbf{Hoeffding's Bound}, derived from the
+  \(\exp(-2n\varepsilon^2)\) term, shows \textbf{faster convergence} as
+  \(n\) increases.
 \end{itemize}
 
 \begin{figure}[H]
@@ -466,7 +467,7 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 
 }
 
-\caption{Hoeffding Bound Convergence Rate}
+\caption{Convergence to True Probability with Hoeffding Bounds}
 
 \end{figure}%
 \end{frame}

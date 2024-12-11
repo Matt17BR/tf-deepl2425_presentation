@@ -223,11 +223,11 @@ plt.show()
 
 ## Hoeffding's Inequality: Convergence
 
-- **Rate of Convergence**: How quickly the training error becomes a good estimate of the true error as we get more data.
-- **Hoeffding's Formula** shows **faster convergence** with larger datasets due to the $\exp(-2n\varepsilon^2)$ term.
+- **Rate of Convergence**: Simulating biased coin flips to show the rate at which sample mean approaches the true probability.
+- **Hoeffding's Bound**, derived from the $\exp(-2n\varepsilon^2)$ term, shows **faster convergence** as $n$ increases.
 
-```{python convergence-plot}
-#| fig-cap: "Hoeffding Bound Convergence Rate"
+```{python convergence-plot}  
+#| fig-cap: "Convergence to True Probability with Hoeffding Bounds"
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -236,28 +236,51 @@ import seaborn as sns
 sns.set_style('whitegrid')
 sns.set_context('talk')
 
-# Function to calculate Hoeffding bound
-def hoeffding_bound(n, epsilon):
-    return 2 * np.exp(-2 * n * epsilon**2)
+# True probability of heads (unknown in practice)
+true_p_heads = 0.6
 
-# Dataset sizes
-m_values = np.linspace(1, 500, 500)
+# Number of coin flips (dataset sizes)
+n_flips = np.arange(1, 401)
 
-# Epsilon values
-epsilon_values = [0.05, 0.1, 0.2]
+# Number of simulations
+n_simulations = 10
+
+# Store results
+sample_means = np.zeros((n_simulations, len(n_flips)))
+
+# Run simulations
+for i in range(n_simulations):
+    for j, n in enumerate(n_flips):
+        # Simulate coin flips (1 for heads, 0 for tails)
+        flips = np.random.binomial(1, true_p_heads, size=n)
+        # Calculate sample mean (estimate of p_heads)
+        sample_means[i, j] = np.mean(flips)
+
+# Calculate Hoeffding bounds (epsilon) for a fixed confidence (e.g., 95%)
+confidence = 0.95
+delta = 1 - confidence
+epsilon = np.sqrt(np.log(2 / delta) / (2 * n_flips))
 
 # Create the plot
-plt.figure(figsize=(12, 3))
+plt.figure(figsize=(11, 2.75))
 
-# Plotting for different epsilon values
-for epsilon in epsilon_values:
-    bound_values = hoeffding_bound(m_values, epsilon)
-    plt.plot(m_values, bound_values, label=f'ε = {epsilon}')
+# Plot each simulation
+for i in range(n_simulations):
+    plt.plot(n_flips, sample_means[i, :], color='skyblue', alpha=0.3)
 
-# plt.title('Hoeffding Bound Convergence Rate')
-plt.xlabel('Dataset Size (n)')
-plt.ylabel('Probability Bound')
-plt.yscale('log')  # Log scale for better visualization of exponential decay
+# Plot the true probability
+plt.axhline(y=true_p_heads, color='red', linestyle='--', label='True Probability')
+
+# Plot Hoeffding bounds with clipping
+lower_bound = np.clip(true_p_heads - epsilon, 0, 1)  # Clip lower bound at 0
+upper_bound = np.clip(true_p_heads + epsilon, 0, 1)  # Clip upper bound at 1
+plt.fill_between(n_flips, lower_bound, upper_bound, color='lightcoral', alpha=0.3, label='Hoeffding Bound (95% Confidence)')
+
+plt.xlabel('Number of Coin Flips (n)')
+plt.ylabel('P(Heads) Estimate')
+# plt.title('Convergence of Sample Mean to True Probability')
+plt.xlim(0, 400)
+plt.ylim(0, 1)  # Set y-axis limits to 0 and 1
 plt.legend()
 plt.show()
 ```
