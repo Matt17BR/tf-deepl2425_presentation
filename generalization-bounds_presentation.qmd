@@ -214,16 +214,16 @@ plt.show()
 
 - **Formula**[@mohri12]:
   $$
-  P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
+  P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2n\varepsilon^2)
   $$
 
   - $R(h)$: True error on unseen data.
   - $R_{\text{emp}}(h)$: Error on training data.
   - $\varepsilon$: Error tolerance.
-  - $m$: Dataset size.
+  - $n$: Dataset size.
 
 - **Interpretation**: The probability of a large difference between true error and training error decreases **exponentially** with:
-  - **Larger datasets** ($m$).
+  - **Larger datasets** ($n$).
   - **Smaller error tolerance** ($\varepsilon$).
 
 ---
@@ -231,7 +231,7 @@ plt.show()
 ## Hoeffding's Inequality: Convergence
 
 - **Rate of Convergence**: How quickly the training error becomes a good estimate of the true error as we get more data.
-- **Hoeffding's Formula** shows **faster convergence** with larger datasets due to the $\exp(-2m\varepsilon^2)$ term.
+- **Hoeffding's Formula** shows **faster convergence** with larger datasets due to the $\exp(-2n\varepsilon^2)$ term.
 
 ```{python convergence-plot}
 #| fig-cap: "Hoeffding Bound Convergence Rate"
@@ -244,8 +244,8 @@ sns.set_style('whitegrid')
 sns.set_context('talk')
 
 # Function to calculate Hoeffding bound
-def hoeffding_bound(m, epsilon):
-    return 2 * np.exp(-2 * m * epsilon**2)
+def hoeffding_bound(n, epsilon):
+    return 2 * np.exp(-2 * n * epsilon**2)
 
 # Dataset sizes
 m_values = np.linspace(1, 500, 500)
@@ -262,7 +262,7 @@ for epsilon in epsilon_values:
     plt.plot(m_values, bound_values, label=f'ε = {epsilon}')
 
 # plt.title('Hoeffding Bound Convergence Rate')
-plt.xlabel('Dataset Size (m)')
+plt.xlabel('Dataset Size (n)')
 plt.ylabel('Probability Bound')
 plt.yscale('log')  # Log scale for better visualization of exponential decay
 plt.legend()
@@ -328,9 +328,9 @@ plt.show()
 
 ## VC Dimension
 
-- **Growth Function** ($\Pi_{\mathcal{H}}(m)$): How many ways can a model class ($\mathcal{H}$) label *m* data points?
+- **Growth Function** ($\Pi_{\mathcal{H}}(n)$): How many ways can a model class ($\mathcal{H}$) label *n* data points?
   - More ways = more complex.
-  - For small *m*, $\Pi_{\mathcal{H}}(m)=2^m$. 
+  - For small *n*, $\Pi_{\mathcal{H}}(n)=2^n$. 
 - **Shattering**: A model class *shatters* a dataset if it can label it in *every possible way*.
 
 ---
@@ -397,12 +397,12 @@ plt.show()
 
 - **Formula**[@vapnik95]:
   $$
-  R(h) \leq R_{\text{emp}}(h) + \sqrt{\frac{8 d_{\text{VC}} \left(\ln\left(\frac{2m}{d_{\text{VC}}}\right) + 1\right) + 8 \ln\left(\frac{4}{\delta}\right)}{m}}
+  R(h) \leq R_{\text{emp}}(h) + \sqrt{\frac{8 d_{\text{VC}} \left(\ln\left(\frac{2n}{d_{\text{VC}}}\right) + 1\right) + 8 \ln\left(\frac{4}{\delta}\right)}{n}}
   $$
   - $R(h)$: True error.
   - $R_{\text{emp}}(h)$: Training error.
   - $d_{\text{VC}}$: VC dimension.
-  - $m$: Dataset size.
+  - $n$: Dataset size.
   - $\delta$: Confidence parameter.
 
 ---
@@ -425,8 +425,8 @@ sns.set_style('whitegrid')
 sns.set_context('talk')
 
 # Function to calculate the VC bound term
-def vc_bound_term(d_vc, m, delta=0.05):
-    return np.sqrt((8 * d_vc * (np.log((2 * m) / d_vc) + 1) + 8 * np.log(4 / delta)) / m)
+def vc_bound_term(d_vc, n, delta=0.05):
+    return np.sqrt((8 * d_vc * (np.log((2 * n) / d_vc) + 1) + 8 * np.log(4 / delta)) / n)
 
 # Dataset sizes
 m_values = np.linspace(10, 1000, 100)
@@ -442,7 +442,7 @@ for d_vc in d_vc_values:
     bound_values = vc_bound_term(d_vc, m_values)
     plt.plot(m_values, bound_values, label=f'VC Dimension = {d_vc}')
 
-plt.xlabel('Dataset Size (m)')
+plt.xlabel('Dataset Size (n)')
 plt.ylabel('VC Bound Term')
 # plt.title('Impact of VC Dimension and Dataset Size on Generalization Bound')
 plt.legend()

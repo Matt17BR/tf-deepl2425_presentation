@@ -434,7 +434,7 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 \begin{itemize}
 \item
   \textbf{Formula}\textsuperscript{{[}\citeproc{ref-mohri12}{3}{]}}: \[
-  P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2m\varepsilon^2)
+  P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2n\varepsilon^2)
   \]
 
   \begin{itemize}
@@ -446,7 +446,7 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
   \item
     \(\varepsilon\): Error tolerance.
   \item
-    \(m\): Dataset size.
+    \(n\): Dataset size.
   \end{itemize}
 \item
   \textbf{Interpretation}: The probability of a large difference between
@@ -455,7 +455,7 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
   \begin{itemize}
   \tightlist
   \item
-    \textbf{Larger datasets} (\(m\)).
+    \textbf{Larger datasets} (\(n\)).
   \item
     \textbf{Smaller error tolerance} (\(\varepsilon\)).
   \end{itemize}
@@ -471,7 +471,7 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
   good estimate of the true error as we get more data.
 \item
   \textbf{Hoeffding's Formula} shows \textbf{faster convergence} with
-  larger datasets due to the \(\exp(-2m\varepsilon^2)\) term.
+  larger datasets due to the \(\exp(-2n\varepsilon^2)\) term.
 \end{itemize}
 
 \begin{figure}[H]
@@ -609,15 +609,15 @@ Large & Looser & Higher \\
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Growth Function} (\(\Pi_{\mathcal{H}}(m)\)): How many ways can
-  a model class (\(\mathcal{H}\)) label \emph{m} data points?
+  \textbf{Growth Function} (\(\Pi_{\mathcal{H}}(n)\)): How many ways can
+  a model class (\(\mathcal{H}\)) label \emph{n} data points?
 
   \begin{itemize}
   \tightlist
   \item
     More ways = more complex.
   \item
-    For small \emph{m}, \(\Pi_{\mathcal{H}}(m)=2^m\).
+    For small \emph{n}, \(\Pi_{\mathcal{H}}(n)=2^n\).
   \end{itemize}
 \item
   \textbf{Shattering}: A model class \emph{shatters} a dataset if it can
@@ -660,7 +660,7 @@ Large & Looser & Higher \\
 \tightlist
 \item
   \textbf{Formula}\textsuperscript{{[}\citeproc{ref-vapnik95}{5}{]}}: \[
-  R(h) \leq R_{\text{emp}}(h) + \sqrt{\frac{8 d_{\text{VC}} \left(\ln\left(\frac{2m}{d_{\text{VC}}}\right) + 1\right) + 8 \ln\left(\frac{4}{\delta}\right)}{m}}
+  R(h) \leq R_{\text{emp}}(h) + \sqrt{\frac{8 d_{\text{VC}} \left(\ln\left(\frac{2n}{d_{\text{VC}}}\right) + 1\right) + 8 \ln\left(\frac{4}{\delta}\right)}{n}}
   \]
 
   \begin{itemize}
@@ -672,7 +672,7 @@ Large & Looser & Higher \\
   \item
     \(d_{\text{VC}}\): VC dimension.
   \item
-    \(m\): Dataset size.
+    \(n\): Dataset size.
   \item
     \(\delta\): Confidence parameter.
   \end{itemize}
