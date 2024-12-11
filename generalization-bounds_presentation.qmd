@@ -33,7 +33,7 @@ nocite: |
 ---
 
 ## Defining Generalization
-- **Supervised Learning**: Learn a function $f: X \to Y$ from labeled training data.
+- **Supervised Learning**: Learn a function $f\!\!: X \to Y$ from labeled training data.
 - **Challenge**: The learned function must perform well *beyond* the training set.
 - **Evaluation**: We assess generalization by comparing model performance on training data versus a separate *testing* dataset representing unseen scenarios. This helps us understand how well the model will perform in the real world.
 
