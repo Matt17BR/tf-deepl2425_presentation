@@ -420,32 +420,30 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 \begin{frame}{Hoeffding's Inequality: The Math}
 \phantomsection\label{hoeffdings-inequality-the-math}
 \begin{itemize}
+\tightlist
 \item
-  \textbf{Formula}\textsuperscript{{[}\citeproc{ref-mohri12}{3}{]}}: \[
+  \textbf{Expression}\textsuperscript{{[}\citeproc{ref-mohri12}{3}{]}}:
+  \[
   P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2n\varepsilon^2)
   \]
+\item
+  \textbf{Breakdown}:
 
   \begin{itemize}
   \tightlist
   \item
-    \(R(h)\): True error on unseen data.
+    \(R(h)\): The \textbf{true risk} of hypothesis \(h\), defined as the
+    expected loss over the data distribution:
+    \(R(h) = \mathbb{E}_{x,y \sim D}[\ell(h(x), y)]\).
   \item
-    \(R_{\text{emp}}(h)\): Error on training data.
+    \(R_{\text{emp}}(h)\): The \textbf{empirical risk} of hypothesis
+    \(h\), defined as the average loss over the training dataset \(S\)
+    of size \(n\):
+    \(R_{\text{emp}}(h) = \frac{1}{n} \sum_{i=1}^{n} \ell(h(x_i), y_i)\).
   \item
     \(\varepsilon\): Error tolerance.
   \item
     \(n\): Dataset size.
-  \end{itemize}
-\item
-  \textbf{Interpretation}: The probability of a large difference between
-  true error and training error decreases \textbf{exponentially} with:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \textbf{Larger datasets} (\(n\)).
-  \item
-    \textbf{Smaller error tolerance} (\(\varepsilon\)).
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -478,12 +476,22 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Meaning}: With more data, training error becomes a better
-  predictor of true error.
+  The probability of a large difference between the true risk
+  (generalization error) and the empirical risk (training error)
+  decreases \textbf{exponentially} with:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Larger datasets} (\(n\)).
+  \item
+    \textbf{Smaller error tolerance} (\(\varepsilon\)).
+  \end{itemize}
 \item
-  \textbf{Practical Implication}: For a fixed model, training
-  performance is a good indicator of unseen data performance, and this
-  improves with dataset size.
+  \textbf{Note}: Hoeffding's inequality applies more generally to the
+  difference between the sample average and the expectation of any
+  bounded random variable. We have shown a special application of the
+  inequality.
 \item
   \textbf{Limitations}: We usually pick the best model from many, not
   just one. Hoeffding doesn't account for how complex the model class
@@ -506,8 +514,8 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Union Bound: The Maths}
-\phantomsection\label{union-bound-the-maths}
+\begin{frame}{Union Bound: The Math}
+\phantomsection\label{union-bound-the-math}
 \begin{itemize}
 \tightlist
 \item
@@ -521,11 +529,16 @@ Network\textsuperscript{{[}\citeproc{ref-nakkiran19}{2}{]}}}
   \begin{itemize}
   \tightlist
   \item
+    \(R(h)\): True risk (expected loss).
+  \item
+    \(R_{\text{emp}}(h)\): Empirical risk (average training loss).
+  \item
     \(\sup_{h \in \mathcal{H}}\): Account for the worst-case scenario
-    across all hypotheses.
+    across all hypotheses, considering the largest deviation between
+    true and empirical risk.
   \item
     \(\sum_{h \in \mathcal{H}}\): Sums up probabilities of large error
-    differences for each model.
+    differences for each model in the hypothesis space \(\mathcal{H}\).
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -642,21 +655,24 @@ Large & Looser & Higher \\
 \end{itemize}
 \end{frame}
 
-\begin{frame}{VC Generalization Bound}
-\phantomsection\label{vc-generalization-bound}
+\begin{frame}{VC Generalization Bound: The Math}
+\phantomsection\label{vc-generalization-bound-the-math}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Formula}\textsuperscript{{[}\citeproc{ref-vapnik95}{5}{]}}: \[
+  \textbf{Expression}\textsuperscript{{[}\citeproc{ref-vapnik95}{5}{]}}:
+  \[
   R(h) \leq R_{\text{emp}}(h) + \sqrt{\frac{8 d_{\text{VC}} \left(\ln\left(\frac{2n}{d_{\text{VC}}}\right) + 1\right) + 8 \ln\left(\frac{4}{\delta}\right)}{n}}
   \]
+\item
+  \textbf{Breakdown}:
 
   \begin{itemize}
   \tightlist
   \item
-    \(R(h)\): True error.
+    \(R(h)\): True risk (expected loss).
   \item
-    \(R_{\text{emp}}(h)\): Training error.
+    \(R_{\text{emp}}(h)\): Empirical risk (average training loss).
   \item
     \(d_{\text{VC}}\): VC dimension.
   \item
@@ -667,8 +683,8 @@ Large & Looser & Higher \\
 \end{itemize}
 \end{frame}
 
-\begin{frame}{VC Bound: Interpretation}
-\phantomsection\label{vc-bound-interpretation}
+\begin{frame}{VC Generalization Bound: Interpretation}
+\phantomsection\label{vc-generalization-bound-interpretation}
 \begin{itemize}
 \tightlist
 \item

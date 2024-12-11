@@ -209,19 +209,15 @@ plt.show()
 
 ## Hoeffding's Inequality: The Math
 
-- **Formula**[@mohri12]:
+- **Expression**[@mohri12]:
   $$
   P(|R(h) - R_{\text{emp}}(h)| > \varepsilon) \leq 2 \exp(-2n\varepsilon^2)
   $$
-
-  - $R(h)$: True error on unseen data.
-  - $R_{\text{emp}}(h)$: Error on training data.
+- **Breakdown**:
+  - $R(h)$: The **true risk** of hypothesis $h$, defined as the expected loss over the data distribution: $R(h) = \mathbb{E}_{x,y \sim D}[\ell(h(x), y)]$.
+  - $R_{\text{emp}}(h)$: The **empirical risk** of hypothesis $h$, defined as the average loss over the training dataset $S$ of size $n$: $R_{\text{emp}}(h) = \frac{1}{n} \sum_{i=1}^{n} \ell(h(x_i), y_i)$.
   - $\varepsilon$: Error tolerance.
   - $n$: Dataset size.
-
-- **Interpretation**: The probability of a large difference between true error and training error decreases **exponentially** with:
-  - **Larger datasets** ($n$).
-  - **Smaller error tolerance** ($\varepsilon$).
 
 ---
 
@@ -270,8 +266,10 @@ plt.show()
 
 ## Hoeffding's Inequality: Interpretation
 
-- **Meaning**: With more data, training error becomes a better predictor of true error.
-- **Practical Implication**: For a fixed model, training performance is a good indicator of unseen data performance, and this improves with dataset size.
+- The probability of a large difference between the true risk (generalization error) and the empirical risk (training error) decreases **exponentially** with:
+  - **Larger datasets** ($n$).
+  - **Smaller error tolerance** ($\varepsilon$).
+- **Note**: Hoeffding's inequality applies more generally to the difference between the sample average and the expectation of any bounded random variable. We have shown a special application of the inequality.
 - **Limitations**: We usually pick the best model from many, not just one. Hoeffding doesn't account for how complex the model class is.
 
 ---
@@ -283,15 +281,17 @@ plt.show()
 
 ---
 
-## Union Bound: The Maths
+## Union Bound: The Math
 
 - **Expression**[@samir16]:
   $$
   P\left(\sup_{h \in \mathcal{H}} |R(h) - R_{\text{emp}}(h)| > \epsilon \right) \leq \sum_{h \in \mathcal{H}} P\left(|R(h) - R_{\text{emp}}(h)| > \epsilon \right)
   $$
 - **Breakdown**:
-  - $\sup_{h \in \mathcal{H}}$: Account for the worst-case scenario across all hypotheses.
-  - $\sum_{h \in \mathcal{H}}$: Sums up probabilities of large error differences for each model.
+  - $R(h)$: True risk (expected loss).
+  - $R_{\text{emp}}(h)$: Empirical risk (average training loss).
+  - $\sup_{h \in \mathcal{H}}$: Account for the worst-case scenario across all hypotheses, considering the largest deviation between true and empirical risk.
+  - $\sum_{h \in \mathcal{H}}$: Sums up probabilities of large error differences for each model in the hypothesis space $\mathcal{H}$.
 
 ---
 
@@ -390,21 +390,22 @@ plt.show()
 
 ---
 
-## VC Generalization Bound
+## VC Generalization Bound: The Math
 
-- **Formula**[@vapnik95]:
+- **Expression**[@vapnik95]:
   $$
   R(h) \leq R_{\text{emp}}(h) + \sqrt{\frac{8 d_{\text{VC}} \left(\ln\left(\frac{2n}{d_{\text{VC}}}\right) + 1\right) + 8 \ln\left(\frac{4}{\delta}\right)}{n}}
   $$
-  - $R(h)$: True error.
-  - $R_{\text{emp}}(h)$: Training error.
+- **Breakdown**:
+  - $R(h)$: True risk (expected loss).
+  - $R_{\text{emp}}(h)$: Empirical risk (average training loss).
   - $d_{\text{VC}}$: VC dimension.
   - $n$: Dataset size.
   - $\delta$: Confidence parameter.
 
 ---
 
-## VC Bound: Interpretation
+## VC Generalization Bound: Interpretation
 
 - **Higher VC Dimension**:
   - More complex model, looser bound, higher risk of overfitting.
