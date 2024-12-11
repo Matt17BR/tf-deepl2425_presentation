@@ -33,12 +33,9 @@ nocite: |
 ---
 
 ## Defining Generalization
-- **Supervised Learning**: 
-  - Goal: Learn a function $f: X \to Y$ mapping inputs $X$ to outputs $Y$ based on labeled training data.
-- **Key Question**: Can the learned function perform well on unseen data?
-- **Generalization**:
-  - Ability of a model to extend its learning beyond the training data.
-  - **Central problem** in machine learning: balancing *empirical performance* with *future predictions*.
+- **Supervised Learning**: Learn a function $f: X \to Y$ from labeled training data.
+- **Challenge**: The learned function must perform well *beyond* the training set.
+- **Evaluation**: We assess generalization by comparing model performance on training data versus a separate *testing* dataset representing unseen scenarios. This helps us understand how well the model will perform in the real world.
 
 # Overfitting
 
