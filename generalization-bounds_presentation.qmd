@@ -182,7 +182,7 @@ plt.show()
 ## Double Descent
 - Modern machine learning introduces a fascinating twist: **Double Descent**, where increasing model complexity can lead to improved generalization after an initial overfitting phase.
 
-![Double Descent phenomenon in a Residual Neural Network [@nakkiran19]](extra/double_descent.png){width=83%}
+![Double Descent phenomenon in a Residual Neural Network [@nakkiran19]](extra/double_descent.png){width=86%}
 
 # Classical Bounds
 
