@@ -377,7 +377,7 @@ fig, axes = plt.subplots(1, 3, figsize=(15, 5.4))
 
 # Function to plot points and a linear classifier
 def plot_points(ax, points, labels, title):
-    ax.scatter(points[:, 0], points[:, 1], c=labels, cmap='viridis', s=100, edgecolors='k')
+    ax.scatter(points[:, 0], points[:, 1], c=labels, cmap='viridis', s=300, edgecolors='k')
     ax.set_title(title)
     ax.set_xlabel('Feature 1')
     ax.set_ylabel('Feature 2')
