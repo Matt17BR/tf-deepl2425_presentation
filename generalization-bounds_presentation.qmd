@@ -476,10 +476,15 @@ plt.show()
 
 - **VC theory** often considers the *worst-case* scenario.
 - **New Idea**: Use information about the **data distribution** for tighter bounds.
+- **Benefit**: More realistic bounds reflecting real-world performance.
+
+## Support Vector Machines
+
 - **Example**: Support Vector Machines (SVMs).
   - **Margin**: Distance from the decision boundary to the nearest data points.
   - Larger margin = better generalization.
-- **Benefit**: More realistic bounds reflecting real-world performance.
+
+![Visualizing Non-Linear Separation with SVM Kernels [@wang24]](extra/svm_kernels.png){width=100%}
 
 ---
 
