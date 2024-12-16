@@ -373,7 +373,7 @@ sns.set_style('whitegrid')
 sns.set_context('talk')
 
 # Create a figure and axes for subplots
-fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+fig, axes = plt.subplots(1, 3, figsize=(15, 5.4))
 
 # Function to plot points and a linear classifier
 def plot_points(ax, points, labels, title):
@@ -458,7 +458,7 @@ m_values = np.linspace(10, 1000, 100)
 d_vc_values = [1, 5, 10]
 
 # Create the plot
-plt.figure(figsize=(10, 2.25))
+plt.figure(figsize=(10, 2.4))
 
 # Plotting for different VC dimension values
 for d_vc in d_vc_values:
