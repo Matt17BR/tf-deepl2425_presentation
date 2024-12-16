@@ -39,7 +39,7 @@ nocite: |
 
 # Overfitting
 
-## Demonstrating Overfitting
+## Demonstrating Overfitting I
 
 - **Objective**:
   - Show how increasing model complexity (polynomial degree) leads to overfitting.
@@ -54,6 +54,8 @@ nocite: |
   4. Plot training vs. test errors to highlight overfitting.
 
 ---
+
+## Demonstrating Overfitting II
 
 ```{python overfitting-plot}
 #| fig-cap: "Overfitting Phenomenon in Polynomial Regression"
@@ -110,7 +112,7 @@ degrees_to_visualize = [1, 5, 9]
 residual_degrees = [1, 9]
 
 # Create figure and GridSpec
-fig = plt.figure(figsize=(15, 10))
+fig = plt.figure(figsize=(15, 8.5))
 gs = GridSpec(2, 3, figure=fig)
 
 # Top row: three polynomial fits
