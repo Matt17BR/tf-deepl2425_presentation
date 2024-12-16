@@ -359,7 +359,7 @@ plt.show()
 
 ## VC Dimension: Definition
 
-- **VC Dimension ($d_{\text{VC}}$)**: The size of the *largest* dataset a model class can shatter.
+- **Vapnik-Chervonenkis Dimension ($d_{\text{VC}}$)**: The size of the *largest* dataset a model class can shatter.
 - **Example**: Linear classifiers in 2D have $d_{\text{VC}} = 3$. They can shatter 3 points but not 4 (in all configurations).
 
 ```{python vc-dimension-illustration}
